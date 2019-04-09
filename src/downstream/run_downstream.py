@@ -24,16 +24,16 @@ logger = logging.getLogger(__name__)
 
 class DownstreamTasks:
     def __init__(self):
-        self.rna_seq_path = "/opt/data/latent/data/downstream/RNA-seq"
-        self.pe_int_path = "/opt/data/latent/data/downstream/PE-interactions"
-        self.fire_path = "/opt/data/latent/data/downstream/FIREs"
+        self.rna_seq_path = "/opt/data/latentGenome/data/downstream/RNA-seq"
+        self.pe_int_path = "/opt/data/latentGenome/data/downstream/PE-interactions"
+        self.fire_path = "/opt/data/latentGenome/data/downstream/FIREs"
         self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
         self.chr_list_rna = '21'
         self.chr_list_pe = 'chr21'
         self.chr_list_tad = 'chr21'
         self.chr_list_fire = 21
-        self.saved_model_dir = "/home/kevindsouza/Documents/projects/latent/results/04-03-2019_n/all_ca_arc_sinh/"
+        self.saved_model_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh/"
         self.feat_mat_rna = self.saved_model_dir + "feat_rna_h24_E003.pkl"
         self.feat_mat_pe = self.saved_model_dir + "feat_pe_h24_E117.pkl"
         self.feat_mat_fire = self.saved_model_dir + "feat_fire_h24_H1.pkl"
@@ -266,7 +266,7 @@ if __name__ == '__main__':
     setup_logging()
     config_base = 'config.yaml'
     result_base = 'down_images'
-    model_path = "/home/kevindsouza/Documents/projects/latent/results/04-03-2019_n/all_ca_arc_sinh/model"
+    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh/model"
 
     cfg = get_config(model_path, config_base, result_base)
     downstream_ob = DownstreamTasks()

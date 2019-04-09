@@ -17,7 +17,7 @@ class ConfigDownstream:
 
         self.cut_seq_len = 100
 
-        self.model_dir = '/home/kevindsouza/Documents/projects/latent/src/down_model/model4'
+        self.model_dir = '/home/kevindsouza/Documents/projects/latentGenome/src/down_model/model4'
         self.config_base = 'config_down.yaml'
         self.tensorboard_log_base = 't_log'
         self.config_file = os.path.join(self.model_dir, self.config_base)
