@@ -83,7 +83,7 @@ def test_gene(cfg):
 if __name__ == '__main__':
     setup_logging()
 
-    model_dir = '/home/kevindsouza/Documents/projects/latent/results/03-04-2019_n/model4_h4/model'
+    model_dir = '/home/kevindsouza/Documents/projects/latentGenome/results/03-04-2019_n/model4_h4/model'
     config_base = 'config.yaml'
     result_base = 'images'
 
