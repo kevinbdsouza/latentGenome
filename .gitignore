@@ -5,3 +5,5 @@
 *.xml
 *.so
 *.ipynb_checkpoints
+*.h5
+

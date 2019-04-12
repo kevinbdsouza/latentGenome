@@ -196,7 +196,6 @@ class DownstreamTasks:
         return mean_map_dict
 
     def run_fires(self, cfg):
-
         fire_ob = Fires()
         fire_ob.get_fire_data(self.fire_path)
         fire_labeled = fire_ob.filter_fire_data(self.chr_list_fire)
@@ -231,7 +230,6 @@ class DownstreamTasks:
         return mean_map_dict
 
     def run_tads(self, cfg):
-
         fire_ob = Fires()
         fire_ob.get_tad_data(self.fire_path, self.fire_cell_names)
         tad_filtered = fire_ob.filter_tad_data(self.chr_list_tad)

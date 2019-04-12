@@ -14,4 +14,5 @@ for file_name in npzfiles:
 
     new_path = npzPath + "/" + npz_file_name
     os.rename(file_name, new_path)
+
 '''

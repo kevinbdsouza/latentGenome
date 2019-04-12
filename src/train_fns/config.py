@@ -8,6 +8,7 @@ class Config:
 
         self.input_size_encoder = 1030
         self.hidden_size_encoder = 110
+
         self.cell_assay_embed_size = self.hidden_size_encoder
 
         self.input_size_decoder = self.hidden_size_encoder
