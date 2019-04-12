@@ -1,14 +1,6 @@
 import numpy as np
 import xgboost
-
 from sklearn.metrics import average_precision_score
-
-n = 10
-
-X5 = np.load('/home/kevindsouza/Documents/projects/latent/baseline/avocado/data/RNAseq.E017.PREDICTD.npy')[:n]
-
-y = np.load('/home/kevindsouza/Documents/projects/latent/baseline/avocado/data/RNAseq.E017.y.npy')[:n]
-y = (y >= 0.5).astype(int)
 
 
 def celltype_baseline(y):
@@ -42,6 +34,15 @@ def make_predictions(X, y):
 
     return average_precisions
 
+
+n = 10
+
+X = np.load('/home/kevindsouza/Documents/projects/latent/baseline/avocado/data/RNAseq.E017.AvocadoFac.npy')
+
+X5 = X[:n]
+
+y = np.load('/home/kevindsouza/Documents/projects/latent/baseline/avocado/data/RNAseq.E017.y.npy')[:n]
+y = (y >= 0.5).astype(int)
 
 map = make_predictions(X5, y)
 mean_map = map.mean()

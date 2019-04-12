@@ -4,3 +4,4 @@
 *.idea
 *.xml
 *.so
+*.ipynb_checkpoints
