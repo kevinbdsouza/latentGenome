@@ -24,9 +24,9 @@ logger = logging.getLogger(__name__)
 
 class DownstreamTasks:
     def __init__(self):
-        self.rna_seq_path = "/opt/data/latentGenome/data/downstream/RNA-seq"
-        self.pe_int_path = "/opt/data/latentGenome/data/downstream/PE-interactions"
-        self.fire_path = "/opt/data/latentGenome/data/downstream/FIREs"
+        self.rna_seq_path = "/opt/data/latent/data/downstream/RNA-seq"
+        self.pe_int_path = "/opt/data/latent/data/downstream/PE-interactions"
+        self.fire_path = "/opt/data/latent/data/downstream/FIREs"
         self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
         self.chr_list_rna = '21'
@@ -34,10 +34,10 @@ class DownstreamTasks:
         self.chr_list_tad = 'chr21'
         self.chr_list_fire = 21
         self.saved_model_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh/"
-        self.feat_mat_rna = self.saved_model_dir + "feat_rna_h24_E003.pkl"
-        self.feat_mat_pe = self.saved_model_dir + "feat_pe_h24_E117.pkl"
-        self.feat_mat_fire = self.saved_model_dir + "feat_fire_h24_H1.pkl"
-        self.feat_mat_tad = self.saved_model_dir + "feat_tad_h24_GM.pkl"
+        self.feat_mat_rna = self.saved_model_dir + "feat_rna_h24_"
+        self.feat_mat_pe = self.saved_model_dir + "feat_pe_h24_"
+        self.feat_mat_fire = self.saved_model_dir + "feat_fire_h24_"
+        self.feat_mat_tad = self.saved_model_dir + "feat_tad_h24_"
         self.new_features = self.saved_model_dir + "new_feat.npy"
         self.run_features_rna = False
         self.run_features_pe = True
@@ -123,7 +123,9 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_rna,
-                                                                          self.feat_mat_rna, self.downstream_main)
+                                                                          self.feat_mat_rna + rna_seq_chr.columns[
+                                                                              col] + '.pkl',
+                                                                          self.downstream_main)
 
             if self.concat_lstm:
 
@@ -175,7 +177,8 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_pe,
-                                                                          self.feat_mat_pe, self.downstream_main)
+                                                                          self.feat_mat_pe + cell + '.pkl',
+                                                                          self.downstream_main)
 
             if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
                 bal_mode = "undersampling"
@@ -193,7 +196,6 @@ class DownstreamTasks:
         return mean_map_dict
 
     def run_fires(self, cfg):
-
         fire_ob = Fires()
         fire_ob.get_fire_data(self.fire_path)
         fire_labeled = fire_ob.filter_fire_data(self.chr_list_fire)
@@ -209,13 +211,14 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_fire,
-                                                                          self.feat_mat_fire, self.downstream_main)
+                                                                          self.feat_mat_fire + cell + '.pkl',
+                                                                          self.downstream_main)
 
             if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
                 bal_mode = "undersampling"
             else:
                 bal_mode = "oversampling"
-                
+
             feature_matrix = self.downstream_helper_ob.fix_class_imbalance(feature_matrix, mode=bal_mode)
 
             mean_map = self.downstream_helper_ob.calculate_map(feature_matrix, cls_mode)
@@ -227,7 +230,6 @@ class DownstreamTasks:
         return mean_map_dict
 
     def run_tads(self, cfg):
-
         fire_ob = Fires()
         fire_ob.get_tad_data(self.fire_path, self.fire_cell_names)
         tad_filtered = fire_ob.filter_tad_data(self.chr_list_tad)
@@ -244,7 +246,9 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_tad,
-                                                                          self.feat_mat_tad, self.downstream_main)
+                                                                          self.feat_mat_tad + self.fire_cell_names[
+                                                                              col] + '.pkl',
+                                                                          self.downstream_main)
 
             if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
                 bal_mode = "undersampling"
@@ -274,10 +278,10 @@ if __name__ == '__main__':
 
     mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
 
-    mapdict_pe = downstream_ob.run_pe(cfg)
+    # mapdict_pe = downstream_ob.run_pe(cfg)
 
-    map_dict_fire = downstream_ob.run_fires(cfg)
+    # map_dict_fire = downstream_ob.run_fires(cfg)
 
-    map_dict_tad = downstream_ob.run_tads(cfg)
+    # map_dict_tad = downstream_ob.run_tads(cfg)
 
     print("done")
