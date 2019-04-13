@@ -5,6 +5,9 @@ from os.path import isfile, join
 import numpy as np
 
 '''
+import numpy
+
+>>>>>>> be71eac643ccc27ed80f0c5805289c6ce13cada6
 npzPath = "/opt/data/latent/data/npz/subset_test_5_celltypes/test"
 
 npzfiles = [f for f in listdir(npzPath) if isfile(join(npzPath, f))]
