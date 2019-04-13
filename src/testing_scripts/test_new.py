@@ -2,8 +2,12 @@ import re
 import os
 from os import listdir
 from os.path import isfile, join
+import numpy as np
+
+'''
 import numpy
 
+>>>>>>> be71eac643ccc27ed80f0c5805289c6ce13cada6
 npzPath = "/opt/data/latent/data/npz/subset_test_5_celltypes/test"
 
 npzfiles = [f for f in listdir(npzPath) if isfile(join(npzPath, f))]
@@ -13,3 +17,5 @@ for file_name in npzfiles:
 
     new_path = npzPath + "/" + npz_file_name
     os.rename(file_name, new_path)
+
+'''
