@@ -18,6 +18,7 @@ class Config:
         self.epoch_size = 193
         self.num_epochs = 10
         self.base_pair_resolution = 25
+        self.hidden_size_encoder = self.bp250_factors + self.bp25_factors + self.bp5k_factors
 
         self.fasta_path = "/opt/data/latent/data/dna"
         self.epigenome_npz_path_train = '/opt/data/latent/data/npz/all_npz_arc_sinh'
@@ -25,7 +26,7 @@ class Config:
         self.epigenome_bigwig_path = '/opt/data/latent/data/bigwig'
 
         self.model_dir = '/home/kevindsouza/Documents/projects/latentGenome/src/saved_model/avocado'
-        self.config_base = 'config.yaml'
+        self.config_base = 'avocado_config.yaml'
         self.tensorboard_log_base = 't_log'
         self.config_file = os.path.join(self.model_dir, self.config_base)
         self.tensorboard_log_path = os.path.join(self.model_dir, self.tensorboard_log_base)
@@ -35,3 +36,5 @@ class Config:
 
         self.data_dir = '.data/'
         self.chr21_len = 1925195
+        self.downstream_df_columns = None
+

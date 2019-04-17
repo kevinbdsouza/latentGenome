@@ -1,6 +1,6 @@
 import numpy as np
 
-path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh/"
+path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh_h110/"
 
 rna = np.load(path + "map_dict_rnaseq.npy").item()
 

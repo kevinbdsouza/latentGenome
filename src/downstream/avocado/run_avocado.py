@@ -2,6 +2,7 @@ import numpy as np
 from os import listdir
 from baseline.avocado.avocado.model import Avocado
 from downstream.avocado import avocado_config as config
+from downstream.avocado import avo_down_helper as helper
 import logging
 from os.path import isfile, join
 from keras.models import load_model
@@ -112,12 +113,19 @@ class AvocadoAnalysis:
 
 if __name__ == "__main__":
     cfg = config.Config()
+
+    AvDown_ob = helper.AvoDownstreamHelper(cfg)
     Avocado_ob = AvocadoAnalysis()
 
+    # pd_col = list(np.arange(cfg.bp25_factors + cfg.bp250_factors + cfg.bp5k_factors))
+    # pd_col.append('target')
+    # cfg.downstream_df_columns = pd_col
+
+    AvDown_ob.save_config_as_yaml(cfg.config_file, cfg)
     # model = Avocado_ob.run_avocado(cfg)
 
-    model = load_model("{}.h5".format(Avocado_ob.model_path + Avocado_ob.model_name))
+    # model = load_model("{}.h5".format(Avocado_ob.model_path + Avocado_ob.model_name))
 
-    gen_factors = Avocado_ob.get_genomic_factors(model, cfg)
+    # gen_factors = Avocado_ob.get_genomic_factors(model, cfg)
 
     print("done")

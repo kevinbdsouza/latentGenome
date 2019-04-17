@@ -9,7 +9,7 @@ from downstream.avocado.avo_down_helper import AvoDownstreamHelper
 from downstream.downstream_helper import DownstreamHelper
 from downstream.fires import Fires
 
-gpu_id = 1
+gpu_id = 0
 mode = "test"
 
 logger = logging.getLogger(__name__)
@@ -30,6 +30,8 @@ class AvocadoDownstreamTasks:
         self.model_name = "avocado-chr21"
         self.Avo_downstream_helper_ob = AvoDownstreamHelper(cfg)
         self.downstream_helper_ob = DownstreamHelper(cfg)
+        self.avocado_features = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir, self.model_name,
+                                                                                 cfg)
 
     def run_rna_seq(self, cfg):
 
@@ -42,7 +44,7 @@ class AvocadoDownstreamTasks:
         cls_mode = 'ind'
         feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
 
-        for col in range(1, 58):
+        for col in range(2, 58):
             rna_seq_chr.loc[rna_seq_chr.iloc[:, col] >= 0.5, 'target'] = 1
             rna_window_labels = rna_seq_chr.filter(['start', 'end', 'target'], axis=1)
             rna_window_labels = rna_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
@@ -50,10 +52,7 @@ class AvocadoDownstreamTasks:
 
             mask_vector, label_ar = self.Avo_downstream_helper_ob.create_mask(rna_window_labels)
 
-            avocado_features = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir, self.model_name,
-                                                                                cfg)
-
-            feature_matrix = self.Avo_downstream_helper_ob.filter_states(avocado_features, feature_matrix,
+            feature_matrix = self.Avo_downstream_helper_ob.filter_states(self.avocado_features, feature_matrix,
                                                                          mask_vector, label_ar)
 
             if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
@@ -89,10 +88,7 @@ class AvocadoDownstreamTasks:
 
             mask_vector, label_ar = self.Avo_downstream_helper_ob.create_mask(pe_window_labels)
 
-            avocado_features = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir, self.model_name,
-                                                                                cfg)
-
-            feature_matrix = self.Avo_downstream_helper_ob.filter_states(avocado_features, feature_matrix,
+            feature_matrix = self.Avo_downstream_helper_ob.filter_states(self.avocado_features, feature_matrix,
                                                                          mask_vector, label_ar)
 
             if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
@@ -126,10 +122,7 @@ class AvocadoDownstreamTasks:
 
             mask_vector, label_ar = self.Avo_downstream_helper_ob.create_mask(fire_window_labels)
 
-            avocado_features = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir, self.model_name,
-                                                                                cfg)
-
-            feature_matrix = self.Avo_downstream_helper_ob.filter_states(avocado_features, feature_matrix,
+            feature_matrix = self.Avo_downstream_helper_ob.filter_states(self.avocado_features, feature_matrix,
                                                                          mask_vector, label_ar)
 
             if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
@@ -165,10 +158,7 @@ class AvocadoDownstreamTasks:
 
             mask_vector, label_ar = self.Avo_downstream_helper_ob.create_mask(tad_cell)
 
-            avocado_features = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir, self.model_name,
-                                                                                cfg)
-
-            feature_matrix = self.Avo_downstream_helper_ob.filter_states(avocado_features, feature_matrix,
+            feature_matrix = self.Avo_downstream_helper_ob.filter_states(self.avocado_features, feature_matrix,
                                                                          mask_vector, label_ar)
 
             if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
@@ -194,15 +184,20 @@ if __name__ == '__main__':
     model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/avocado/model"
 
     cfg = get_config(model_path, config_base, result_base)
+
+    pd_col = list(np.arange(cfg.hidden_size_encoder))
+    pd_col.append('target')
+    cfg = cfg._replace(downstream_df_columns=pd_col)
+
     Av_downstream_ob = AvocadoDownstreamTasks()
     downstream_helper_ob = DownstreamHelper(cfg)
 
     mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
 
-    # mapdict_pe = downstream_ob.run_pe(cfg)
+    mapdict_pe = Av_downstream_ob.run_pe(cfg)
 
-    # map_dict_fire = downstream_ob.run_fires(cfg)
+    map_dict_fire = Av_downstream_ob.run_fires(cfg)
 
-    # map_dict_tad = downstream_ob.run_tads(cfg)
+    map_dict_tad = Av_downstream_ob.run_tads(cfg)
 
     print("done")
