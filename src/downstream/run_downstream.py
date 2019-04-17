@@ -40,9 +40,9 @@ class DownstreamTasks:
         self.feat_mat_tad = self.saved_model_dir + "feat_tad_h24_"
         self.new_features = self.saved_model_dir + "new_feat.npy"
         self.run_features_rna = False
-        self.run_features_pe = True
+        self.run_features_pe = False
         self.run_features_fire = False
-        self.run_features_tad = True
+        self.run_features_tad = False
         self.concat_lstm = False
         self.run_concat_feat = False
         self.downstream_helper_ob = DownstreamHelper(cfg)
