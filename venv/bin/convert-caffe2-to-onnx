@@ -1,12 +1,10 @@
-#!/home/kevindsouza/Documents/projects/latent/venv/bin/python3.5
-# EASY-INSTALL-ENTRY-SCRIPT: 'torch==1.1.0a0+72f070a','console_scripts','convert-caffe2-to-onnx'
-__requires__ = 'torch==1.1.0a0+72f070a'
-import re
+#!/home/kevin/Documents/projects/latentGenome/venv/bin/python
+# EASY-INSTALL-ENTRY-SCRIPT: 'torch==1.1.0a0+a3d3008','console_scripts','convert-caffe2-to-onnx'
+__requires__ = 'torch==1.1.0a0+a3d3008'
 import sys
 from pkg_resources import load_entry_point
 
 if __name__ == '__main__':
-    sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
     sys.exit(
-        load_entry_point('torch==1.1.0a0+72f070a', 'console_scripts', 'convert-caffe2-to-onnx')()
+        load_entry_point('torch==1.1.0a0+a3d3008', 'console_scripts', 'convert-caffe2-to-onnx')()
     )

@@ -14,6 +14,7 @@ import re
 from os import listdir
 from os.path import isfile, join
 from tqdm import tqdm
+import logging
 
 
 def get_bigwig(url, download_filepath, verbose=True):
@@ -39,7 +40,7 @@ def download_bigWig(name, bigwigPath, chroms,
             print("bigWigToBedGraph {} {} -chrom=chr{}".format(bigwig,
                                                                bedgraph, chrom))
 
-        os.system("/opt/data/latent/./bigWigToBedGraph {} {} -chrom=chr{}".format(bigwig,
+        os.system("/data2/data/latent/bigWigToBedGraph {} {} -chrom=chr{}".format(bigwig,
                                                                                   bedgraph, chrom))
 
         if verbose == True:
@@ -68,10 +69,6 @@ def download_bigWig(name, bigwigPath, chroms,
 
         os.system("rm {}".format(bedgraph))
 
-    if verbose == True:
-        print("rm {}".format(bigwig))
-
-    os.system("rm {}".format(bigwig))
     return chrom_data
 
 
@@ -169,19 +166,28 @@ def decimate_vector(x, k=25, func=numpy.mean):
 if __name__ == "__main__":
     # chroms = list(range(1, 23)) + ['X']
 
-    chroms = [21]
-    bigwigPath = "/opt/data/latent/data/bigwig"
-    npzPath = "/opt/data/latent/data/npz/all_npz"
+    chroms = [20]
+    bigwigPath = "/data2/data/latent/data/bigwig"
+    npzPath = "/data2/data/latent/data/npz/all_npz_arc_sinh_ch20"
 
     bigwigfiles = [f for f in listdir(bigwigPath) if isfile(join(bigwigPath, f))]
     bigwigfiles.sort()
 
-    for file_name in bigwigfiles:
-        chrom_data = download_bigWig(file_name, bigwigPath, chroms,
-                                     chrom_lengths=None, verbose=True)
+    logging.basicConfig(filename="Log_Test_File.txt",
+                        level=logging.DEBUG)
 
-        npz_file_name = re.split(r"\.\s*", file_name)[0]
-        numpy.savez(npzPath + "/" + npz_file_name, chrom_data)
-        print("Data extracted from {}".format(file_name))
+    for file_name in bigwigfiles:
+        try:
+            npz_file_name = re.split(r"\.\s*", file_name)[0]
+
+            chrom_data = download_bigWig(file_name, bigwigPath, chroms,
+                                         chrom_lengths=None, verbose=True)
+
+            numpy.savez(npzPath + "/" + npz_file_name, chrom_data)
+            print("Data extracted from {}".format(file_name))
+        except Exception as e:
+            logging.info("Error message: {}".format(e))
+            logging.info("file name: {}".format(npz_file_name))
+            continue
 
     print("done")

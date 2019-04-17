@@ -6,7 +6,6 @@ import numpy as np
 from os import listdir
 from os.path import isfile, join
 from common.log import setup_logging
-from Bio import SeqIO
 import traceback
 import math
 
