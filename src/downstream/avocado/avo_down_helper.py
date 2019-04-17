@@ -4,6 +4,8 @@ import pandas as pd
 from train_fns.test_gene import get_config
 from keras.models import load_model
 from downstream.avocado.run_avocado import AvocadoAnalysis
+import yaml
+import traceback
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +17,17 @@ class AvoDownstreamHelper:
         self.cfg_down = None
         self.columns = cfg.downstream_df_columns
 
+    @staticmethod
+    def save_config_as_yaml(path, cfg):
+        """
+            Save configuration
+        """
+        try:
+            with open(path, 'w') as f:
+                yaml.safe_dump(cfg.__dict__, f, default_flow_style=False)
+        except:
+            logger.error(traceback.format_exc())
+
     def create_mask(self, window_labels):
         ind_list = []
         label_ar = np.zeros(self.chr21_len)
@@ -25,6 +38,9 @@ class AvoDownstreamHelper:
             end = window_labels.loc[i, "end"]
 
             # print("gene : {} - start : {})".format(i, start))
+
+            if start > self.chr21_len or end > self.chr21_len:
+                break
 
             for j in range(end + 1 - start):
                 ind_list.append(start - 1 + j)
@@ -60,6 +76,8 @@ class AvoDownstreamHelper:
 
         feature_matrix = feature_matrix.append(pd.DataFrame(feat_mat, columns=self.columns),
                                                ignore_index=True)
+
+        feature_matrix.target = feature_matrix.target.astype(int)
 
         return feature_matrix
 
