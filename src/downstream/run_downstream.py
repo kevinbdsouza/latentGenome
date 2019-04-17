@@ -33,16 +33,16 @@ class DownstreamTasks:
         self.chr_list_pe = 'chr21'
         self.chr_list_tad = 'chr21'
         self.chr_list_fire = 21
-        self.saved_model_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh/"
-        self.feat_mat_rna = self.saved_model_dir + "feat_rna_h24_"
-        self.feat_mat_pe = self.saved_model_dir + "feat_pe_h24_"
-        self.feat_mat_fire = self.saved_model_dir + "feat_fire_h24_"
-        self.feat_mat_tad = self.saved_model_dir + "feat_tad_h24_"
+        self.saved_model_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh_h24/"
+        self.feat_mat_rna = self.saved_model_dir + "feat_rna_h24_E003.pkl"
+        self.feat_mat_pe = self.saved_model_dir + "feat_pe_h24.pkl"
+        self.feat_mat_fire = self.saved_model_dir + "feat_fire_h24.pkl"
+        self.feat_mat_tad = self.saved_model_dir + "feat_tad_h24.pkl"
         self.new_features = self.saved_model_dir + "new_feat.npy"
         self.run_features_rna = False
-        self.run_features_pe = True
+        self.run_features_pe = False
         self.run_features_fire = False
-        self.run_features_tad = True
+        self.run_features_tad = False
         self.concat_lstm = False
         self.run_concat_feat = False
         self.downstream_helper_ob = DownstreamHelper(cfg)
@@ -123,9 +123,10 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_rna,
-                                                                          self.feat_mat_rna + rna_seq_chr.columns[
-                                                                              col] + '.pkl',
+                                                                          self.feat_mat_rna,
                                                                           self.downstream_main)
+
+            self.run_features_rna = False
 
             if self.concat_lstm:
 
@@ -177,7 +178,7 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_pe,
-                                                                          self.feat_mat_pe + cell + '.pkl',
+                                                                          self.feat_mat_pe,
                                                                           self.downstream_main)
 
             if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
@@ -211,8 +212,10 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_fire,
-                                                                          self.feat_mat_fire + cell + '.pkl',
+                                                                          self.feat_mat_fire,
                                                                           self.downstream_main)
+
+            self.run_features_fire = False
 
             if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
                 bal_mode = "undersampling"
@@ -246,8 +249,7 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_tad,
-                                                                          self.feat_mat_tad + self.fire_cell_names[
-                                                                              col] + '.pkl',
+                                                                          self.feat_mat_tad,
                                                                           self.downstream_main)
 
             if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
@@ -270,9 +272,14 @@ if __name__ == '__main__':
     setup_logging()
     config_base = 'config.yaml'
     result_base = 'down_images'
-    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh/model"
+    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh_h24/model"
 
     cfg = get_config(model_path, config_base, result_base)
+    pd_col = list(np.arange(cfg.hidden_size_encoder))
+    pd_col.append('target')
+    pd_col.append('gene_id')
+    cfg = cfg._replace(downstream_df_columns=pd_col)
+
     downstream_ob = DownstreamTasks()
     downstream_helper_ob = DownstreamHelper(cfg)
 

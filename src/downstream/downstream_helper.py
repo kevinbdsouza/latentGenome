@@ -43,7 +43,7 @@ class DownstreamHelper:
     def filter_states(self, encoder_hidden_states_np, feature_matrix, mask_vector, label_ar, gene_ar):
 
         # if True in mask_vector:
-        #    print("here")
+        #     print("here")
 
         enc = encoder_hidden_states_np[mask_vector,]
         lab = label_ar[mask_vector,]
@@ -54,8 +54,9 @@ class DownstreamHelper:
         feat_mat = np.append(enc, lab, axis=1)
         feat_mat = np.append(feat_mat, gene_id, axis=1)
 
-        feature_matrix = feature_matrix.append(pd.DataFrame(feat_mat, columns=self.columns),
-                                               ignore_index=True)
+        if True in mask_vector:
+            feature_matrix = feature_matrix.append(pd.DataFrame(feat_mat, columns=self.columns),
+                                                   ignore_index=True)
 
         return feature_matrix
 
@@ -68,7 +69,7 @@ class DownstreamHelper:
             hidden_size = self.cfg.hidden_size_encoder
 
         average_precisions = np.zeros(5)
-        for i in range(5):
+        for i in range(2):
             msk_test = np.random.rand(len(feature_matrix)) < 0.8
             X_train_val = feature_matrix[msk_test].reset_index(drop=True)
             X_test = feature_matrix[~msk_test].reset_index(drop=True)
@@ -77,7 +78,7 @@ class DownstreamHelper:
             X_train = X_train_val[msk_val].reset_index(drop=True)
             X_valid = X_train_val[~msk_val].reset_index(drop=True)
 
-            model = xgboost.XGBClassifier(n_estimators=5000, nthread=min(X_train.shape[1] - 1, 4), max_depth=6)
+            model = xgboost.XGBClassifier(n_estimators=5000, nthread=min(X_train.shape[1] - 1, 20), max_depth=6)
             model.fit(X_train.iloc[:, 0:hidden_size], X_train[:]["target"],
                       eval_set=[(X_valid.iloc[:, 0:hidden_size], X_valid.iloc[:]["target"])],
                       eval_metric='map',
