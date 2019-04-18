@@ -40,7 +40,7 @@ def download_bigWig(name, bigwigPath, chroms,
             print("bigWigToBedGraph {} {} -chrom=chr{}".format(bigwig,
                                                                bedgraph, chrom))
 
-        os.system("/data2/data/latent/bigWigToBedGraph {} {} -chrom=chr{}".format(bigwig,
+        os.system("/opt/data/latent/bigWigToBedGraph {} {} -chrom=chr{}".format(bigwig,
                                                                                   bedgraph, chrom))
 
         if verbose == True:
@@ -167,8 +167,8 @@ if __name__ == "__main__":
     # chroms = list(range(1, 23)) + ['X']
 
     chroms = [20]
-    bigwigPath = "/data2/data/latent/data/bigwig"
-    npzPath = "/data2/data/latent/data/npz/all_npz_arc_sinh_ch20"
+    bigwigPath = "/opt/data/latent/data/bigwig"
+    npzPath = "/opt/data/latent/data/npz/all_npz_arc_sinh_ch20"
 
     bigwigfiles = [f for f in listdir(bigwigPath) if isfile(join(bigwigPath, f))]
     bigwigfiles.sort()
