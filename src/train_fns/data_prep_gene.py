@@ -21,7 +21,7 @@ class DataPrepGene():
         self.epigenome_assay_dict = {}
         self.cfg = cfg
         self.mode = mode
-        self.ch21_cuts = 3
+        self.ch21_cuts = 5
         self.ch_cut_len = int(math.floor((self.cfg.chr21_len // self.ch21_cuts) / 100.0)) * 100
         self.tracks = None
 

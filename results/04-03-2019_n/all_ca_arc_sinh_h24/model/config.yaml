@@ -1,6 +1,6 @@
 base_pair_resolution: 25
 cell_assay_embed_size: 24
-chr21_len: 1926400
+chr21_len: 2600000
 config_base: config.yaml
 config_file: /home/kevindsouza/Documents/projects/latent/src/saved_model/model_all_ca/config.yaml
 cut_seq_len: 100
@@ -33,8 +33,8 @@ downstream_df_columns:
 - target
 - gene_id
 epigenome_bigwig_path: /opt/data/latent/data/bigwig
-epigenome_npz_path_test: /opt/data/latent/data/npz/all_npz_arc_sinh
-epigenome_npz_path_train: /opt/data/latent/data/npz/all_npz_arc_sinh
+epigenome_npz_path_test: /opt/data/latent/data/npz/try
+epigenome_npz_path_train: /opt/data/latent/data/npz/try
 fasta_path: /opt/data/latent/data/dna
 hidden_size_decoder: 24
 hidden_size_encoder: 24
