@@ -69,7 +69,7 @@ class DownstreamHelper:
             hidden_size = self.cfg.hidden_size_encoder
 
         average_precisions = np.zeros(5)
-        for i in range(2):
+        for i in range(5):
             msk_test = np.random.rand(len(feature_matrix)) < 0.8
             X_train_val = feature_matrix[msk_test].reset_index(drop=True)
             X_test = feature_matrix[~msk_test].reset_index(drop=True)
@@ -78,7 +78,7 @@ class DownstreamHelper:
             X_train = X_train_val[msk_val].reset_index(drop=True)
             X_valid = X_train_val[~msk_val].reset_index(drop=True)
 
-            model = xgboost.XGBClassifier(n_estimators=5000, nthread=min(X_train.shape[1] - 1, 20), max_depth=6)
+            model = xgboost.XGBClassifier(n_estimators=5000, nthread=min(X_train.shape[1] - 1, 12), max_depth=6)
             model.fit(X_train.iloc[:, 0:hidden_size], X_train[:]["target"],
                       eval_set=[(X_valid.iloc[:, 0:hidden_size], X_valid.iloc[:]["target"])],
                       eval_metric='map',
@@ -124,27 +124,29 @@ class DownstreamHelper:
 
     def fix_class_imbalance(self, feature_matrix, mode='undersampling'):
 
-        balanced_feat_mat = None
-        feat_majority = feature_matrix[feature_matrix.target == 0]
-        feat_minority = feature_matrix[feature_matrix.target == 1]
-
         if mode == 'undersampling':
+            feat_majority = feature_matrix[feature_matrix.target == 1]
+            feat_minority = feature_matrix[feature_matrix.target == 0]
+
             feat_majority_downsampled = resample(feat_majority,
                                                  replace=False,
                                                  n_samples=feat_minority.shape[0],
                                                  random_state=123)
 
-            balanced_feat_mat = pd.concat([feat_majority_downsampled, feat_minority]).reset_index(drop=True)
+            feature_matrix = pd.concat([feat_majority_downsampled, feat_minority]).reset_index(drop=True)
 
         elif mode == 'oversampling':
+            feat_majority = feature_matrix[feature_matrix.target == 0]
+            feat_minority = feature_matrix[feature_matrix.target == 1]
+
             feat_minority_upsampled = resample(feat_minority,
                                                replace=True,
                                                n_samples=feat_majority.shape[0],
                                                random_state=123)
 
-            balanced_feat_mat = pd.concat([feat_minority_upsampled, feat_majority]).reset_index(drop=True)
+            feature_matrix = pd.concat([feat_minority_upsampled, feat_majority]).reset_index(drop=True)
 
-        return balanced_feat_mat
+        return feature_matrix
 
     def concat_gene_features(self, feature_matrix):
 

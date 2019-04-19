@@ -1,6 +1,6 @@
 import numpy as np
 from os import listdir
-from baseline.avocado.avocado.model import Avocado
+from downstream.avocado.model import Avocado
 from downstream.avocado import avocado_config as config
 from downstream.avocado import avo_down_helper as helper
 import logging

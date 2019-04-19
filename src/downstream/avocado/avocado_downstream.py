@@ -34,6 +34,7 @@ class AvocadoDownstreamTasks:
                                                                                  cfg)
 
     def run_rna_seq(self, cfg):
+        print("Running RNA-Seq")
 
         rna_seq_ob = RnaSeq()
         rna_seq_ob.get_rna_seq(self.rna_seq_path)
@@ -44,7 +45,8 @@ class AvocadoDownstreamTasks:
         cls_mode = 'ind'
         feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
 
-        for col in range(2, 58):
+        for col in range(1, 58):
+            print("cell no : {}".format(col))
             rna_seq_chr.loc[rna_seq_chr.iloc[:, col] >= 0.5, 'target'] = 1
             rna_window_labels = rna_seq_chr.filter(['start', 'end', 'target'], axis=1)
             rna_window_labels = rna_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
@@ -71,6 +73,7 @@ class AvocadoDownstreamTasks:
         return mean_map_dict
 
     def run_pe(self, cfg):
+        print("Running PE")
 
         pe_ob = PeInteractions()
         pe_ob.get_pe_data(self.pe_int_path)
@@ -80,6 +83,7 @@ class AvocadoDownstreamTasks:
         feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
 
         for cell in self.pe_cell_names:
+            print("cell name : {}".format(cell))
             pe_data_chr_cell = pe_data_chr.loc[pe_data_chr['cell'] == cell]
             pe_window_labels = pe_data_chr_cell.filter(['window_start', 'window_end', 'label'], axis=1)
             pe_window_labels.rename(columns={'window_start': 'start', 'window_end': 'end', 'label': 'target'},
@@ -107,6 +111,7 @@ class AvocadoDownstreamTasks:
         return mean_map_dict
 
     def run_fires(self, cfg):
+        print("Running FIREs")
 
         fire_ob = Fires()
         fire_ob.get_fire_data(self.fire_path)
@@ -116,6 +121,7 @@ class AvocadoDownstreamTasks:
         feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
 
         for cell in self.fire_cell_names:
+            print("cell name : {}".format(cell))
             fire_window_labels = fire_labeled.filter(['start', 'end', cell + '_l'], axis=1)
             fire_window_labels.rename(columns={cell + '_l': 'target'}, inplace=True)
             fire_window_labels = fire_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
@@ -141,6 +147,7 @@ class AvocadoDownstreamTasks:
         return mean_map_dict
 
     def run_tads(self, cfg):
+        print("Running TADs")
 
         fire_ob = Fires()
         fire_ob.get_tad_data(self.fire_path, self.fire_cell_names)
@@ -150,6 +157,7 @@ class AvocadoDownstreamTasks:
         feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
 
         for col in range(7):
+            print("cell no : {}".format(col))
             tad_cell = tad_filtered[col]
             tad_cell['target'] = 1
             tad_cell = tad_cell.filter(['start', 'end', 'target'], axis=1)
