@@ -115,10 +115,6 @@ def unroll_loop(cfg, track_cut, model, encoder_optimizer,
 
     rec_loss = 0
     for ei in range(0, nValues):
-
-        if not np.any(input_variable[:, ei]):
-            continue
-
         encoder_input = Variable(
             torch.from_numpy(np.array(input_variable[:, ei])).float().unsqueeze(0).unsqueeze(0)).cuda(gpu_id)
 
@@ -135,7 +131,6 @@ def unroll_loop(cfg, track_cut, model, encoder_optimizer,
     # With teacher forcing
     for di in range(0, nValues):
         decoder_state = encoder_states[di].unsqueeze(0)
-        
         decoder_output, decoder_hidden, _ = decoder(encoder_outputs[di].unsqueeze(0), decoder_hidden,
                                                     decoder_state)
 
@@ -151,8 +146,8 @@ def unroll_loop(cfg, track_cut, model, encoder_optimizer,
 
     if mode == "train":
         rec_loss.backward()
-        clip_grad_norm_(encoder.parameters(), max_norm=0.005)
-        clip_grad_norm_(decoder.parameters(), max_norm=0.005)
+        clip_grad_norm_(encoder.parameters(), max_norm=5)
+        clip_grad_norm_(decoder.parameters(), max_norm=5)
         encoder_optimizer.step()
         decoder_optimizer.step()
         mean_loss = rec_loss.item() / nValues

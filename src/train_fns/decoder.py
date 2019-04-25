@@ -22,6 +22,10 @@ class DecoderLSTM(nn.Module):
         return output, hidden, state
 
     def initHidden(self):
-        h = Variable(torch.zeros(1, 1, self.hidden_size))
-        c = Variable(torch.zeros(1, 1, self.hidden_size))
+        # h = Variable(torch.zeros(1, 1, self.hidden_size))
+        # c = Variable(torch.zeros(1, 1, self.hidden_size))
+
+        h = Variable(torch.randn(1, 1, self.hidden_size).float())
+        c = Variable(torch.randn(1, 1, self.hidden_size).float())
+        
         return h.cuda(self.gpu_id), c.cuda(self.gpu_id)

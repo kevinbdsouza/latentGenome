@@ -6,4 +6,4 @@
 *.so
 *.ipynb_checkpoints
 *.h5
-
+*.pyc

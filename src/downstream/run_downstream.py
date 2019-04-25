@@ -33,7 +33,7 @@ class DownstreamTasks:
         self.chr_list_pe = 'chr21'
         self.chr_list_tad = 'chr21'
         self.chr_list_fire = 21
-        self.saved_model_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh_h24/ch20/"
+        self.saved_model_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh_h24/ch21/grad_clip_0.05/arc_sin_znorm/"
         self.feat_mat_rna = self.saved_model_dir + "feat_rna_h24.pkl"
         self.feat_mat_pe = self.saved_model_dir + "feat_pe_h24.pkl"
         self.feat_mat_fire = self.saved_model_dir + "feat_fire_h24.pkl"
@@ -144,7 +144,7 @@ class DownstreamTasks:
                 feature_matrix = feature_matrix.loc[:, feature_matrix.columns != 'gene_id']
                 cls_mode = 'ind'
 
-            if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
+            if feature_matrix["target"].value_counts().index[0] == 1:
                 bal_mode = "undersampling"
             else:
                 bal_mode = "oversampling"
@@ -181,7 +181,7 @@ class DownstreamTasks:
                                                                           self.feat_mat_pe,
                                                                           self.downstream_main)
 
-            if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
+            if feature_matrix["target"].value_counts().index[0] == 1:
                 bal_mode = "undersampling"
             else:
                 bal_mode = "oversampling"
@@ -217,7 +217,7 @@ class DownstreamTasks:
 
             self.run_features_fire = False
 
-            if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
+            if feature_matrix["target"].value_counts().index[0] == 1:
                 bal_mode = "undersampling"
             else:
                 bal_mode = "oversampling"
@@ -252,7 +252,7 @@ class DownstreamTasks:
                                                                           self.feat_mat_tad,
                                                                           self.downstream_main)
 
-            if feature_matrix["target"].value_counts()[0] > feature_matrix["target"].value_counts()[1]:
+            if feature_matrix["target"].value_counts().index[0] == 1:
                 bal_mode = "undersampling"
             else:
                 bal_mode = "oversampling"
@@ -272,7 +272,7 @@ if __name__ == '__main__':
     setup_logging()
     config_base = 'config.yaml'
     result_base = 'down_images'
-    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh_h24/model"
+    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh_h24/ch21/grad_clip_0.05/arc_sin_znorm/model"
 
     cfg = get_config(model_path, config_base, result_base)
     pd_col = list(np.arange(cfg.hidden_size_encoder))
@@ -285,10 +285,10 @@ if __name__ == '__main__':
 
     mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
 
-    # mapdict_pe = downstream_ob.run_pe(cfg)
+    mapdict_pe = downstream_ob.run_pe(cfg)
 
-    # map_dict_fire = downstream_ob.run_fires(cfg)
+    map_dict_fire = downstream_ob.run_fires(cfg)
 
-    # map_dict_tad = downstream_ob.run_tads(cfg)
+    map_dict_tad = downstream_ob.run_tads(cfg)
 
     print("done")
