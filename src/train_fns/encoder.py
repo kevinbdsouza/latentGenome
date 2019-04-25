@@ -21,8 +21,12 @@ class EncoderLSTM(nn.Module):
         return output, hidden, state
 
     def initHidden(self):
-        h = Variable(torch.zeros(1, 1, self.hidden_size))
-        c = Variable(torch.zeros(1, 1, self.hidden_size))
+        # h = Variable(torch.zeros(1, 1, self.hidden_size))
+        # c = Variable(torch.zeros(1, 1, self.hidden_size))
+
+        h = Variable(torch.randn(1, 1, self.hidden_size).float())
+        c = Variable(torch.randn(1, 1, self.hidden_size).float())
+
         return h.cuda(self.gpu_id), c.cuda(self.gpu_id)
 
 
@@ -30,7 +34,8 @@ class Embeddings:
     def __init__(self, cfg, vocab_size):
         self.cfg = cfg
         self.embed = nn.Embedding(vocab_size, cfg.cell_assay_embed_size).cuda().train()
-        self.init_weights = np.random.multivariate_normal(np.zeros(self.cfg.cell_assay_embed_size), np.identity(self.cfg.cell_assay_embed_size), vocab_size)
+        self.init_weights = np.random.multivariate_normal(np.zeros(self.cfg.cell_assay_embed_size),
+                                                          np.identity(self.cfg.cell_assay_embed_size), vocab_size)
         self._initialize_embeddings()
 
     def _initialize_embeddings(self):

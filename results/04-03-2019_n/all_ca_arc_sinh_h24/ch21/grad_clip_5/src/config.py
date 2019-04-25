@@ -22,8 +22,8 @@ class Config:
         self.use_dna_seq = False
 
         self.fasta_path = "/opt/data/latent/data/dna"
-        self.epigenome_npz_path_train = '/opt/data/latent/data/npz/ch_21_arc_sin_znorm'
-        self.epigenome_npz_path_test = '/opt/data/latent/data/npz/ch_21_arc_sin_znorm'
+        self.epigenome_npz_path_train = '/opt/data/latent/data/npz/all_npz_arc_sinh_ch21'
+        self.epigenome_npz_path_test = '/opt/data/latent/data/npz/all_npz_arc_sinh_ch21'
         self.epigenome_bigwig_path = '/opt/data/latent/data/bigwig'
 
         self.model_dir = '/home/kevindsouza/Documents/projects/latentGenome/src/saved_model/model_all_ca'

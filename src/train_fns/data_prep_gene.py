@@ -47,7 +47,7 @@ class DataPrepGene():
                 track = np.load(full_track_path)
                 track = track['arr_0'][0]
 
-                if num == self.ch21_cuts - 1:
+                if num == self.ch21_cuts - 1 and len(track) <= last_pos:
                     track_patch = track[num * self.ch_cut_len:len(track)]
                     self.tracks[epgen_assay_id][:len(track_patch)] = track_patch
                     self.tracks[epgen_assay_id][len(track_patch):self.ch_cut_len] = np.zeros(
