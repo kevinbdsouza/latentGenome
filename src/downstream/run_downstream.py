@@ -33,7 +33,7 @@ class DownstreamTasks:
         self.chr_list_pe = 'chr21'
         self.chr_list_tad = 'chr21'
         self.chr_list_fire = 21
-        self.saved_model_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/layer_norm/"
+        self.saved_model_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/layer_norm/softsign_1/"
         self.feat_mat_rna = self.saved_model_dir + "feat_rna_h24.pkl"
         self.feat_mat_pe = self.saved_model_dir + "feat_pe_h24.pkl"
         self.feat_mat_fire = self.saved_model_dir + "feat_fire_h24.pkl"
@@ -272,7 +272,7 @@ if __name__ == '__main__':
     setup_logging()
     config_base = 'config.yaml'
     result_base = 'down_images'
-    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/layer_norm/model"
+    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/layer_norm/softsign_1/model"
 
     cfg = get_config(model_path, config_base, result_base)
     pd_col = list(np.arange(cfg.hidden_size_encoder))

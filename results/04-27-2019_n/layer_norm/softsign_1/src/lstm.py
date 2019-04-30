@@ -244,11 +244,9 @@ class LSTMcell(nn.Module):
         # Linear mappings
         preact = self.i2h(x) + self.h2h(h)
 
-        soft_sign = nn.Softsign()
-
         # activations
         gates = preact[:, :3 * self.hidden_size].sigmoid()
-        g_t = soft_sign(preact[:, 3 * self.hidden_size:])
+        g_t = preact[:, 3 * self.hidden_size:].tanh()
         i_t = gates[:, :self.hidden_size]
         f_t = gates[:, self.hidden_size:2 * self.hidden_size]
         o_t = gates[:, -self.hidden_size:]
@@ -263,6 +261,7 @@ class LSTMcell(nn.Module):
             c_t.data.set_(torch.mul(c_t, self.mask).data)
             c_t.data *= 1.0 / (1.0 - self.dropout)
 
+        soft_sign = nn.Softsign()
         h_t = torch.mul(o_t, soft_sign(c_t))
 
         # Reshape for compatibility
@@ -332,11 +331,9 @@ class LayerNormLSTM(LSTMcell):
                 h2h = self.ln_h2h(h2h)
         preact = i2h + h2h
 
-        soft_sign = nn.Softsign()
-
         # activations
         gates = preact[:, :3 * self.hidden_size].sigmoid()
-        g_t = soft_sign(preact[:, 3 * self.hidden_size:])
+        g_t = preact[:, 3 * self.hidden_size:].tanh()
         i_t = gates[:, :self.hidden_size]
         f_t = gates[:, self.hidden_size:2 * self.hidden_size]
         o_t = gates[:, -self.hidden_size:]
@@ -356,6 +353,7 @@ class LayerNormLSTM(LSTMcell):
         else:
             c_t = self.ln_cell(c_t)
 
+        soft_sign = nn.Softsign()
         h_t = torch.mul(o_t, soft_sign(c_t))
 
         # Reshape for compatibility
