@@ -24,9 +24,9 @@ logger = logging.getLogger(__name__)
 
 class DownstreamTasks:
     def __init__(self):
-        self.rna_seq_path = "/opt/data/latent/data/downstream/RNA-seq"
-        self.pe_int_path = "/opt/data/latent/data/downstream/PE-interactions"
-        self.fire_path = "/opt/data/latent/data/downstream/FIREs"
+        self.rna_seq_path = "/data/latent/downstream/RNA-seq"
+        self.pe_int_path = "/data/latent/downstream/PE-interactions"
+        self.fire_path = "/data/latent/downstream/FIREs"
         self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
         self.chr_list_rna = '21'
@@ -39,7 +39,7 @@ class DownstreamTasks:
         self.feat_mat_fire = self.saved_model_dir + "feat_fire_h24.pkl"
         self.feat_mat_tad = self.saved_model_dir + "feat_tad_h24.pkl"
         self.new_features = self.saved_model_dir + "new_feat.npy"
-        self.run_features_rna = True
+        self.run_features_rna = False
         self.run_features_pe = True
         self.run_features_fire = True
         self.run_features_tad = True
@@ -273,7 +273,6 @@ if __name__ == '__main__':
     config_base = 'config.yaml'
     result_base = 'down_images'
     model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/layer_norm/grad_clip_0.05/soft_sign_1/model"
-
     cfg = get_config(model_path, config_base, result_base)
     pd_col = list(np.arange(cfg.hidden_size_encoder))
     pd_col.append('target')

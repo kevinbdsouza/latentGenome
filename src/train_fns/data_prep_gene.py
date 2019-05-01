@@ -35,8 +35,8 @@ class DataPrepGene():
 
     def get_data(self):
 
-        fasta_files = [f for f in listdir(self.fasta_path) if isfile(join(self.fasta_path, f))]
-        fasta_files.sort()
+        # fasta_files = [f for f in listdir(self.fasta_path) if isfile(join(self.fasta_path, f))]
+        # fasta_files.sort()
 
         last_pos = self.ch21_cuts * self.ch_cut_len
 
