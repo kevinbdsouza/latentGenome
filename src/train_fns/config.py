@@ -22,8 +22,8 @@ class Config:
         self.use_dna_seq = False
 
         self.fasta_path = "/opt/data/latent/data/dna"
-        self.epigenome_npz_path_train = '/data/latent/data/ch_21_arc_sin_znorm'
-        self.epigenome_npz_path_test = '/data/latent/data/ch_21_arc_sin_znorm'
+        self.epigenome_npz_path_train = '/opt/data/latent/data/npz/ch_21_arc_sin_znorm'
+        self.epigenome_npz_path_test = '/opt/data/latent/data/npz/ch_21_arc_sin_znorm'
         self.epigenome_bigwig_path = '/opt/data/latent/data/bigwig'
 
         self.model_dir = '/home/kevindsouza/Documents/projects/latentGenome/src/saved_model/model_all_ca'
@@ -36,7 +36,7 @@ class Config:
             os.makedirs(self.tensorboard_log_path)
 
         self.data_dir = '.data/'
-        self.num_epochs = 5
+        self.num_epochs = 3
 
         self.chr21_len = 1926400
         self.downstream_df_columns = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', 'f13',
