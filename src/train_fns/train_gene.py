@@ -14,9 +14,9 @@ from keras.callbacks import TensorBoard
 import numpy as np
 import os
 
-# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 # The GPU id to use, usually either "0" or "1"
-# os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 gpu_id = 1
 mode = 'train'
@@ -24,8 +24,7 @@ mode = 'train'
 logger = logging.getLogger(__name__)
 
 
-def train_iter_gene():
-    cfg = config.Config()
+def train_iter_gene(cfg):
     data_ob_gene = DataPrepGene(cfg, mode='train')
 
     data_ob_gene.prepare_id_dict()
@@ -66,10 +65,13 @@ def train_iter_gene():
                     encoder_init,
                     decoder_init, mode)
 
+                logger.info('Hidden states: {}'.format(encoder_hidden_states_np))
+                
                 iter_num += 1
                 if iter_num % 500 == 0:
                     logger.info('Iter: {} - rec_loss: {}'.format(iter_num, np.mean(monitor.losses_iter)))
                     model.save_weights()
+                    break
 
                 monitor.monitor_loss_iter(callback, rec_loss, iter_num)
 
@@ -135,7 +137,7 @@ def unroll_loop(cfg, track_cut, model, encoder_optimizer,
     # With teacher forcing
     for di in range(0, nValues):
         decoder_state = encoder_states[di].unsqueeze(0)
-        
+
         decoder_output, decoder_hidden, _ = decoder(encoder_outputs[di].unsqueeze(0), decoder_hidden,
                                                     decoder_state)
 
@@ -151,8 +153,8 @@ def unroll_loop(cfg, track_cut, model, encoder_optimizer,
 
     if mode == "train":
         rec_loss.backward()
-        clip_grad_norm_(encoder.parameters(), max_norm=0.05)
-        clip_grad_norm_(decoder.parameters(), max_norm=0.05)
+        clip_grad_norm_(encoder.parameters(), max_norm=5e-10)
+        clip_grad_norm_(decoder.parameters(), max_norm=5e-10)
         encoder_optimizer.step()
         decoder_optimizer.step()
         mean_loss = rec_loss.item() / nValues
@@ -166,4 +168,5 @@ def unroll_loop(cfg, track_cut, model, encoder_optimizer,
 
 if __name__ == '__main__':
     setup_logging()
-    train_iter_gene()
+    cfg = config.Config()
+    train_iter_gene(cfg)

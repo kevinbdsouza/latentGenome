@@ -1,0 +1,1 @@
+INFO:train_fns.train_gene:Epoch 1/3
