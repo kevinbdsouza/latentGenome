@@ -7,7 +7,7 @@ class Config:
         self.load_weights = False
 
         self.input_size_encoder = 1030
-        self.hidden_size_encoder = 24
+        self.hidden_size_encoder = 110
 
         self.cell_assay_embed_size = self.hidden_size_encoder
 
@@ -16,6 +16,7 @@ class Config:
         self.output_size_decoder = self.input_size_encoder
 
         self.learning_rate = 1e-2
+        self.max_norm = 5e-11
 
         self.cut_seq_len = 100
         self.base_pair_resolution = 25

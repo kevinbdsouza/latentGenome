@@ -1,0 +1,21 @@
+
+
+Data = reduce the epigenomic data to 25 bp resolution leading to ~1926400 length data and train the model
+
+gen_positions = Obtain the genomic positions along with respective labels for a particular downstream task (e.g. gene expression).
+                These genomic positions are given as windows. Consider every position in the window.
+
+gen_positions_25bp = convert the gen_positions to 25 bp resolution to get features from the trained model
+
+
+for task in downstream_tasks:
+
+    for c in cells:
+
+        hidden_features = get features from the trained model at gen_positions_25bp
+
+        hidden_features_neg = some tasks dont have negative labels. Create these labels at other positions and obtain the features
+
+        map = train and evaluate using xgboost classifier
+
+

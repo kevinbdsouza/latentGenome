@@ -21,19 +21,20 @@ def get_avg_map(mapdict_rna_seq):
     return mean_map
 
 
-def run_all(hidden_nodes, down_dir):
+def run_all(max_norm_list, down_dir):
     config_base = 'config.yaml'
     result_base = 'down_images'
-    map_list_hidden = []
+    map_list_norm = []
 
-    for h in hidden_nodes:
+    for max_norm in max_norm_list:
         cfg = config.Config()
-        dir_name = down_dir + "/" + str(5e-10) + "/"
+        dir_name = down_dir + "/" + str(max_norm) + "/"
         model_dir_name = dir_name + "model"
 
-        cfg.hidden_size_encoder = h
-        cfg.input_size_decoder = h
-        cfg.hidden_size_decoder = h
+        # cfg.hidden_size_encoder = h
+        # cfg.input_size_decoder = h
+        # cfg.hidden_size_decoder = h
+        cfg.max_norm = max_norm
 
         train_gene.train_iter_gene(cfg)
 
@@ -49,15 +50,14 @@ def run_all(hidden_nodes, down_dir):
 
         downstream_ob = DownstreamTasks(cfg, dir_name)
 
-        mapdict_rna_seq, feature_matrix = downstream_ob.run_rna_seq(cfg)
+        mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
 
-        logging.info("hidden nodes: {}".format(h))
-        logging.info("feature_matrix: {}".format(feature_matrix))
+        logging.info("max norm: {}".format(max_norm))
         logging.info("mapdict_rna_seq: {}".format(mapdict_rna_seq))
 
-        map_list_hidden.append(get_avg_map(mapdict_rna_seq))
+        map_list_norm.append(get_avg_map(mapdict_rna_seq))
 
-    return map_list_hidden
+    return map_list_norm
 
 
 if __name__ == "__main__":
@@ -65,12 +65,13 @@ if __name__ == "__main__":
     logging.basicConfig(filename="run_log.txt",
                         level=logging.DEBUG)
 
-    hidden_nodes = [110]
+    # hidden_nodes = [110]
     # hidden_nodes = [6, 12, 24, 36, 48, 60, 96, 110]
+    max_norm_list = [5e-11, 5e-12, 5e-13, 5e-14]
     down_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110"
 
-    map_list_hidden = run_all(hidden_nodes, down_dir)
+    map_list_hidden = run_all(max_norm_list, down_dir)
 
-    np.save(down_dir + "/" + "map_hidden.npy", map_list_hidden)
+    np.save(down_dir + "/" + "map_norm.npy", map_list_hidden)
 
     print("done")

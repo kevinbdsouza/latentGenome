@@ -157,7 +157,7 @@ class DownstreamTasks:
 
         np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
 
-        return mean_map_dict, feature_matrix
+        return mean_map_dict
 
     def run_pe(self, cfg):
 
@@ -272,8 +272,8 @@ if __name__ == '__main__':
     setup_logging()
     config_base = 'config.yaml'
     result_base = 'down_images'
-    dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/layer_norm/5e-8/"
-    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/layer_norm/5e-8/model"
+    dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-10/epoch_5/"
+    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-10/epoch_5/model"
     cfg = get_config(model_path, config_base, result_base)
     pd_col = list(np.arange(cfg.hidden_size_encoder))
     pd_col.append('target')

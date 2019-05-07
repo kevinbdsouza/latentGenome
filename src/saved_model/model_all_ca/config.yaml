@@ -1,5 +1,5 @@
 base_pair_resolution: 25
-cell_assay_embed_size: 24
+cell_assay_embed_size: 110
 chr21_len: 1926400
 config_base: config.yaml
 config_file: /home/kevindsouza/Documents/projects/latentGenome/src/saved_model/model_all_ca/config.yaml
@@ -42,6 +42,7 @@ input_size_decoder: 110
 input_size_encoder: 1030
 learning_rate: 0.01
 load_weights: false
+max_norm: 5.0e-13
 model_dir: /home/kevindsouza/Documents/projects/latentGenome/src/saved_model/model_all_ca
 network: lstm
 num_epochs: 3
