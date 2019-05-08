@@ -71,6 +71,7 @@ def train_iter_gene(cfg):
                 if iter_num % 500 == 0:
                     logger.info('Iter: {} - rec_loss: {}'.format(iter_num, np.mean(monitor.losses_iter)))
                     model.save_weights()
+                    break
 
                 monitor.monitor_loss_iter(callback, rec_loss, iter_num)
 
@@ -152,8 +153,10 @@ def unroll_loop(cfg, track_cut, model, encoder_optimizer,
 
     if mode == "train":
         rec_loss.backward()
+
         clip_grad_norm_(encoder.parameters(), max_norm=cfg.max_norm)
         clip_grad_norm_(decoder.parameters(), max_norm=cfg.max_norm)
+
         encoder_optimizer.step()
         decoder_optimizer.step()
         mean_loss = rec_loss.item() / nValues

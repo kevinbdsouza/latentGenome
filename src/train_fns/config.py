@@ -7,7 +7,7 @@ class Config:
         self.load_weights = False
 
         self.input_size_encoder = 1030
-        self.hidden_size_encoder = 110
+        self.hidden_size_encoder = 24
 
         self.cell_assay_embed_size = self.hidden_size_encoder
 
