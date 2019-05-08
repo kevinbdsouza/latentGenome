@@ -5,8 +5,8 @@ from os.path import isfile, join
 import numpy as np
 import math
 
-npzPath = "/opt/data/latent/data/npz/all_npz_arc_sinh_ch21"
-z_norm_path = "/opt/data/latent/data/npz/ch_21_arc_sin_znorm"
+npzPath = "/data2/latent/data/npz/ch20_arc_sinh"
+z_norm_path = "/data2/latent/data/npz/ch_20_arc_sinh_znorm"
 
 npzfiles = [f for f in listdir(npzPath) if isfile(join(npzPath, f))]
 

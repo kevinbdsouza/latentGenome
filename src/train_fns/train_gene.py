@@ -24,8 +24,8 @@ mode = 'train'
 logger = logging.getLogger(__name__)
 
 
-def train_iter_gene(cfg):
-    data_ob_gene = DataPrepGene(cfg, mode='train')
+def train_iter_gene(cfg, chr):
+    data_ob_gene = DataPrepGene(cfg, mode='train', chr=chr)
 
     data_ob_gene.prepare_id_dict()
     model = Model(cfg, data_ob_gene.vocab_size, gpu_id)
@@ -71,7 +71,6 @@ def train_iter_gene(cfg):
                 if iter_num % 500 == 0:
                     logger.info('Iter: {} - rec_loss: {}'.format(iter_num, np.mean(monitor.losses_iter)))
                     model.save_weights()
-                    break
 
                 monitor.monitor_loss_iter(callback, rec_loss, iter_num)
 
@@ -170,5 +169,6 @@ def unroll_loop(cfg, track_cut, model, encoder_optimizer,
 
 if __name__ == '__main__':
     setup_logging()
+    chr = '20'
     cfg = config.Config()
-    train_iter_gene(cfg)
+    train_iter_gene(cfg, chr)
