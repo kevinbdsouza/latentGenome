@@ -23,21 +23,21 @@ logger = logging.getLogger(__name__)
 
 
 class DownstreamTasks:
-    def __init__(self, cfg, dir):
-        self.rna_seq_path = "/opt/data/latent/data/downstream/RNA-seq"
-        self.pe_int_path = "/opt/data/latent/data/downstream/PE-interactions"
-        self.fire_path = "/opt/data/latent/data/downstream/FIREs"
+    def __init__(self, cfg, dir, chr):
+        self.rna_seq_path = "/data2/latent/data/downstream/RNA-seq"
+        self.pe_int_path = "/data2/latent/data/downstream/PE-interactions"
+        self.fire_path = "/data2/latent/data/downstream/FIREs"
         self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
-        self.chr_list_rna = '21'
-        self.chr_list_pe = 'chr21'
-        self.chr_list_tad = 'chr21'
-        self.chr_list_fire = 21
+        self.chr_list_rna = str(chr)
+        self.chr_list_pe = 'chr' + str(chr)
+        self.chr_list_tad = 'chr' + str(chr)
+        self.chr_list_fire = chr
         self.saved_model_dir = dir
-        self.feat_mat_rna = self.saved_model_dir + "feat_rna_h24.pkl"
-        self.feat_mat_pe = self.saved_model_dir + "feat_pe_h24.pkl"
-        self.feat_mat_fire = self.saved_model_dir + "feat_fire_h24.pkl"
-        self.feat_mat_tad = self.saved_model_dir + "feat_tad_h24.pkl"
+        self.feat_mat_rna = self.saved_model_dir + "feat_rna.pkl"
+        self.feat_mat_pe = self.saved_model_dir + "feat_pe.pkl"
+        self.feat_mat_fire = self.saved_model_dir + "feat_fire.pkl"
+        self.feat_mat_tad = self.saved_model_dir + "feat_tad.pkl"
         self.new_features = self.saved_model_dir + "new_feat.npy"
         self.run_features_rna = True
         self.run_features_pe = True
@@ -273,6 +273,7 @@ if __name__ == '__main__':
     config_base = 'config.yaml'
     result_base = 'down_images'
 
+    chr = 20
     dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-10/epoch_5/"
     model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-10/epoch_5/model"
     cfg = get_config(model_path, config_base, result_base)
@@ -281,7 +282,7 @@ if __name__ == '__main__':
     pd_col.append('gene_id')
     cfg = cfg._replace(downstream_df_columns=pd_col)
 
-    downstream_ob = DownstreamTasks(cfg, dir)
+    downstream_ob = DownstreamTasks(cfg, dir, chr)
 
     # downstream_helper_ob = DownstreamHelper(cfg)
 
