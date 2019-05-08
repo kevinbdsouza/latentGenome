@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 def train_iter_gene(cfg, chr):
-    data_ob_gene = DataPrepGene(cfg, mode='train', chr=chr)
+    data_ob_gene = DataPrepGene(cfg, mode='train', chr=str(chr))
 
     data_ob_gene.prepare_id_dict()
     model = Model(cfg, data_ob_gene.vocab_size, gpu_id)
