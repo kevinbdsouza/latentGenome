@@ -16,15 +16,15 @@ class Config:
         self.output_size_decoder = self.input_size_encoder
 
         self.learning_rate = 1e-2
-        self.max_norm = 5e-11
+        self.max_norm = 5e-13
 
         self.cut_seq_len = 100
         self.base_pair_resolution = 25
         self.use_dna_seq = False
 
         self.fasta_path = "/opt/data/latent/data/dna"
-        self.epigenome_npz_path_train = '/opt/data/latent/data/npz/ch_21_arc_sin_znorm'
-        self.epigenome_npz_path_test = '/opt/data/latent/data/npz/ch_21_arc_sin_znorm'
+        self.epigenome_npz_path_train = '/data2/latent/data/npz/ch_20_arc_sinh_znorm'
+        self.epigenome_npz_path_test = '/data2/latent/data/npz/ch_20_arc_sinh_znorm'
         self.epigenome_bigwig_path = '/opt/data/latent/data/bigwig'
 
         self.model_dir = '/home/kevindsouza/Documents/projects/latentGenome/src/saved_model/model_all_ca'
@@ -39,7 +39,9 @@ class Config:
         self.data_dir = '.data/'
         self.num_epochs = 3
 
-        self.chr21_len = 1926400
+        self.chr_cuts = {'20': 7, '21': 5}
+        self.chr_len = {'20': 2518621, '21': 1926400}
+
         self.downstream_df_columns = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', 'f13',
                                       'f14', 'f15', 'f16', 'f17', 'f18', 'f19', 'f20', 'f21', 'f22', 'f23', 'f24',
                                       'target', 'gene_id']

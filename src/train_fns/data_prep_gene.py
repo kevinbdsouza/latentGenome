@@ -15,14 +15,15 @@ pd.options.mode.chained_assignment = None
 
 class DataPrepGene():
 
-    def __init__(self, cfg, mode):
+    def __init__(self, cfg, mode, chr):
         self.epigenome_dict = {}
         self.assay_dict = {}
         self.epigenome_assay_dict = {}
         self.cfg = cfg
         self.mode = mode
-        self.ch21_cuts = 5
-        self.ch_cut_len = int(math.floor((self.cfg.chr21_len // self.ch21_cuts) / 100.0)) * 100
+        self.chr_len = self.cfg.chr_len[chr]
+        self.chr_cuts = self.cfg.chr_cuts[chr]
+        self.ch_cut_len = int(math.floor((self.chr_len // self.chr_cuts) / 100.0)) * 100
         self.tracks = None
 
         if mode == 'train':
@@ -38,16 +39,23 @@ class DataPrepGene():
         # fasta_files = [f for f in listdir(self.fasta_path) if isfile(join(self.fasta_path, f))]
         # fasta_files.sort()
 
-        last_pos = self.ch21_cuts * self.ch_cut_len
+        max_len = 0
 
-        for num in range(self.ch21_cuts):
+        last_pos = self.chr_cuts * self.ch_cut_len
+
+        for num in range(self.chr_cuts):
+
+            print("num {}".format(num))
 
             for epgen_assay, epgen_assay_id in sorted(self.epigenome_assay_dict.items()):
                 full_track_path = self.epigenome_npz_path + "/" + epgen_assay + ".npz"
                 track = np.load(full_track_path)
                 track = track['arr_0'][0]
 
-                if num == self.ch21_cuts - 1 and len(track) <= last_pos:
+                if len(track) > max_len:
+                    max_len = len(track)
+
+                if num == self.chr_cuts - 1 and len(track) <= last_pos:
                     track_patch = track[num * self.ch_cut_len:len(track)]
                     self.tracks[epgen_assay_id][:len(track_patch)] = track_patch
                     self.tracks[epgen_assay_id][len(track_patch):self.ch_cut_len] = np.zeros(
