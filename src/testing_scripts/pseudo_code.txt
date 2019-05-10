@@ -1,21 +1,30 @@
 
 
-Data = reduce the epigenomic data to 25 bp resolution leading to ~1926400 length data and train the model
+epigenomic_data = znormed, arcsinh transformed signals in a matrix form with dimension 1030*1926400 (after decimating each signal to 25bp resolution and 1030 are number of assays)
 
-gen_positions = Obtain the genomic positions along with respective labels for a particular downstream task (e.g. gene expression).
-                These genomic positions are given as windows. Consider every position in the window.
+for task in tasks:
+    downstream_windows (gene, pe window, fire) = dataframe consisting of columns window_start, window_end and label, with number of rows equalling the number of windows.
 
-gen_positions_25bp = convert the gen_positions to 25 bp resolution to get features from the trained model
+    # downstream_windows are given at 1bp resolution therefore we need to convert these positions to 25bp resolution to match it with the epigenomic data used to train the model.
+
+    downstream_windows_25bp = convert the downstream_windows to 25 bp resolution
 
 
-for task in downstream_tasks:
+    for cell in cells:
+        features_cell = []
+        for row in downstream_wondows_25bp
 
-    for c in cells:
+            features_window = []
+            for position in window_start to window_end
+                feature = hidden feature at position
+                features_window = concat_row(features_window, feature)
 
-        hidden_features = get features from the trained model at gen_positions_25bp
+            features_cell = concat_row(features_cell, features_window)
 
-        hidden_features_neg = some tasks dont have negative labels. Create these labels at other positions and obtain the features
 
-        map = train and evaluate using xgboost classifier
+        Mean Average Precision  = use n_fold cross validation with xgboost classifier to train and evaluate
+
+
+
 
 

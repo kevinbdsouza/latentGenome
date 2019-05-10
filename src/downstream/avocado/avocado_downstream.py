@@ -16,18 +16,17 @@ logger = logging.getLogger(__name__)
 
 
 class AvocadoDownstreamTasks:
-    def __init__(self):
-        self.rna_seq_path = "/opt/data/latent/data/downstream/RNA-seq"
-        self.pe_int_path = "/opt/data/latent/data/downstream/PE-interactions"
-        self.fire_path = "/opt/data/latent/data/downstream/FIREs"
+    def __init__(self, model, chr, cfg, dir_name):
+        self.rna_seq_path = "/data2/latent/data/downstream/RNA-seq"
+        self.pe_int_path = "/data2/latent/data/downstream/PE-interactions"
+        self.fire_path = "/data2/latent/data/downstream/FIREs"
         self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
-        self.chr_list_rna = '21'
-        self.chr_list_pe = 'chr21'
-        self.chr_list_tad = 'chr21'
-        self.chr_list_fire = 21
-        self.saved_model_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/avocado/model/"
-        self.model_name = "avocado-chr21"
+        self.chr_rna = str(chr)
+        self.chr_pe = 'chr' + str(chr)
+        self.chr_fire = chr
+        self.saved_model_dir = dir_name
+        self.model_name = model
         self.Avo_downstream_helper_ob = AvoDownstreamHelper(cfg)
         self.downstream_helper_ob = DownstreamHelper(cfg)
         self.avocado_features = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir, self.model_name,
@@ -38,14 +37,14 @@ class AvocadoDownstreamTasks:
 
         rna_seq_ob = RnaSeq()
         rna_seq_ob.get_rna_seq(self.rna_seq_path)
-        rna_seq_chr = rna_seq_ob.filter_rna_seq(self.chr_list_rna)
+        rna_seq_chr = rna_seq_ob.filter_rna_seq(self.chr_rna)
         rna_seq_chr['target'] = 0
 
         mean_map_dict = {}
         cls_mode = 'ind'
         feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
 
-        for col in range(4, 58):
+        for col in range(1, 58):
             rna_seq_chr.loc[rna_seq_chr.iloc[:, col] >= 0.5, 'target'] = 1
             rna_window_labels = rna_seq_chr.filter(['start', 'end', 'target'], axis=1)
             rna_window_labels = rna_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
@@ -56,18 +55,13 @@ class AvocadoDownstreamTasks:
             feature_matrix = self.Avo_downstream_helper_ob.filter_states(self.avocado_features, feature_matrix,
                                                                          mask_vector, label_ar)
 
-            if feature_matrix["target"].value_counts().index[0] == 1:
-                bal_mode = "undersampling"
-            else:
-                bal_mode = "oversampling"
+            # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
 
-            feature_matrix = self.downstream_helper_ob.fix_class_imbalance(feature_matrix, mode=bal_mode)
-
-            mean_map = self.downstream_helper_ob.calculate_map(feature_matrix, cls_mode)
+            mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
             mean_map_dict[rna_seq_chr.columns[col]] = mean_map
 
-            print("cell name : {} - MAP : {}".format(rna_seq_chr.columns[col], mean_map))
+            logging.info("cell name : {} - MAP : {}".format(rna_seq_chr.columns[col], mean_map))
 
         np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
 
@@ -78,7 +72,7 @@ class AvocadoDownstreamTasks:
 
         pe_ob = PeInteractions()
         pe_ob.get_pe_data(self.pe_int_path)
-        pe_data_chr = pe_ob.filter_pe_data(self.chr_list_pe)
+        pe_data_chr = pe_ob.filter_pe_data(self.chr_pe)
         mean_map_dict = {}
         cls_mode = 'ind'
         feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
@@ -95,18 +89,13 @@ class AvocadoDownstreamTasks:
             feature_matrix = self.Avo_downstream_helper_ob.filter_states(self.avocado_features, feature_matrix,
                                                                          mask_vector, label_ar)
 
-            if feature_matrix["target"].value_counts().index[0] == 1:
-                bal_mode = "undersampling"
-            else:
-                bal_mode = "oversampling"
+            # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
 
-            feature_matrix = self.downstream_helper_ob.fix_class_imbalance(feature_matrix, mode=bal_mode)
-
-            mean_map = self.downstream_helper_ob.calculate_map(feature_matrix, cls_mode)
+            mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
             mean_map_dict[cell] = mean_map
 
-            print("cell name : {} - MAP : {}".format(cell, mean_map))
+            logging.info("cell name : {} - MAP : {}".format(cell, mean_map))
 
         np.save(self.saved_model_dir + 'map_dict_pe.npy', mean_map_dict)
 
@@ -117,13 +106,12 @@ class AvocadoDownstreamTasks:
 
         fire_ob = Fires()
         fire_ob.get_fire_data(self.fire_path)
-        fire_labeled = fire_ob.filter_fire_data(self.chr_list_fire)
+        fire_labeled = fire_ob.filter_fire_data(self.chr_fire)
         mean_map_dict = {}
         cls_mode = 'ind'
         feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
 
         for cell in self.fire_cell_names:
-
             fire_window_labels = fire_labeled.filter(['start', 'end', cell + '_l'], axis=1)
             fire_window_labels.rename(columns={cell + '_l': 'target'}, inplace=True)
             fire_window_labels = fire_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
@@ -133,60 +121,15 @@ class AvocadoDownstreamTasks:
             feature_matrix = self.Avo_downstream_helper_ob.filter_states(self.avocado_features, feature_matrix,
                                                                          mask_vector, label_ar)
 
-            if feature_matrix["target"].value_counts().index[0] == 1:
-                bal_mode = "undersampling"
-            else:
-                bal_mode = "oversampling"
+            # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
 
-            feature_matrix = self.downstream_helper_ob.fix_class_imbalance(feature_matrix, mode=bal_mode)
-
-            mean_map = self.downstream_helper_ob.calculate_map(feature_matrix, cls_mode)
+            mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
             mean_map_dict[cell] = mean_map
 
-            print("cell name : {} - MAP : {}".format(cell, mean_map))
+            logging.info("cell name : {} - MAP : {}".format(cell, mean_map))
 
         np.save(self.saved_model_dir + 'map_dict_fire.npy', mean_map_dict)
-
-        return mean_map_dict
-
-    def run_tads(self, cfg):
-        print("Running TADs")
-
-        fire_ob = Fires()
-        fire_ob.get_tad_data(self.fire_path, self.fire_cell_names)
-        tad_filtered = fire_ob.filter_tad_data(self.chr_list_tad)
-        mean_map_dict = {}
-        cls_mode = 'ind'
-        feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
-
-        for col in range(7):
-
-            tad_cell = tad_filtered[col]
-            tad_cell['target'] = 1
-            tad_cell = tad_cell.filter(['start', 'end', 'target'], axis=1)
-            tad_cell = tad_cell.drop_duplicates(keep='first').reset_index(drop=True)
-            tad_cell = fire_ob.augment_tad_negatives(cfg, tad_cell)
-
-            mask_vector, label_ar = self.Avo_downstream_helper_ob.create_mask(tad_cell)
-
-            feature_matrix = self.Avo_downstream_helper_ob.filter_states(self.avocado_features, feature_matrix,
-                                                                         mask_vector, label_ar)
-
-            if feature_matrix["target"].value_counts().index[0] == 1:
-                bal_mode = "undersampling"
-            else:
-                bal_mode = "oversampling"
-
-            feature_matrix = self.downstream_helper_ob.fix_class_imbalance(feature_matrix, mode=bal_mode)
-
-            mean_map = self.downstream_helper_ob.calculate_map(feature_matrix, cls_mode)
-
-            mean_map_dict[self.fire_cell_names[col]] = mean_map
-
-            print("cell name : {} - MAP : {}".format(self.fire_cell_names[col], mean_map))
-
-        np.save(self.saved_model_dir + 'map_dict_tad.npy', mean_map_dict)
 
         return mean_map_dict
 
@@ -195,7 +138,10 @@ if __name__ == '__main__':
     setup_logging()
     config_base = 'avocado_config.yaml'
     result_base = 'down_images'
-    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/avocado/model"
+    model_path = "/data2/latent/data/avocado"
+    dir_name = "/data2/latent/data/avocado/"
+    model = "avocado-chr21"
+    chr = 21
 
     cfg = get_config(model_path, config_base, result_base)
 
@@ -203,15 +149,12 @@ if __name__ == '__main__':
     pd_col.append('target')
     cfg = cfg._replace(downstream_df_columns=pd_col)
 
-    Av_downstream_ob = AvocadoDownstreamTasks()
-    downstream_helper_ob = DownstreamHelper(cfg)
+    Av_downstream_ob = AvocadoDownstreamTasks(model, chr, cfg, dir_name)
 
     # mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
 
-    # mapdict_pe = Av_downstream_ob.run_pe(cfg)
+    mapdict_pe = Av_downstream_ob.run_pe(cfg)
 
     # map_dict_fire = Av_downstream_ob.run_fires(cfg)
-
-    map_dict_tad = Av_downstream_ob.run_tads(cfg)
 
     print("done")

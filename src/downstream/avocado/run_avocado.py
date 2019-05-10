@@ -78,7 +78,7 @@ class AvocadoAnalysis:
         n_250bp = cfg.bp250_factors
         n_5kbp = cfg.bp5k_factors
 
-        gen_factors = np.empty((cfg.chr21_len,
+        gen_factors = np.empty((cfg.chr_len,
                                 n_25bp + n_250bp + n_5kbp))
 
         for layer in model.layers:
@@ -92,7 +92,7 @@ class AvocadoAnalysis:
         n1 = n_25bp
         n2 = n_25bp + n_250bp
 
-        for i in range(cfg.chr21_len):
+        for i in range(cfg.chr_len):
             gen_factors[i, :n1] = genome_25bp_embedding[i]
             gen_factors[i, n1:n2] = genome_250bp_embedding[i // 10]
             gen_factors[i, n2:] = genome_5kbp_embedding[i // 200]

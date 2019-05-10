@@ -11,15 +11,15 @@ logger = logging.getLogger(__name__)
 
 class DownstreamHelper:
     def __init__(self, cfg):
-        self.chr21_len = cfg.chr21_len
+        self.chr_len = cfg.chr_len
         self.cfg = cfg
         self.cfg_down = None
         self.columns = cfg.downstream_df_columns
 
     def create_mask(self, window_labels):
         ind_list = []
-        label_ar = np.zeros(self.chr21_len)
-        gene_ar = np.zeros(self.chr21_len)
+        label_ar = np.zeros(self.chr_len)
+        gene_ar = np.zeros(self.chr_len)
 
         for i in range(window_labels.shape[0]):
 
@@ -33,7 +33,7 @@ class DownstreamHelper:
                 label_ar[start - 1 + j] = window_labels.loc[i, "target"]
                 gene_ar[start - 1 + j] = i
 
-        mask_vec = np.zeros(self.chr21_len, bool)
+        mask_vec = np.zeros(self.chr_len, bool)
         ind_ar = np.array(ind_list)
 
         mask_vec[ind_ar] = True
@@ -60,16 +60,57 @@ class DownstreamHelper:
 
         return feature_matrix
 
-    def calculate_map(self, feature_matrix, cls_mode):
+    def calculate_map2(self, feature_matrix, cls_mode):
 
+        n_folds = 20
         hidden_size = None
         if cls_mode == 'concat':
             hidden_size = self.cfg_down.hidden_size_encoder
         elif cls_mode == 'ind':
             hidden_size = self.cfg.hidden_size_encoder
 
-        average_precisions = np.zeros(5)
-        for i in range(5):
+        average_precisions = np.zeros(n_folds)
+        X_train = pd.DataFrame(columns=list(np.arange(hidden_size)))
+        y_train = pd.DataFrame()
+        feature_matrix = feature_matrix.sample(frac=1)
+
+        for i in range(n_folds):
+            X_test = feature_matrix.iloc[i::n_folds, 0:hidden_size]
+            X_valid = feature_matrix.iloc[(i + 1) % n_folds::n_folds, 0:hidden_size]
+            y_test = feature_matrix.iloc[i::n_folds]["target"]
+            y_valid = feature_matrix.iloc[(i + 1) % n_folds::n_folds]["target"]
+
+            for j in range(n_folds):
+                if j != i and j != (i + 1) % n_folds:
+                    fold_mat = feature_matrix.iloc[j::n_folds, 0:hidden_size]
+                    y_mat = feature_matrix.iloc[j::n_folds]["target"]
+                    X_train = pd.concat([X_train, fold_mat])
+                    y_train = pd.concat([y_train, y_mat])
+
+            y_train = y_train.astype(int)
+
+            model = xgboost.XGBClassifier(n_estimators=10, nthread=min(X_train.shape[1], 12), max_depth=4)
+            model.fit(X_train, y_train, eval_set=[(X_valid, y_valid)], eval_metric='map', early_stopping_rounds=20,
+                      verbose=False)
+
+            y_hat = model.predict_proba(X_test)
+            average_precisions[i] = average_precision_score(y_test, y_hat[:, 1])
+
+        mean_map = average_precisions.mean()
+
+        return mean_map
+
+    def calculate_map(self, feature_matrix, cls_mode):
+
+        n_folds = 1
+        hidden_size = None
+        if cls_mode == 'concat':
+            hidden_size = self.cfg_down.hidden_size_encoder
+        elif cls_mode == 'ind':
+            hidden_size = self.cfg.hidden_size_encoder
+
+        average_precisions = np.zeros(n_folds)
+        for i in range(n_folds):
             msk_test = np.random.rand(len(feature_matrix)) < 0.8
             X_train_val = feature_matrix[msk_test].reset_index(drop=True)
             X_test = feature_matrix[~msk_test].reset_index(drop=True)
@@ -119,6 +160,16 @@ class DownstreamHelper:
 
             label_matrix.target = label_matrix.target.astype(int)
             feature_matrix.target = label_matrix.target
+
+        return feature_matrix
+
+    def balance_classes(self, feature_matrix):
+        if feature_matrix["target"].value_counts().index[0] == 1:
+            bal_mode = "undersampling"
+        else:
+            bal_mode = "oversampling"
+
+        feature_matrix = self.fix_class_imbalance(feature_matrix, mode=bal_mode)
 
         return feature_matrix
 

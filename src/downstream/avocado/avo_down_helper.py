@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class AvoDownstreamHelper:
     def __init__(self, cfg):
-        self.chr21_len = cfg.chr21_len
+        self.chr_len = cfg.chr_len
         self.cfg = cfg
         self.cfg_down = None
         self.columns = cfg.downstream_df_columns
@@ -30,7 +30,9 @@ class AvoDownstreamHelper:
 
     def create_mask(self, window_labels):
         ind_list = []
-        label_ar = np.zeros(self.chr21_len)
+        label_ar = np.zeros(self.chr_len)
+
+        # w_labels = pd.read_pickle("/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-13/w_labels_dropped.pkl")
 
         for i in range(window_labels.shape[0]):
 
@@ -39,14 +41,14 @@ class AvoDownstreamHelper:
 
             # print("gene : {} - start : {})".format(i, start))
 
-            if start > self.chr21_len or end > self.chr21_len:
+            if start > self.chr_len or end > self.chr_len:
                 break
 
             for j in range(end + 1 - start):
                 ind_list.append(start - 1 + j)
                 label_ar[start - 1 + j] = window_labels.loc[i, "target"]
 
-        mask_vec = np.zeros(self.chr21_len, bool)
+        mask_vec = np.zeros(self.chr_len, bool)
         ind_ar = np.array(ind_list)
 
         mask_vec[ind_ar] = True
