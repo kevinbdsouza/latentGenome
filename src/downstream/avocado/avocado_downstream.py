@@ -28,9 +28,7 @@ class AvocadoDownstreamTasks:
         self.saved_model_dir = dir_name
         self.model_name = model
         self.Avo_downstream_helper_ob = AvoDownstreamHelper(cfg)
-        self.downstream_helper_ob = DownstreamHelper(cfg)
-        self.avocado_features = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir, self.model_name,
-                                                                                 cfg)
+        self.downstream_helper_ob = DownstreamHelper(cfg, chr)
 
     def run_rna_seq(self, cfg):
         print("Running RNA-Seq")
@@ -52,7 +50,11 @@ class AvocadoDownstreamTasks:
 
             mask_vector, label_ar = self.Avo_downstream_helper_ob.create_mask(rna_window_labels)
 
-            feature_matrix = self.Avo_downstream_helper_ob.filter_states(self.avocado_features, feature_matrix,
+            gen_factors = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir,
+                                                                                     self.model_name,
+                                                                                     cfg, mask_vector, label_ar)
+
+            feature_matrix = self.Avo_downstream_helper_ob.filter_states(gen_factors, feature_matrix,
                                                                          mask_vector, label_ar)
 
             # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)

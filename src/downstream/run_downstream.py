@@ -28,6 +28,7 @@ class DownstreamTasks:
         self.pe_int_path = "/data2/latent/data/downstream/PE-interactions"
         self.fire_path = "/data2/latent/data/downstream/FIREs"
         self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
+        self.chr = chr
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
         self.chr_list_rna = str(chr)
         self.chr_list_pe = 'chr' + str(chr)
@@ -37,19 +38,17 @@ class DownstreamTasks:
         self.feat_mat_rna = self.saved_model_dir + "feat_rna.pkl"
         self.feat_mat_pe = self.saved_model_dir + "feat_pe.pkl"
         self.feat_mat_fire = self.saved_model_dir + "feat_fire.pkl"
-        self.feat_mat_tad = self.saved_model_dir + "feat_tad.pkl"
         self.new_features = self.saved_model_dir + "new_feat.npy"
         self.run_features_rna = False
-        self.run_features_pe = False
-        self.run_features_fire = True
-        self.run_features_tad = True
+        self.run_features_pe = True
+        self.run_features_fire = False
         self.concat_lstm = False
         self.run_concat_feat = False
-        self.downstream_helper_ob = DownstreamHelper(cfg)
+        self.downstream_helper_ob = DownstreamHelper(cfg, chr)
         self.down_lstm_ob = DownstreamLSTM()
 
     def downstream_main(self, cfg, mask_vector, label_ar, gene_ar):
-        data_ob_gene = DataPrepGene(cfg, mode='test')
+        data_ob_gene = DataPrepGene(cfg, mode='test', chr=str(self.chr))
         monitor = MonitorTesting(cfg)
         callback = TensorBoard(cfg.tensorboard_log_path)
 

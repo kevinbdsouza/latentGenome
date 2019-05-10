@@ -72,13 +72,14 @@ class AvocadoAnalysis:
 
         return y_pred
 
-    def get_genomic_factors(self, model, cfg):
+    def get_genomic_factors(self, model, cfg, mask_vector):
 
         n_25bp = cfg.bp25_factors
         n_250bp = cfg.bp250_factors
         n_5kbp = cfg.bp5k_factors
 
-        gen_factors = np.empty((cfg.chr_len,
+        mask_len = np.count_nonzero(mask_vector)
+        gen_factors = np.empty((mask_len,
                                 n_25bp + n_250bp + n_5kbp))
 
         for layer in model.layers:
@@ -92,11 +93,16 @@ class AvocadoAnalysis:
         n1 = n_25bp
         n2 = n_25bp + n_250bp
 
+        pos = 0
         for i in range(cfg.chr_len):
-            gen_factors[i, :n1] = genome_25bp_embedding[i]
-            gen_factors[i, n1:n2] = genome_250bp_embedding[i // 10]
-            gen_factors[i, n2:] = genome_5kbp_embedding[i // 200]
 
+            if mask_vector[i]:
+                gen_factors[pos, :n1] = genome_25bp_embedding[i]
+                gen_factors[pos, n1:n2] = genome_250bp_embedding[i // 10]
+                gen_factors[pos, n2:] = genome_5kbp_embedding[i // 200]
+
+                pos += 1
+                
         return gen_factors
 
     def run_avocado(self, cfg):
