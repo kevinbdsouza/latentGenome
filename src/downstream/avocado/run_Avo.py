@@ -1,7 +1,4 @@
 from downstream.avocado.avocado_downstream import AvocadoDownstreamTasks
-from downstream.avocado.run_avocado import AvocadoAnalysis
-from keras.models import load_model
-import os
 from train_fns.test_gene import get_config
 import numpy as np
 import logging
@@ -45,7 +42,7 @@ def run_all(model, down_dir, chr_list):
 
         cfg = cfg._replace(chr_len=chr_len)
 
-        Av_downstream_ob = AvocadoDownstreamTasks(model_name, chr, cfg, dir_name)
+        Av_downstream_ob = AvocadoDownstreamTasks(model_name, chr, cfg, dir_name, mode='avocado')
 
         mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
         mean_rna_map = get_avg_map(mapdict_rna_seq)
@@ -69,7 +66,7 @@ def run_all(model, down_dir, chr_list):
 if __name__ == "__main__":
     # setup_logging()
     logging.basicConfig(
-        filename="/home/kevindsouza/Documents/projects/latentGenome/src/saved_model/avocado/avocado_log.txt",
+        filename="/home/kevin/Documents/latentGenome/src/saved_model/avocado/avocado_log.txt",
         level=logging.DEBUG)
 
     model = "avocado-chr"
