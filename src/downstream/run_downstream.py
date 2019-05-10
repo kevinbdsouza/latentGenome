@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 class DownstreamTasks:
-    def __init__(self, cfg, dir, chr):
+    def __init__(self, cfg, dir, chr, mode):
         self.rna_seq_path = "/data2/latent/data/downstream/RNA-seq"
         self.pe_int_path = "/data2/latent/data/downstream/PE-interactions"
         self.fire_path = "/data2/latent/data/downstream/FIREs"
@@ -44,7 +44,7 @@ class DownstreamTasks:
         self.run_features_fire = False
         self.concat_lstm = False
         self.run_concat_feat = False
-        self.downstream_helper_ob = DownstreamHelper(cfg, chr)
+        self.downstream_helper_ob = DownstreamHelper(cfg, chr, mode=mode)
         self.down_lstm_ob = DownstreamLSTM()
 
     def downstream_main(self, cfg, mask_vector, label_ar, gene_ar):

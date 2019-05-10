@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class AvocadoDownstreamTasks:
-    def __init__(self, model, chr, cfg, dir_name):
+    def __init__(self, model, chr, cfg, dir_name, mode):
         self.rna_seq_path = "/data2/latent/data/downstream/RNA-seq"
         self.pe_int_path = "/data2/latent/data/downstream/PE-interactions"
         self.fire_path = "/data2/latent/data/downstream/FIREs"
@@ -28,10 +28,10 @@ class AvocadoDownstreamTasks:
         self.saved_model_dir = dir_name
         self.model_name = model
         self.Avo_downstream_helper_ob = AvoDownstreamHelper(cfg)
-        self.downstream_helper_ob = DownstreamHelper(cfg, chr)
+        self.downstream_helper_ob = DownstreamHelper(cfg, chr, mode=mode)
 
     def run_rna_seq(self, cfg):
-        print("Running RNA-Seq")
+        logging.info("Running RNA-Seq")
 
         rna_seq_ob = RnaSeq()
         rna_seq_ob.get_rna_seq(self.rna_seq_path)
@@ -51,13 +51,11 @@ class AvocadoDownstreamTasks:
             mask_vector, label_ar = self.Avo_downstream_helper_ob.create_mask(rna_window_labels)
 
             gen_factors = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir,
-                                                                                     self.model_name,
-                                                                                     cfg, mask_vector, label_ar)
+                                                                           self.model_name,
+                                                                           cfg, mask_vector)
 
             feature_matrix = self.Avo_downstream_helper_ob.filter_states(gen_factors, feature_matrix,
                                                                          mask_vector, label_ar)
-
-            # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
 
             mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
@@ -70,7 +68,7 @@ class AvocadoDownstreamTasks:
         return mean_map_dict
 
     def run_pe(self, cfg):
-        print("Running PE")
+        logging.info("Running PE")
 
         pe_ob = PeInteractions()
         pe_ob.get_pe_data(self.pe_int_path)
@@ -88,10 +86,12 @@ class AvocadoDownstreamTasks:
 
             mask_vector, label_ar = self.Avo_downstream_helper_ob.create_mask(pe_window_labels)
 
-            feature_matrix = self.Avo_downstream_helper_ob.filter_states(self.avocado_features, feature_matrix,
-                                                                         mask_vector, label_ar)
+            gen_factors = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir,
+                                                                           self.model_name,
+                                                                           cfg, mask_vector)
 
-            # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
+            feature_matrix = self.Avo_downstream_helper_ob.filter_states(gen_factors, feature_matrix,
+                                                                         mask_vector, label_ar)
 
             mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
@@ -104,7 +104,7 @@ class AvocadoDownstreamTasks:
         return mean_map_dict
 
     def run_fires(self, cfg):
-        print("Running FIREs")
+        logging.info("Running FIREs")
 
         fire_ob = Fires()
         fire_ob.get_fire_data(self.fire_path)
@@ -120,10 +120,12 @@ class AvocadoDownstreamTasks:
 
             mask_vector, label_ar = self.Avo_downstream_helper_ob.create_mask(fire_window_labels)
 
-            feature_matrix = self.Avo_downstream_helper_ob.filter_states(self.avocado_features, feature_matrix,
-                                                                         mask_vector, label_ar)
+            gen_factors = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir,
+                                                                           self.model_name,
+                                                                           cfg, mask_vector)
 
-            # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
+            feature_matrix = self.Avo_downstream_helper_ob.filter_states(gen_factors, feature_matrix,
+                                                                         mask_vector, label_ar)
 
             mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
