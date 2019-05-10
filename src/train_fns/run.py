@@ -21,7 +21,7 @@ def get_avg_map(mapdict_rna_seq):
     return mean_map
 
 
-def run_all(max_norm_list, down_dir):
+def run_all(max_norm_list, down_dir, chr):
     config_base = 'config.yaml'
     result_base = 'down_images'
     map_list_norm = []
@@ -36,7 +36,7 @@ def run_all(max_norm_list, down_dir):
         # cfg.hidden_size_decoder = h
         cfg.max_norm = max_norm
 
-        train_gene.train_iter_gene(cfg)
+        train_gene.train_iter_gene(cfg, chr=chr)
 
         os.system("mkdir {}".format(dir_name))
         os.system("mkdir {}".format(model_dir_name))
@@ -48,7 +48,7 @@ def run_all(max_norm_list, down_dir):
         pd_col.append('gene_id')
         cfg = cfg._replace(downstream_df_columns=pd_col)
 
-        downstream_ob = DownstreamTasks(cfg, dir_name)
+        downstream_ob = DownstreamTasks(cfg, dir_name, chr)
 
         mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
 
@@ -67,10 +67,12 @@ if __name__ == "__main__":
 
     # hidden_nodes = [110]
     # hidden_nodes = [6, 12, 24, 36, 48, 60, 96, 110]
-    max_norm_list = [5e-11, 5e-12, 5e-13, 5e-14]
+
+    chr = 20
+    max_norm_list = [5e-14]
     down_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110"
 
-    map_list_hidden = run_all(max_norm_list, down_dir)
+    map_list_hidden = run_all(max_norm_list, down_dir, chr)
 
     np.save(down_dir + "/" + "map_norm.npy", map_list_hidden)
 
