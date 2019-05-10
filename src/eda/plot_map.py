@@ -9,10 +9,8 @@ logger = logging.getLogger(__name__)
 
 class PlotMap:
     def __init__(self, cfg):
-        self.chr21_len = cfg.chr21_len
         self.cfg = cfg
-        self.path_h24 = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh_h24/"
-        self.path_h110 = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh_h110/"
+        self.path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
 
     def plot_all(self, path):
         rna_seq_dict, pe_dict, fire_dict, tad_dict = self.get_dict(path)
@@ -84,17 +82,32 @@ class PlotMap:
         plt.ylabel('MAP')
         plt.savefig(path + 'tad.png')
 
+    def plot_hidden(self, path, hidden_list):
+        map_hidden = np.load(path + "map_hidden.npy")
+
+        plt.figure()
+        plt.plot(hidden_list, map_hidden)
+        #plt.xticks(range(len(key_list)), key_list)
+        plt.title('MAP vs hidden nodes')
+        plt.xlabel('hidden nodes')
+        plt.ylabel('MAP')
+        plt.savefig(path + 'hidden.png')
+
+        pass
+
 
 if __name__ == "__main__":
     setup_logging()
     config_base = 'config.yaml'
     result_base = 'down_images'
-    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-03-2019_n/all_ca_arc_sinh_h24/model"
+    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden"
 
     cfg = get_config(model_path, config_base, result_base)
     plot_ob = PlotMap(cfg)
 
-    plot_ob.plot_all(plot_ob.path_h24)
-    plot_ob.plot_all(plot_ob.path_h110)
+    # plot_ob.plot_all(plot_ob.path)
+
+    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    plot_ob.plot_hidden(plot_ob.path, hidden_list)
 
     print("done")

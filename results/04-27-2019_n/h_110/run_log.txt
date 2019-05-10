@@ -147,3 +147,11 @@ INFO:downstream.run_downstream:Iter: 13500 - mse: 793.5541617141189
 INFO:downstream.run_downstream:Iter: 14000 - mse: 832.6343464215139
 INFO:downstream.run_downstream:Iter: 14500 - mse: 860.1710721771874
 INFO:downstream.run_downstream:Iter: 15000 - mse: 878.9222029343722
+INFO:downstream.run_downstream:Iter: 15500 - mse: 906.1875574953067
+INFO:downstream.run_downstream:Iter: 16000 - mse: 921.2715934011657
+INFO:downstream.run_downstream:Iter: 16500 - mse: 940.1048595928685
+INFO:downstream.run_downstream:Iter: 17000 - mse: 940.9656961130248
+INFO:downstream.run_downstream:Iter: 17500 - mse: 962.0995236807827
+INFO:downstream.run_downstream:Iter: 18000 - mse: 986.557487900677
+INFO:downstream.run_downstream:Iter: 18500 - mse: 1016.4174954050883
+INFO:downstream.run_downstream:Iter: 19000 - mse: 1042.7856183707613

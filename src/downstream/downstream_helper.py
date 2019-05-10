@@ -90,7 +90,8 @@ class DownstreamHelper:
 
             y_train = y_train.astype(int)
 
-            model = xgboost.XGBClassifier(n_estimators=10, nthread=min(X_train.shape[1], 12), max_depth=4)
+            model = xgboost.XGBClassifier(n_estimators=5000, nthread=min(X_train.shape[1], 12), max_depth=6,
+                                          tree_method='gpu_hist')
             model.fit(X_train, y_train, eval_set=[(X_valid, y_valid)], eval_metric='map', early_stopping_rounds=20,
                       verbose=False)
 
@@ -135,7 +136,7 @@ class DownstreamHelper:
 
         return mean_map
 
-    def get_feature_matrix(self, cfg, mask_vector, label_ar, gene_ar, run_features, feat_mat, downstream_main):
+    def get_feature_matrix(self, cfg, mask_vector, label_ar, gene_ar, run_features, feat_mat, downstream_main, chr):
 
         if run_features:
             feature_matrix = downstream_main(cfg, mask_vector, label_ar, gene_ar)
@@ -149,7 +150,7 @@ class DownstreamHelper:
 
             label_matrix = pd.DataFrame(columns=['target'])
 
-            for i in range(cfg.chr21_len // cfg.cut_seq_len):
+            for i in range(cfg.chr_len[str(chr)] // cfg.cut_seq_len):
                 mask_vec_cut = mask_vector[i * cfg.cut_seq_len: (i + 1) * cfg.cut_seq_len]
                 label_ar_cut = label_ar[i * cfg.cut_seq_len: (i + 1) * cfg.cut_seq_len]
 

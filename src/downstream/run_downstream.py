@@ -40,7 +40,7 @@ class DownstreamTasks:
         self.feat_mat_fire = self.saved_model_dir + "feat_fire.pkl"
         self.new_features = self.saved_model_dir + "new_feat.npy"
         self.run_features_rna = False
-        self.run_features_pe = True
+        self.run_features_pe = False
         self.run_features_fire = False
         self.concat_lstm = False
         self.run_concat_feat = False
@@ -123,7 +123,7 @@ class DownstreamTasks:
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_rna,
                                                                           self.feat_mat_rna,
-                                                                          self.downstream_main)
+                                                                          self.downstream_main, self.chr)
 
             self.run_features_rna = False
 
@@ -173,7 +173,7 @@ class DownstreamTasks:
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_pe,
                                                                           self.feat_mat_pe,
-                                                                          self.downstream_main)
+                                                                          self.downstream_main, self.chr)
 
             # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
 
@@ -202,7 +202,7 @@ class DownstreamTasks:
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_fire,
                                                                           self.feat_mat_fire,
-                                                                          self.downstream_main)
+                                                                          self.downstream_main, self.chr)
 
             self.run_features_fire = False
 
@@ -221,9 +221,10 @@ if __name__ == '__main__':
     setup_logging()
     config_base = 'config.yaml'
     result_base = 'down_images'
+    chr = 21
 
-    dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-13/"
-    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-13/model"
+    dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/"
+    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/model"
     cfg = get_config(model_path, config_base, result_base)
     pd_col = list(np.arange(cfg.hidden_size_encoder))
     pd_col.append('target')
@@ -232,12 +233,10 @@ if __name__ == '__main__':
 
     downstream_ob = DownstreamTasks(cfg, dir, chr)
 
-    # downstream_helper_ob = DownstreamHelper(cfg)
-
     # mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
 
-    mapdict_pe = downstream_ob.run_pe(cfg)
+    # mapdict_pe = downstream_ob.run_pe(cfg)
 
-    # mapdict_fire = downstream_ob.run_fires(cfg)
+    mapdict_fire = downstream_ob.run_fires(cfg)
 
     print("done")
