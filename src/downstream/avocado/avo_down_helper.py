@@ -32,8 +32,6 @@ class AvoDownstreamHelper:
         ind_list = []
         label_ar = np.zeros(self.chr_len)
 
-        # w_labels = pd.read_pickle("/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-13/w_labels_dropped.pkl")
-
         for i in range(window_labels.shape[0]):
 
             start = window_labels.loc[i, "start"]
@@ -55,26 +53,26 @@ class AvoDownstreamHelper:
 
         return mask_vec, label_ar
 
-    def get_feature_matrix(self, model_path, model_name, cfg):
+    def get_feature_matrix(self, model_path, model_name, cfg, mask_vector):
 
         Avocado_ob = AvocadoAnalysis()
 
         model = load_model("{}.h5".format(model_path + model_name))
 
-        gen_factors = Avocado_ob.get_genomic_factors(model, cfg)
+        gen_factors = Avocado_ob.get_genomic_factors(model, cfg, mask_vector)
 
         return gen_factors
 
-    def filter_states(self, avocado_features, feature_matrix, mask_vector, label_ar):
+    def filter_states(self, gen_factors, feature_matrix, mask_vector, label_ar):
 
         # if True in mask_vector:
         #    print("here")
+        # enc = avocado_features[mask_vector,]
 
-        enc = avocado_features[mask_vector,]
         lab = label_ar[mask_vector,]
-        lab = lab.reshape((enc.shape[0], 1))
+        lab = lab.reshape((gen_factors.shape[0], 1))
 
-        feat_mat = np.append(enc, lab, axis=1)
+        feat_mat = np.append(gen_factors, lab, axis=1)
 
         feature_matrix = feature_matrix.append(pd.DataFrame(feat_mat, columns=self.columns),
                                                ignore_index=True)

@@ -16,7 +16,7 @@ class Config:
         self.output_size_decoder = self.input_size_encoder
 
         self.learning_rate = 1e-2
-        self.max_norm = 5e-13
+        self.max_norm = 5e-14
 
         self.cut_seq_len = 100
         self.base_pair_resolution = 25
@@ -24,8 +24,8 @@ class Config:
 
         self.fasta_path = "/opt/data/latent/data/dna"
 
-        self.epigenome_npz_path_train = '/data2/latent/data/npz/ch_21_arc_sinh_znorm'
-        self.epigenome_npz_path_test = '/data2/latent/data/npz/ch_21_arc_sinh_znorm'
+        self.epigenome_npz_path_train = '/data2/latent/data/npz/ch21_arc_sinh_znorm'
+        self.epigenome_npz_path_test = '/data2/latent/data/npz/ch21_arc_sinh_znorm'
         self.epigenome_bigwig_path = '/opt/data/latent/data/bigwig'
 
         self.model_dir = '/home/kevindsouza/Documents/projects/latentGenome/src/saved_model/model_all_ca'

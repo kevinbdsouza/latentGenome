@@ -10,14 +10,15 @@ logger = logging.getLogger(__name__)
 
 
 class DownstreamHelper:
-    def __init__(self, cfg):
-        self.chr_len = cfg.chr_len
+    def __init__(self, cfg, chr):
+        self.chr_len = cfg.chr_len[str(chr)]
         self.cfg = cfg
         self.cfg_down = None
         self.columns = cfg.downstream_df_columns
 
     def create_mask(self, window_labels):
         ind_list = []
+
         label_ar = np.zeros(self.chr_len)
         gene_ar = np.zeros(self.chr_len)
 
