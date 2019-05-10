@@ -74,8 +74,8 @@ if __name__ == "__main__":
 
     # hidden_nodes = [6, 12, 24, 36, 48, 60, 96, 110]
 
-    map_list_hidden = run_all(max_norm_list, down_dir, chr)
+    map_list_norm = run_all(max_norm_list, down_dir, chr)
 
-    np.save(down_dir + "/" + "map_norm.npy", map_list_hidden)
+    np.save(down_dir + "/" + "map_norm.npy", map_list_norm)
 
     print("done")
