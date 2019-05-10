@@ -33,8 +33,8 @@ downstream_df_columns:
 - target
 - gene_id
 epigenome_bigwig_path: /opt/data/latent/data/bigwig
-epigenome_npz_path_test: /opt/data/latent/data/npz/ch_21_arc_sin_znorm
-epigenome_npz_path_train: /opt/data/latent/data/npz/ch_21_arc_sin_znorm
+epigenome_npz_path_test: /data2/latent/data/npz/ch21_arc_sinh_znorm
+epigenome_npz_path_train: /data2/latent/data/npz/ch21_arc_sinh_znorm
 fasta_path: /opt/data/latent/data/dna
 hidden_size_decoder: 110
 hidden_size_encoder: 110

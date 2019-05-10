@@ -24,9 +24,9 @@ logger = logging.getLogger(__name__)
 
 class DownstreamTasks:
     def __init__(self, cfg, dir):
-        self.rna_seq_path = "/opt/data/latent/data/downstream/RNA-seq"
-        self.pe_int_path = "/opt/data/latent/data/downstream/PE-interactions"
-        self.fire_path = "/opt/data/latent/data/downstream/FIREs"
+        self.rna_seq_path = "/data2/latent/data/downstream/RNA-seq"
+        self.pe_int_path = "/data2/latent/data/downstream/PE-interactions"
+        self.fire_path = "/data2/latent/data/downstream/FIREs"
         self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
         self.chr_list_rna = '21'
@@ -34,13 +34,13 @@ class DownstreamTasks:
         self.chr_list_tad = 'chr21'
         self.chr_list_fire = 21
         self.saved_model_dir = dir
-        self.feat_mat_rna = self.saved_model_dir + "feat_rna_h24.pkl"
-        self.feat_mat_pe = self.saved_model_dir + "feat_pe_h24.pkl"
-        self.feat_mat_fire = self.saved_model_dir + "feat_fire_h24.pkl"
-        self.feat_mat_tad = self.saved_model_dir + "feat_tad_h24.pkl"
+        self.feat_mat_rna = self.saved_model_dir + "feat_rna.pkl"
+        self.feat_mat_pe = self.saved_model_dir + "feat_pe.pkl"
+        self.feat_mat_fire = self.saved_model_dir + "feat_fire.pkl"
+        self.feat_mat_tad = self.saved_model_dir + "feat_tad.pkl"
         self.new_features = self.saved_model_dir + "new_feat.npy"
-        self.run_features_rna = True
-        self.run_features_pe = True
+        self.run_features_rna = False
+        self.run_features_pe = False
         self.run_features_fire = True
         self.run_features_tad = True
         self.concat_lstm = False
@@ -113,7 +113,7 @@ class DownstreamTasks:
         rna_seq_chr['target'] = 0
         mean_map_dict = {}
 
-        for col in range(1, 2):
+        for col in range(1, 58):
             rna_seq_chr.loc[rna_seq_chr.iloc[:, col] >= 0.5, 'target'] = 1
             rna_window_labels = rna_seq_chr.filter(['start', 'end', 'target'], axis=1)
             rna_window_labels = rna_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
@@ -144,20 +144,15 @@ class DownstreamTasks:
                 feature_matrix = feature_matrix.loc[:, feature_matrix.columns != 'gene_id']
                 cls_mode = 'ind'
 
-            if feature_matrix["target"].value_counts().index[0] == 1:
-                bal_mode = "undersampling"
-            else:
-                bal_mode = "oversampling"
+            # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
 
-            feature_matrix = self.downstream_helper_ob.fix_class_imbalance(feature_matrix, mode=bal_mode)
-
-            mean_map = self.downstream_helper_ob.calculate_map(feature_matrix, cls_mode)
+            mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
             mean_map_dict[rna_seq_chr.columns[col]] = mean_map
 
         np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
 
-        return mean_map_dict, feature_matrix
+        return mean_map_dict
 
     def run_pe(self, cfg):
 
@@ -181,14 +176,9 @@ class DownstreamTasks:
                                                                           self.feat_mat_pe,
                                                                           self.downstream_main)
 
-            if feature_matrix["target"].value_counts().index[0] == 1:
-                bal_mode = "undersampling"
-            else:
-                bal_mode = "oversampling"
+            # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
 
-            feature_matrix = self.downstream_helper_ob.fix_class_imbalance(feature_matrix, mode=bal_mode)
-
-            mean_map = self.downstream_helper_ob.calculate_map(feature_matrix, cls_mode)
+            mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
             mean_map_dict[cell] = mean_map
 
@@ -217,53 +207,13 @@ class DownstreamTasks:
 
             self.run_features_fire = False
 
-            if feature_matrix["target"].value_counts().index[0] == 1:
-                bal_mode = "undersampling"
-            else:
-                bal_mode = "oversampling"
+            # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
 
-            feature_matrix = self.downstream_helper_ob.fix_class_imbalance(feature_matrix, mode=bal_mode)
-
-            mean_map = self.downstream_helper_ob.calculate_map(feature_matrix, cls_mode)
+            mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
             mean_map_dict[cell] = mean_map
 
         np.save(self.saved_model_dir + 'map_dict_fire.npy', mean_map_dict)
-
-        return mean_map_dict
-
-    def run_tads(self, cfg):
-        fire_ob = Fires()
-        fire_ob.get_tad_data(self.fire_path, self.fire_cell_names)
-        tad_filtered = fire_ob.filter_tad_data(self.chr_list_tad)
-        mean_map_dict = {}
-        cls_mode = 'ind'
-
-        for col in range(7):
-            tad_cell = tad_filtered[col]
-            tad_cell['target'] = 1
-            tad_cell = tad_cell.filter(['start', 'end', 'target'], axis=1)
-            tad_cell = tad_cell.drop_duplicates(keep='first').reset_index(drop=True)
-            tad_cell = fire_ob.augment_tad_negatives(cfg, tad_cell)
-            mask_vector, label_ar, gene_ar = self.downstream_helper_ob.create_mask(tad_cell)
-
-            feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
-                                                                          self.run_features_tad,
-                                                                          self.feat_mat_tad,
-                                                                          self.downstream_main)
-
-            if feature_matrix["target"].value_counts().index[0] == 1:
-                bal_mode = "undersampling"
-            else:
-                bal_mode = "oversampling"
-
-            feature_matrix = self.downstream_helper_ob.fix_class_imbalance(feature_matrix, mode=bal_mode)
-
-            mean_map = self.downstream_helper_ob.calculate_map(feature_matrix, cls_mode)
-
-            mean_map_dict[self.fire_cell_names[col]] = mean_map
-
-        np.save(self.saved_model_dir + 'map_dict_tad.npy', mean_map_dict)
 
         return mean_map_dict
 
@@ -273,8 +223,8 @@ if __name__ == '__main__':
     config_base = 'config.yaml'
     result_base = 'down_images'
 
-    dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-10/epoch_5/"
-    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-10/epoch_5/model"
+    dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-13/"
+    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-13/model"
     cfg = get_config(model_path, config_base, result_base)
     pd_col = list(np.arange(cfg.hidden_size_encoder))
     pd_col.append('target')
@@ -285,12 +235,10 @@ if __name__ == '__main__':
 
     # downstream_helper_ob = DownstreamHelper(cfg)
 
-    mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
+    # mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
 
     mapdict_pe = downstream_ob.run_pe(cfg)
 
-    map_dict_fire = downstream_ob.run_fires(cfg)
-
-    map_dict_tad = downstream_ob.run_tads(cfg)
+    # mapdict_fire = downstream_ob.run_fires(cfg)
 
     print("done")

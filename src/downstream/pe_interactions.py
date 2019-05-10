@@ -11,6 +11,7 @@ class PeInteractions:
         pe_pairs = pe_pairs.sort_values(by=['window_start']).reset_index(drop=True)
 
         ''' decimate by 25 to get the positions at 25 bp resolution '''
+        pe_pairs = pe_pairs.drop_duplicates(subset="promoter_name", keep='first').reset_index(drop=True)
         pe_pairs["window_start"] = pe_pairs["window_start"] // 25
         pe_pairs["window_end"] = pe_pairs["window_end"] // 25
         pe_pairs["cell"] = None

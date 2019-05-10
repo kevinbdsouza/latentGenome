@@ -28,22 +28,22 @@ class RnaSeq:
                                    error_bad_lines=False)
 
     def filter_rna_seq(self, chrom):
-        gene_info_chr21 = self.gene_info.loc[self.gene_info['chr'] == chrom]
+        gene_info_chr = self.gene_info.loc[self.gene_info['chr'] == chrom]
 
-        pc_data_chr21 = self.pc_data.merge(gene_info_chr21, on=['gene_id'], how='inner')
+        pc_data_chr = self.pc_data.merge(gene_info_chr, on=['gene_id'], how='inner')
 
-        nc_data_chr21 = self.nc_data.merge(gene_info_chr21, on=['gene_id'], how='inner')
+        nc_data_chr = self.nc_data.merge(gene_info_chr, on=['gene_id'], how='inner')
 
-        rb_data_chr21 = self.rb_data.merge(gene_info_chr21, on=['gene_id'], how='inner')
+        rb_data_chr = self.rb_data.merge(gene_info_chr, on=['gene_id'], how='inner')
 
-        rna_seq_chr21 = pd.concat([pc_data_chr21, nc_data_chr21, rb_data_chr21], ignore_index=True)
-        rna_seq_chr21 = rna_seq_chr21.sort_values(by=['start']).reset_index(drop=True)
+        rna_seq_chr = pd.concat([pc_data_chr, nc_data_chr, rb_data_chr], ignore_index=True)
+        rna_seq_chr = rna_seq_chr.sort_values(by=['start']).reset_index(drop=True)
 
         ''' decimate by 25 to get the positions at 25 bp resolution '''
-        rna_seq_chr21["start"] = rna_seq_chr21["start"] // 25
-        rna_seq_chr21["end"] = rna_seq_chr21["end"] // 25
+        rna_seq_chr["start"] = rna_seq_chr["start"] // 25
+        rna_seq_chr["end"] = rna_seq_chr["end"] // 25
 
-        return rna_seq_chr21
+        return rna_seq_chr
 
 
 if __name__ == '__main__':

@@ -2,15 +2,17 @@ import pandas as pd
 import re
 
 
-class Fires:
+class Rep_timing:
     def __init__(self):
-        self.fire_data = None
-        self.tad_data = None
-        self.fire_pkl = "/data2/latent/data/downstream/FIREs/fires.pkl"
+        self.rep_data = None
+        self.huvec = "RT_HUVEC_Umbilical"
+        self.imr90 = "RT_IMR90_Lung"
+        self.k562 = "RT_K562_Bone"
+        self.nhek = "RT_NHEK_Keratinocytes_Int92817591_hg38"
+        self.gm12878 = "RT_GM12878_Lymphocyte_Int90901931_hg38"
 
-    def get_fire_data(self, fire_path):
-        # fires = pd.read_excel(fire_path + '/FIRE_scores.xlsx', sheet_name="primary_cohort")
-        # fires = fires.sort_values(by=['start']).reset_index(drop=True)
+    def get_rep_data(self, fire_path):
+
 
         fires = pd.read_pickle(self.fire_pkl)
 
@@ -22,24 +24,8 @@ class Fires:
 
         self.fire_data = fire_chosen
 
-    def get_tad_data(self, tad_path, cell_names):
-
-        tad_list = []
-        for cell in cell_names:
-            tads = pd.read_excel(tad_path + '/TAD_boundaries.xlsx', sheet_name=cell, names=["chr", "start", "end"])
-
-            tads = tads.sort_values(by=['start']).reset_index(drop=True)
-
-            ''' decimate by 25 to get the positions at 25 bp resolution '''
-            tads["start"] = tads["start"] // 25
-            tads["end"] = tads["end"] // 25
-
-            tad_list.append(tads)
-
-        self.tad_data = tad_list
-
-    def filter_fire_data(self, chrom_fire):
-        fire_data_chr = self.fire_data.loc[self.fire_data['chr'] == chrom_fire].reset_index(drop=True)
+    def filter_rep_data(self, chrom_rep):
+        fire_data_chr = self.fire_data.loc[self.fire_data['chr'] == chrom_rep].reset_index(drop=True)
 
         fire_data_chr['GM12878_l'] = 0
         fire_data_chr['H1_l'] = 0
@@ -62,17 +48,6 @@ class Fires:
 
         return fire_labeled
 
-    def filter_tad_data(self, chrom_tad):
-
-        tad_list_filtered = []
-        for i in range(len(self.tad_data)):
-            tad_cell = self.tad_data[i]
-            tad_data_chr = tad_cell.loc[tad_cell['chr'] == chrom_tad].reset_index(drop=True)
-
-            tad_list_filtered.append(tad_data_chr)
-
-        return tad_list_filtered
-
     def augment_tad_negatives(self, cfg, tad_df):
 
         neg_df = pd.DataFrame(columns=['start', 'end', 'target'])
@@ -93,17 +68,13 @@ class Fires:
 
 
 if __name__ == '__main__':
-    fire_path = "/opt/data/latent/data/downstream/FIREs"
+    rep_timing_path = "/data2/latent/data/downstream/replication_timing"
 
-    chrom_fire = 21
-    chrom_tad = 'chr21'
-    cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
+    chrom_rep = 21
+    cell_names = ['GM12878', 'HUVEC', 'IMR90', 'K562', 'NHEK']
 
-    fire_ob = Fires()
-    fire_ob.get_fire_data(fire_path)
-    fire_labeled = fire_ob.filter_fire_data(chrom_fire)
-
-    fire_ob.get_tad_data(fire_path, cell_names)
-    tad_filtered = fire_ob.filter_tad_data(chrom_tad)
+    rep_ob = Rep_timing()
+    rep_ob.get_rep_data(rep_timing_path)
+    fire_labeled = rep_ob.filter_rep_data(chrom_rep)
 
     print("done")
