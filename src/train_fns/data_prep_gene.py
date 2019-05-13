@@ -25,15 +25,10 @@ class DataPrepGene():
         self.chr_cuts = self.cfg.chr_cuts[chr]
         self.ch_cut_len = int(math.floor((self.chr_len // self.chr_cuts) / 100.0)) * 100
         self.tracks = None
-
-        if mode == 'train':
-            self.epigenome_npz_path = cfg.epigenome_npz_path_train
-        elif mode == 'test':
-            self.epigenome_npz_path = cfg.epigenome_npz_path_train
-
+        self.epigenome_npz_path = cfg.epigenome_npz_path_train
         self.epigenome_bigwig_path = cfg.epigenome_bigwig_path
         self.fasta_path = cfg.fasta_path
-
+        
     def get_data(self):
 
         # fasta_files = [f for f in listdir(self.fasta_path) if isfile(join(self.fasta_path, f))]

@@ -41,7 +41,7 @@ class Config:
         self.num_epochs = 3
 
         self.chr_cuts = {'20': 7, '21': 5}
-        self.chr_len = {'20': 2518621, '21': 1926400}
+        self.chr_len = {'20': 2518700, '21': 1926400}
 
         self.downstream_df_columns = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', 'f13',
                                       'f14', 'f15', 'f16', 'f17', 'f18', 'f19', 'f20', 'f21', 'f22', 'f23', 'f24',
