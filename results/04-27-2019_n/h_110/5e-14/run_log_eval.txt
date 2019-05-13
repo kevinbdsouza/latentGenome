@@ -310,3 +310,10 @@ INFO:downstream.run_downstream:Iter: 500 - mse: 1190.2476084403645
 INFO:downstream.run_downstream:Iter: 1000 - mse: 1171.8450127204542
 INFO:downstream.run_downstream:Iter: 1500 - mse: 1195.9879211876587
 INFO:downstream.run_downstream:Iter: 2000 - mse: 1204.2712368153286
+INFO:downstream.run_downstream:Iter: 2500 - mse: 1176.4245332322284
+INFO:downstream.run_downstream:Iter: 3000 - mse: 1110.162449340138
+INFO:downstream.run_downstream:Iter: 3500 - mse: 1066.7474914880809
+INFO:downstream.run_downstream:Iter: 4000 - mse: 1036.335822410649
+INFO:downstream.run_downstream:Iter: 4500 - mse: 1026.9856859113413
+INFO:downstream.run_downstream:Iter: 5000 - mse: 1004.8977213642713
+INFO:downstream.run_downstream:Iter: 5500 - mse: 989.3186278371649
