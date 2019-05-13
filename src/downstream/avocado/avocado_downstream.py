@@ -17,11 +17,16 @@ logger = logging.getLogger(__name__)
 
 class AvocadoDownstreamTasks:
     def __init__(self, model, chr, cfg, dir_name, mode):
-        self.rna_seq_path = "/data2/latent/data/downstream/RNA-seq"
-        self.pe_int_path = "/data2/latent/data/downstream/PE-interactions"
-        self.fire_path = "/data2/latent/data/downstream/FIREs"
+        self.data_dir = "/data2/latent/data/"
+        self.rna_seq_path = self.data_dir + "downstream/RNA-seq"
+        self.pe_int_path = self.data_dir + "downstream/PE-interactions"
+        self.fire_path = self.data_dir + "downstream/FIREs"
         self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
+        self.feat_avo_rna = "feat_avo_chr_" + str(chr) + "_rna_"
+        self.feat_avo_pe = "feat_avo_chr_" + str(chr) + "_pe_"
+        self.feat_avo_fire = "feat_avo_chr_" + str(chr) + "_fire_"
+        self.chr = chr
         self.chr_rna = str(chr)
         self.chr_pe = 'chr' + str(chr)
         self.chr_fire = chr
@@ -57,13 +62,17 @@ class AvocadoDownstreamTasks:
             feature_matrix = self.Avo_downstream_helper_ob.filter_states(gen_factors, feature_matrix,
                                                                          mask_vector, label_ar)
 
-            mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
+            save_path = self.data_dir + 'avocado/chr' + str(self.chr) + "/" + self.feat_avo_rna + rna_seq_chr.columns[col]
+            feature_matrix.to_pickle(save_path)
+            logging.info("chr name : {} - cell name : {} - saved".format(str(self.chr), rna_seq_chr.columns[col]))
 
-            mean_map_dict[rna_seq_chr.columns[col]] = mean_map
+            # mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
-            logging.info("cell name : {} - MAP : {}".format(rna_seq_chr.columns[col], mean_map))
+            # mean_map_dict[rna_seq_chr.columns[col]] = mean_map
 
-        np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
+            # logging.info("cell name : {} - MAP : {}".format(rna_seq_chr.columns[col], mean_map))
+
+        # np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
 
         return mean_map_dict
 
@@ -93,13 +102,17 @@ class AvocadoDownstreamTasks:
             feature_matrix = self.Avo_downstream_helper_ob.filter_states(gen_factors, feature_matrix,
                                                                          mask_vector, label_ar)
 
-            mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
+            save_path = self.data_dir + 'avocado/chr' + str(self.chr) + "/" + self.feat_avo_pe + cell
+            feature_matrix.to_pickle(save_path)
+            logging.info("chr name : {} - cell name : {} - saved".format(str(self.chr), cell))
 
-            mean_map_dict[cell] = mean_map
+            # mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
-            logging.info("cell name : {} - MAP : {}".format(cell, mean_map))
+            # mean_map_dict[cell] = mean_map
 
-        np.save(self.saved_model_dir + 'map_dict_pe.npy', mean_map_dict)
+            # logging.info("cell name : {} - MAP : {}".format(cell, mean_map))
+
+        # np.save(self.saved_model_dir + 'map_dict_pe.npy', mean_map_dict)
 
         return mean_map_dict
 
@@ -127,13 +140,17 @@ class AvocadoDownstreamTasks:
             feature_matrix = self.Avo_downstream_helper_ob.filter_states(gen_factors, feature_matrix,
                                                                          mask_vector, label_ar)
 
-            mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
+            save_path = self.data_dir + 'avocado/chr' + str(self.chr) + "/" + self.feat_avo_pe + cell
+            feature_matrix.to_pickle(save_path)
+            logging.info("chr name : {} - cell name : {} - saved".format(str(self.chr), cell))
 
-            mean_map_dict[cell] = mean_map
+            # mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
-            logging.info("cell name : {} - MAP : {}".format(cell, mean_map))
+            # mean_map_dict[cell] = mean_map
 
-        np.save(self.saved_model_dir + 'map_dict_fire.npy', mean_map_dict)
+            # logging.info("cell name : {} - MAP : {}".format(cell, mean_map))
+
+        # np.save(self.saved_model_dir + 'map_dict_fire.npy', mean_map_dict)
 
         return mean_map_dict
 
@@ -153,7 +170,7 @@ if __name__ == '__main__':
     pd_col.append('target')
     cfg = cfg._replace(downstream_df_columns=pd_col)
 
-    Av_downstream_ob = AvocadoDownstreamTasks(model, chr, cfg, dir_name)
+    Av_downstream_ob = AvocadoDownstreamTasks(model, chr, cfg, dir_name, mode='avocado')
 
     # mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
 
