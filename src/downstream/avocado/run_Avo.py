@@ -45,20 +45,20 @@ def run_all(model, down_dir, chr_list):
         Av_downstream_ob = AvocadoDownstreamTasks(model_name, chr, cfg, dir_name, mode='avocado')
 
         mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
-        mean_rna_map = get_avg_map(mapdict_rna_seq)
-        map_rna.append(mean_rna_map)
+        # mean_rna_map = get_avg_map(mapdict_rna_seq)
+        # map_rna.append(mean_rna_map)
 
         mapdict_pe = Av_downstream_ob.run_pe(cfg)
-        mean_pe_map = get_avg_map(mapdict_pe)
-        map_pe.append(mean_pe_map)
+        # mean_pe_map = get_avg_map(mapdict_pe)
+        # map_pe.append(mean_pe_map)
 
         mapdict_fire = Av_downstream_ob.run_fires(cfg)
-        mean_fire_map = get_avg_map(mapdict_fire)
-        map_fire.append(mean_fire_map)
+        # mean_fire_map = get_avg_map(mapdict_fire)
+        # map_fire.append(mean_fire_map)
 
-        logging.info("chr: {} - map_rna:{}".format(chr, mean_rna_map))
-        logging.info("chr: {} - map_pe: {}".format(chr, mean_pe_map))
-        logging.info("chr: {} - map_fire: {}".format(chr, mean_fire_map))
+        # logging.info("chr: {} - map_rna:{}".format(chr, mean_rna_map))
+        # logging.info("chr: {} - map_pe: {}".format(chr, mean_pe_map))
+        # logging.info("chr: {} - map_fire: {}".format(chr, mean_fire_map))
 
     return map_rna, map_pe, map_fire
 
