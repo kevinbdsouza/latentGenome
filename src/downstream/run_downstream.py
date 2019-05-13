@@ -24,10 +24,12 @@ logger = logging.getLogger(__name__)
 
 class DownstreamTasks:
     def __init__(self, cfg, dir, chr, mode):
-        self.rna_seq_path = "/data2/latent/data/downstream/RNA-seq"
-        self.pe_int_path = "/data2/latent/data/downstream/PE-interactions"
-        self.fire_path = "/data2/latent/data/downstream/FIREs"
-        self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
+        self.data_dir = "/data2/latent/data/"
+        self.rna_seq_path = self.data_dir + "downstream/RNA-seq"
+        self.pe_int_path = self.data_dir + "downstream/PE-interactions"
+        self.fire_path = self.data_dir + "downstream/FIREs"
+        # self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
+        self.fire_cell_names = ['GM12878']
         self.chr = chr
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
         self.chr_list_rna = str(chr)
@@ -35,19 +37,23 @@ class DownstreamTasks:
         self.chr_list_tad = 'chr' + str(chr)
         self.chr_list_fire = chr
         self.saved_model_dir = dir
-        self.feat_mat_rna = self.saved_model_dir + "feat_rna.pkl"
-        self.feat_mat_pe = self.saved_model_dir + "feat_pe.pkl"
-        self.feat_mat_fire = self.saved_model_dir + "feat_fire.pkl"
-        self.new_features = self.saved_model_dir + "new_feat.npy"
-        self.run_features_rna = False
-        self.run_features_pe = False
-        self.run_features_fire = False
+        self.feat_mat_rna = self.saved_model_dir + "feat_chr_" + str(chr) + "_rna_"
+        self.feat_mat_pe = self.saved_model_dir + "feat_chr_" + str(chr) + "_pe_"
+        self.feat_mat_fire = self.saved_model_dir + "feat_chr_" + str(chr) + "_fire_"
+        self.new_features = self.saved_model_dir + "new_feat_.npy"
+        self.run_features_rna = True
+        self.run_features_pe = True
+        self.run_features_fire = True
         self.concat_lstm = False
         self.run_concat_feat = False
         self.downstream_helper_ob = DownstreamHelper(cfg, chr, mode=mode)
         self.down_lstm_ob = DownstreamLSTM()
 
     def downstream_main(self, cfg, mask_vector, label_ar, gene_ar):
+
+        cfg = cfg._replace(epigenome_npz_path_train=self.data_dir + "npz/chr" + str(self.chr) + "_arc_sinh_znorm")
+        cfg = cfg._replace(epigenome_npz_path_test=self.data_dir + "npz/chr" + str(self.chr) + "_arc_sinh_znorm")
+
         data_ob_gene = DataPrepGene(cfg, mode='test', chr=str(self.chr))
         monitor = MonitorTesting(cfg)
         callback = TensorBoard(cfg.tensorboard_log_path)
@@ -58,7 +64,7 @@ class DownstreamTasks:
         model.load_weights()
         model.set_callback(callback)
 
-        logger.info('Downstream Start')
+        logging.info('Downstream Start')
 
         iter_num = 0
         hidden_states = np.zeros((2, cfg.hidden_size_encoder))
@@ -104,6 +110,7 @@ class DownstreamTasks:
         return feature_matrix
 
     def run_rna_seq(self, cfg):
+        logging.info("RNA-Seq start")
 
         rna_seq_ob = RnaSeq()
         rna_seq_ob.get_rna_seq(self.rna_seq_path)
@@ -112,7 +119,7 @@ class DownstreamTasks:
         rna_seq_chr['target'] = 0
         mean_map_dict = {}
 
-        for col in range(1, 58):
+        for col in range(1, 2):
             rna_seq_chr.loc[rna_seq_chr.iloc[:, col] >= 0.5, 'target'] = 1
             rna_window_labels = rna_seq_chr.filter(['start', 'end', 'target'], axis=1)
             rna_window_labels = rna_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
@@ -122,11 +129,17 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_rna,
-                                                                          self.feat_mat_rna,
+                                                                          self.feat_mat_rna + rna_seq_chr.columns[
+                                                                              col] + '.pkl',
                                                                           self.downstream_main, self.chr)
+
+            feature_matrix = self.downstream_helper_ob.get_window_features(feature_matrix)
 
             self.run_features_rna = False
 
+            logging.info("chr : {} - cell : {}".format(str(self.chr), rna_seq_chr.columns[col]))
+
+            '''
             if self.concat_lstm:
 
                 if self.run_concat_feat:
@@ -143,17 +156,17 @@ class DownstreamTasks:
                 feature_matrix = feature_matrix.loc[:, feature_matrix.columns != 'gene_id']
                 cls_mode = 'ind'
 
-            # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
-
             mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
             mean_map_dict[rna_seq_chr.columns[col]] = mean_map
+            '''
 
-        np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
+        # np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
 
         return mean_map_dict
 
     def run_pe(self, cfg):
+        logging.info("PE start")
 
         pe_ob = PeInteractions()
         pe_ob.get_pe_data(self.pe_int_path)
@@ -172,20 +185,24 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_pe,
-                                                                          self.feat_mat_pe,
+                                                                          self.feat_mat_pe + cell + ".pkl",
                                                                           self.downstream_main, self.chr)
 
-            # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
+            feature_matrix = self.downstream_helper_ob.get_window_features(feature_matrix)
 
-            mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
+            logging.info("chr : {} - cell : {}".format(str(self.chr), cell))
 
-            mean_map_dict[cell] = mean_map
+            # mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
-        np.save(self.saved_model_dir + 'map_dict_pe.npy', mean_map_dict)
+            # mean_map_dict[cell] = mean_map
+
+        # np.save(self.saved_model_dir + 'map_dict_pe.npy', mean_map_dict)
 
         return mean_map_dict
 
     def run_fires(self, cfg):
+        logging.info("fires start")
+
         fire_ob = Fires()
         fire_ob.get_fire_data(self.fire_path)
         fire_labeled = fire_ob.filter_fire_data(self.chr_list_fire)
@@ -201,18 +218,20 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_fire,
-                                                                          self.feat_mat_fire,
+                                                                          self.feat_mat_fire + cell + ".pkl",
                                                                           self.downstream_main, self.chr)
 
+            feature_matrix = self.downstream_helper_ob.get_window_features(feature_matrix)
+            
             self.run_features_fire = False
 
-            # feature_matrix = self.downstream_helper_ob.balance_classes(feature_matrix)
+            logging.info("chr : {} - cell : {}".format(str(self.chr), cell))
 
-            mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
+            # mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
-            mean_map_dict[cell] = mean_map
+            # mean_map_dict[cell] = mean_map
 
-        np.save(self.saved_model_dir + 'map_dict_fire.npy', mean_map_dict)
+        # np.save(self.saved_model_dir + 'map_dict_fire.npy', mean_map_dict)
 
         return mean_map_dict
 
@@ -231,12 +250,12 @@ if __name__ == '__main__':
     pd_col.append('gene_id')
     cfg = cfg._replace(downstream_df_columns=pd_col)
 
-    downstream_ob = DownstreamTasks(cfg, dir, chr)
+    downstream_ob = DownstreamTasks(cfg, dir, chr, mode='lstm')
 
     # mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
 
-    # mapdict_pe = downstream_ob.run_pe(cfg)
+    mapdict_pe = downstream_ob.run_pe(cfg)
 
-    mapdict_fire = downstream_ob.run_fires(cfg)
+    # mapdict_fire = downstream_ob.run_fires(cfg)
 
     print("done")

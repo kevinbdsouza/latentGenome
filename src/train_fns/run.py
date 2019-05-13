@@ -21,22 +21,16 @@ def get_avg_map(mapdict_rna_seq):
     return mean_map
 
 
-def run_all(max_norm_list, down_dir, chr):
+def run_all(chr_list, down_dir):
     config_base = 'config.yaml'
     result_base = 'down_images'
-    map_list_norm = []
 
-    for max_norm in max_norm_list:
-        cfg = config.Config()
-        dir_name = down_dir + "/" + str(max_norm) + "/"
-        model_dir_name = dir_name + "model"
+    for chr in chr_list:
+        # cfg = config.Config()
+        dir_name = down_dir + "/" + str(chr) + "/"
+        model_dir_name = down_dir + "/model"
 
-        # cfg.hidden_size_encoder = h
-        # cfg.input_size_decoder = h
-        # cfg.hidden_size_decoder = h
         '''
-        cfg.max_norm = max_norm
-
         train_gene.train_iter_gene(cfg, chr=chr)
 
         os.system("mkdir {}".format(dir_name))
@@ -50,32 +44,32 @@ def run_all(max_norm_list, down_dir, chr):
         pd_col.append('gene_id')
         cfg = cfg._replace(downstream_df_columns=pd_col)
 
-        downstream_ob = DownstreamTasks(cfg, dir_name, chr)
+        downstream_ob = DownstreamTasks(cfg, dir_name, chr, mode='lstm')
 
-        mapdict_pe_seq = downstream_ob.run_pe(cfg)
+        # mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
+        # logging.info("chr done: {}".format(chr))
 
-        logging.info("max norm: {}".format(max_norm))
-        logging.info("chr: {}".format(chr))
-        logging.info("mapdict_rna_seq: {}".format(mapdict_pe_seq))
+        # mapdict_pe_seq = downstream_ob.run_pe(cfg)
+        # logging.info("chr done: {}".format(chr))
 
-        map_list_norm.append(get_avg_map(mapdict_pe_seq))
+        mapdict_fire_seq = downstream_ob.run_fires(cfg)
+        logging.info("chr done: {}".format(chr))
 
-    return map_list_norm
+    return mapdict_fire_seq
 
 
 if __name__ == "__main__":
     # setup_logging()
-    chr = 21
-    max_norm_list = [5e-14]
-    down_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110"
+    chr_list = [20]
+    down_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14"
 
-    logging.basicConfig(filename=down_dir + "/run_log.txt",
+    logging.basicConfig(filename=down_dir + "/run_log_eval.txt",
                         level=logging.DEBUG)
 
     # hidden_nodes = [6, 12, 24, 36, 48, 60, 96, 110]
 
-    map_list_norm = run_all(max_norm_list, down_dir, chr)
+    mapdict_fire_seq = run_all(chr_list, down_dir)
 
-    np.save(down_dir + "/" + "map_norm.npy", map_list_norm)
+    # np.save(down_dir + "/" + "map_norm.npy", map_list_norm)
 
     print("done")

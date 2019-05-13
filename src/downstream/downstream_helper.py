@@ -32,6 +32,9 @@ class DownstreamHelper:
 
             # print("gene : {} - start : {})".format(i, start))
 
+            if start > self.chr_len or end > self.chr_len:
+                break
+
             for j in range(end + 1 - start):
                 ind_list.append(start - 1 + j)
                 label_ar[start - 1 + j] = window_labels.loc[i, "target"]
@@ -63,6 +66,24 @@ class DownstreamHelper:
                                                    ignore_index=True)
 
         return feature_matrix
+
+    def get_window_features(self, feature_matrix):
+
+        pd_col = list(np.arange(self.cfg.hidden_size_encoder))
+        pd_col.append('target')
+        window_feature_matrix = pd.DataFrame(columns=pd_col)
+
+        n_genes = feature_matrix['gene_id'].nunique()
+
+        for i in range(n_genes):
+            subset_gene_df = feature_matrix.loc[feature_matrix["gene_id"] == i,]
+
+            window_feature_matrix[i, 0:self.cfg.hidden_size_encoder] = subset_gene_df.loc[:,
+                                                                0:self.cfg.hidden_size_encoder].mean()
+
+            window_feature_matrix[i]["target"] = subset_gene_df[0]["target"]
+
+        return window_feature_matrix
 
     def calculate_map2(self, feature_matrix, cls_mode):
 

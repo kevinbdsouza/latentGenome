@@ -4,7 +4,7 @@ chr_cuts:
   '20': 7
   '21': 5
 chr_len:
-  '20': 2518621
+  '20': 2518700
   '21': 1926400
 config_base: config.yaml
 config_file: /home/kevindsouza/Documents/projects/latentGenome/src/saved_model/model_all_ca/config.yaml
@@ -38,8 +38,8 @@ downstream_df_columns:
 - target
 - gene_id
 epigenome_bigwig_path: /opt/data/latent/data/bigwig
-epigenome_npz_path_test: /data2/latent/data/npz/ch21_arc_sinh_znorm
-epigenome_npz_path_train: /data2/latent/data/npz/ch21_arc_sinh_znorm
+epigenome_npz_path_test: /data2/latent/data/npz/chr21_arc_sinh_znorm
+epigenome_npz_path_train: /data2/latent/data/npz/chr21_arc_sinh_znorm
 fasta_path: /opt/data/latent/data/dna
 hidden_size_decoder: 24
 hidden_size_encoder: 24
