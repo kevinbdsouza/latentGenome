@@ -41,11 +41,12 @@ class DownstreamTasks:
         self.feat_mat_pe = self.saved_model_dir + "feat_chr_" + str(chr) + "_pe_"
         self.feat_mat_fire = self.saved_model_dir + "feat_chr_" + str(chr) + "_fire_"
         self.new_features = self.saved_model_dir + "new_feat_.npy"
-        self.run_features_rna = True
+        self.run_features_rna = False
         self.run_features_pe = True
         self.run_features_fire = True
         self.concat_lstm = False
         self.run_concat_feat = False
+        self.calculate_map = True
         self.downstream_helper_ob = DownstreamHelper(cfg, chr, mode=mode)
         self.down_lstm_ob = DownstreamLSTM()
 
@@ -139,7 +140,6 @@ class DownstreamTasks:
 
             logging.info("chr : {} - cell : {}".format(str(self.chr), rna_seq_chr.columns[col]))
 
-            '''
             if self.concat_lstm:
 
                 if self.run_concat_feat:
@@ -156,12 +156,12 @@ class DownstreamTasks:
                 feature_matrix = feature_matrix.loc[:, feature_matrix.columns != 'gene_id']
                 cls_mode = 'ind'
 
-            mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
+            if self.calculate_map:
+                mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
-            mean_map_dict[rna_seq_chr.columns[col]] = mean_map
-            '''
+                mean_map_dict[rna_seq_chr.columns[col]] = mean_map
 
-        # np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
+        np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
 
         return mean_map_dict
 
@@ -192,11 +192,12 @@ class DownstreamTasks:
 
             logging.info("chr : {} - cell : {}".format(str(self.chr), cell))
 
-            # mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
+            if self.calculate_map:
+                mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
-            # mean_map_dict[cell] = mean_map
+                mean_map_dict[cell] = mean_map
 
-        # np.save(self.saved_model_dir + 'map_dict_pe.npy', mean_map_dict)
+        np.save(self.saved_model_dir + 'map_dict_pe.npy', mean_map_dict)
 
         return mean_map_dict
 
@@ -222,16 +223,17 @@ class DownstreamTasks:
                                                                           self.downstream_main, self.chr)
 
             feature_matrix = self.downstream_helper_ob.get_window_features(feature_matrix)
-            
+
             self.run_features_fire = False
 
             logging.info("chr : {} - cell : {}".format(str(self.chr), cell))
 
-            # mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
+            if self.calculate_map:
+                mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
-            # mean_map_dict[cell] = mean_map
+                mean_map_dict[cell] = mean_map
 
-        # np.save(self.saved_model_dir + 'map_dict_fire.npy', mean_map_dict)
+        np.save(self.saved_model_dir + 'map_dict_fire.npy', mean_map_dict)
 
         return mean_map_dict
 
@@ -242,7 +244,7 @@ if __name__ == '__main__':
     result_base = 'down_images'
     chr = 21
 
-    dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/"
+    dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/"
     model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/model"
     cfg = get_config(model_path, config_base, result_base)
     pd_col = list(np.arange(cfg.hidden_size_encoder))
@@ -252,9 +254,9 @@ if __name__ == '__main__':
 
     downstream_ob = DownstreamTasks(cfg, dir, chr, mode='lstm')
 
-    # mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
+    mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
 
-    mapdict_pe = downstream_ob.run_pe(cfg)
+    # mapdict_pe = downstream_ob.run_pe(cfg)
 
     # mapdict_fire = downstream_ob.run_fires(cfg)
 

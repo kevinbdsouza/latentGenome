@@ -78,10 +78,13 @@ class DownstreamHelper:
         for i in range(n_genes):
             subset_gene_df = feature_matrix.loc[feature_matrix["gene_id"] == i,]
 
-            window_feature_matrix[i, 0:self.cfg.hidden_size_encoder] = subset_gene_df.loc[:,
-                                                                0:self.cfg.hidden_size_encoder].mean()
+            window_feature_matrix.loc[i, 0:self.cfg.hidden_size_encoder] = subset_gene_df.iloc[:,
+                                                                           0:self.cfg.hidden_size_encoder].mean()
 
-            window_feature_matrix[i]["target"] = subset_gene_df[0]["target"]
+            window_feature_matrix.iloc[i]["target"] = subset_gene_df.iloc[0]["target"]
+
+        window_feature_matrix = window_feature_matrix.apply(pd.to_numeric)
+        window_feature_matrix.target = window_feature_matrix.target.astype(int)
 
         return window_feature_matrix
 
@@ -169,7 +172,6 @@ class DownstreamHelper:
             feature_matrix.gene_id = feature_matrix.gene_id.astype(int)
         else:
             feature_matrix = pd.read_pickle(feat_mat)
-            feature_matrix.target = feature_matrix.target.astype(int)
             feature_matrix.gene_id = feature_matrix.gene_id.astype(int)
 
             label_matrix = pd.DataFrame(columns=['target'])
