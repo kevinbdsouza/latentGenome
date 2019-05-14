@@ -74,14 +74,16 @@ class DownstreamHelper:
         window_feature_matrix = pd.DataFrame(columns=pd_col)
 
         n_genes = feature_matrix['gene_id'].nunique()
-
+        count = 0
         for i in range(n_genes):
             subset_gene_df = feature_matrix.loc[feature_matrix["gene_id"] == i,]
 
-            window_feature_matrix.loc[i, 0:self.cfg.hidden_size_encoder] = subset_gene_df.iloc[:,
-                                                                           0:self.cfg.hidden_size_encoder].mean()
+            if not subset_gene_df.empty:
+                window_feature_matrix.loc[count, 0:self.cfg.hidden_size_encoder] = subset_gene_df.iloc[:,
+                                                                                   0:self.cfg.hidden_size_encoder].mean()
 
-            window_feature_matrix.iloc[i]["target"] = subset_gene_df.iloc[0]["target"]
+                window_feature_matrix.iloc[count]["target"] = subset_gene_df.iloc[0]["target"]
+                count += 1
 
         window_feature_matrix = window_feature_matrix.apply(pd.to_numeric)
         window_feature_matrix.target = window_feature_matrix.target.astype(int)
@@ -117,8 +119,8 @@ class DownstreamHelper:
 
             y_train = y_train.astype(int)
 
-            model = xgboost.XGBClassifier(n_estimators=5000, nthread=min(X_train.shape[1], 12), max_depth=6,
-                                          tree_method='gpu_hist')
+            model = xgboost.XGBClassifier(n_estimators=1, nthread=min(X_train.shape[1], 12), max_depth=4)
+
             model.fit(X_train, y_train, eval_set=[(X_valid, y_valid)], eval_metric='map', early_stopping_rounds=20,
                       verbose=False)
 
