@@ -74,14 +74,16 @@ class DownstreamHelper:
         window_feature_matrix = pd.DataFrame(columns=pd_col)
 
         n_genes = feature_matrix['gene_id'].nunique()
-
+        count = 0
         for i in range(n_genes):
             subset_gene_df = feature_matrix.loc[feature_matrix["gene_id"] == i,]
 
-            window_feature_matrix.loc[i, 0:self.cfg.hidden_size_encoder] = subset_gene_df.iloc[:,
-                                                                           0:self.cfg.hidden_size_encoder].mean()
+            if not subset_gene_df.empty:
+                window_feature_matrix.loc[count, 0:self.cfg.hidden_size_encoder] = subset_gene_df.iloc[:,
+                                                                                   0:self.cfg.hidden_size_encoder].mean()
 
-            window_feature_matrix.iloc[i]["target"] = subset_gene_df.iloc[0]["target"]
+                window_feature_matrix.iloc[count]["target"] = subset_gene_df.iloc[0]["target"]
+                count += 1
 
         window_feature_matrix = window_feature_matrix.apply(pd.to_numeric)
         window_feature_matrix.target = window_feature_matrix.target.astype(int)
@@ -125,7 +127,10 @@ class DownstreamHelper:
             y_hat = model.predict_proba(X_test)
             average_precisions[i] = average_precision_score(y_test, y_hat[:, 1])
 
-        mean_map = average_precisions.mean()
+        mean_map = np.nanmean(average_precisions)
+
+        if np.isnan(mean_map):
+            mean_map = 0
 
         return mean_map
 
@@ -159,7 +164,7 @@ class DownstreamHelper:
 
             average_precisions[i] = average_precision_score(X_test.iloc[:]["target"], y_hat[:, 1])
 
-        mean_map = average_precisions.mean()
+        mean_map = np.nanmean(average_precisions)
 
         return mean_map
 
