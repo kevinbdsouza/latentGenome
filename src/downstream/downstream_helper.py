@@ -119,8 +119,8 @@ class DownstreamHelper:
 
             y_train = y_train.astype(int)
 
-            model = xgboost.XGBClassifier(n_estimators=5000, nthread=min(X_train.shape[1], 12), max_depth=6,
-                                          tree_method='gpu_hist')
+            model = xgboost.XGBClassifier(n_estimators=1, nthread=min(X_train.shape[1], 12), max_depth=4)
+
             model.fit(X_train, y_train, eval_set=[(X_valid, y_valid)], eval_metric='map', early_stopping_rounds=20,
                       verbose=False)
 

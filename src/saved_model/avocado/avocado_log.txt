@@ -1,5 +1,32 @@
 INFO:root:Running RNA-Seq
-WARNING:tensorflow:From /usr/local/lib/python3.5/dist-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
-Instructions for updating:
-Colocations handled automatically by placer.
-INFO:root:chr name : 1 - cell name : E000 - saved
+INFO:root:chr name : 20 - cell name : E000 - saved
+INFO:root:Running RNA-Seq
+INFO:root:chr name : 20 - cell name : E000 - saved
+INFO:root:Running RNA-Seq
+INFO:root:chr name : 20 - cell name : E000 - saved
+INFO:root:Running RNA-Seq
+INFO:root:chr name : 20 - cell name : E000 - saved
+INFO:root:Running PE
+INFO:root:Running PE
+INFO:root:Running RNA-Seq
+INFO:root:chr name : 20 - cell name : E000 - saved
+INFO:root:Running PE
+INFO:root:chr name : 20 - cell name : E123 - saved
+INFO:root:Running PE
+INFO:root:chr name : 20 - cell name : E123 - saved
+INFO:root:Running PE
+INFO:root:chr name : 20 - cell name : E123 - saved
+INFO:root:Running PE
+INFO:root:chr name : 20 - cell name : E123 - saved
+INFO:root:Running PE
+INFO:root:chr name : 20 - cell name : E123 - saved
+INFO:root:Running PE
+INFO:root:chr name : 20 - cell name : E123 - saved
+INFO:root:Running PE
+INFO:root:chr name : 20 - cell name : E123 - saved
+INFO:root:Running PE
+INFO:root:chr name : 20 - cell name : E123 - saved
+INFO:root:Running PE
+INFO:root:chr name : 20 - cell name : E123 - saved
+INFO:root:Running PE
+INFO:root:chr name : 20 - cell name : E123 - saved
