@@ -31,6 +31,7 @@ class AvoDownstreamHelper:
     def create_mask(self, window_labels):
         ind_list = []
         label_ar = np.zeros(self.chr_len)
+        gene_ar = np.zeros(self.chr_len)
 
         for i in range(window_labels.shape[0]):
 
@@ -45,25 +46,46 @@ class AvoDownstreamHelper:
             for j in range(end + 1 - start):
                 ind_list.append(start - 1 + j)
                 label_ar[start - 1 + j] = window_labels.loc[i, "target"]
+                gene_ar[start - 1 + j] = i
 
         mask_vec = np.zeros(self.chr_len, bool)
         ind_ar = np.array(ind_list)
 
         mask_vec[ind_ar] = True
 
-        return mask_vec, label_ar
+        return mask_vec, label_ar, gene_ar
 
-    def get_feature_matrix(self, model_path, model_name, cfg, mask_vector):
+    def get_feature_matrix(self, model_path, model_name, cfg, mask_vector, feature_matrix, run_features, label_ar,
+                           gene_ar, feat_mat, mode):
 
-        Avocado_ob = AvocadoAnalysis()
+        if run_features:
+            Avocado_ob = AvocadoAnalysis()
+            model = load_model("{}.h5".format(model_path + model_name))
+            gen_factors = Avocado_ob.get_genomic_factors(model, cfg, mask_vector)
+            feature_matrix = self.filter_states(gen_factors, feature_matrix,
+                                                mask_vector, label_ar, gene_ar)
 
-        model = load_model("{}.h5".format(model_path + model_name))
+            feature_matrix.to_pickle(feat_mat)
 
-        gen_factors = Avocado_ob.get_genomic_factors(model, cfg, mask_vector)
+        else:
+            feature_matrix = pd.read_pickle(feat_mat)
+            feature_matrix.gene_id = feature_matrix.gene_id.astype(int)
 
-        return gen_factors
+            if not mode == 'pe':
+                label_matrix = pd.DataFrame(columns=['target'])
 
-    def filter_states(self, gen_factors, feature_matrix, mask_vector, label_ar):
+                lab = label_ar[mask_vector,]
+                lab = lab.reshape((-1, 1))
+
+                label_matrix = label_matrix.append(pd.DataFrame(lab, columns=['target']),
+                                                   ignore_index=True)
+
+                label_matrix.target = label_matrix.target.astype(int)
+                feature_matrix.target = label_matrix.target
+
+        return feature_matrix
+
+    def filter_states(self, gen_factors, feature_matrix, mask_vector, label_ar, gene_ar):
 
         # if True in mask_vector:
         #    print("here")
@@ -71,13 +93,17 @@ class AvoDownstreamHelper:
 
         lab = label_ar[mask_vector,]
         lab = lab.reshape((gen_factors.shape[0], 1))
+        gene_id = gene_ar[mask_vector,]
+        gene_id = gene_id.reshape((gen_factors.shape[0], 1))
 
         feat_mat = np.append(gen_factors, lab, axis=1)
+        feat_mat = np.append(feat_mat, gene_id, axis=1)
 
         feature_matrix = feature_matrix.append(pd.DataFrame(feat_mat, columns=self.columns),
                                                ignore_index=True)
 
         feature_matrix.target = feature_matrix.target.astype(int)
+        feature_matrix.gene_id = feature_matrix.gene_id.astype(int)
 
         return feature_matrix
 
