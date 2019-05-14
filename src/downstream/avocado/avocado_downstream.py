@@ -21,17 +21,22 @@ class AvocadoDownstreamTasks:
         self.rna_seq_path = self.data_dir + "downstream/RNA-seq"
         self.pe_int_path = self.data_dir + "downstream/PE-interactions"
         self.fire_path = self.data_dir + "downstream/FIREs"
-        self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
+        # self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
+        self.fire_cell_names = ['GM12878']
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
-        self.feat_avo_rna = "feat_avo_chr_" + str(chr) + "_rna_"
-        self.feat_avo_pe = "feat_avo_chr_" + str(chr) + "_pe_"
-        self.feat_avo_fire = "feat_avo_chr_" + str(chr) + "_fire_"
+        self.feat_avo_rna = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr) + "_rna"
+        self.feat_avo_pe = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr) + "_pe_"
+        self.feat_avo_fire = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr) + "_fire"
         self.chr = chr
         self.chr_rna = str(chr)
         self.chr_pe = 'chr' + str(chr)
         self.chr_fire = chr
         self.saved_model_dir = dir_name
         self.model_name = model
+        self.run_features_rna = False
+        self.run_features_pe = False
+        self.run_features_fire = True
+        self.calculate_map = True
         self.Avo_downstream_helper_ob = AvoDownstreamHelper(cfg)
         self.downstream_helper_ob = DownstreamHelper(cfg, chr, mode=mode)
 
@@ -45,34 +50,38 @@ class AvocadoDownstreamTasks:
 
         mean_map_dict = {}
         cls_mode = 'ind'
-        feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
 
-        for col in range(1, 58):
+        for col in range(1, 2):
+            feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
+
             rna_seq_chr.loc[rna_seq_chr.iloc[:, col] >= 0.5, 'target'] = 1
             rna_window_labels = rna_seq_chr.filter(['start', 'end', 'target'], axis=1)
             rna_window_labels = rna_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
             rna_window_labels = rna_window_labels.drop([410, 598]).reset_index(drop=True)
 
-            mask_vector, label_ar = self.Avo_downstream_helper_ob.create_mask(rna_window_labels)
+            mask_vector, label_ar, gene_ar = self.Avo_downstream_helper_ob.create_mask(rna_window_labels)
 
-            gen_factors = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir,
-                                                                           self.model_name,
-                                                                           cfg, mask_vector)
+            feature_matrix = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir,
+                                                                              self.model_name,
+                                                                              cfg, mask_vector, feature_matrix,
+                                                                              self.run_features_rna, label_ar, gene_ar,
+                                                                              self.feat_avo_rna + '.pkl',
+                                                                              mode='rna')
 
-            feature_matrix = self.Avo_downstream_helper_ob.filter_states(gen_factors, feature_matrix,
-                                                                         mask_vector, label_ar)
+            feature_matrix = self.downstream_helper_ob.get_window_features(feature_matrix)
 
-            save_path = self.data_dir + 'avocado/chr' + str(self.chr) + "/" + self.feat_avo_rna + rna_seq_chr.columns[col]
-            feature_matrix.to_pickle(save_path)
+            self.run_features_rna = False
+
             logging.info("chr name : {} - cell name : {} - saved".format(str(self.chr), rna_seq_chr.columns[col]))
 
-            # mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
+            if self.calculate_map:
+                mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
-            # mean_map_dict[rna_seq_chr.columns[col]] = mean_map
+                mean_map_dict[rna_seq_chr.columns[col]] = mean_map
 
-            # logging.info("cell name : {} - MAP : {}".format(rna_seq_chr.columns[col], mean_map))
+                logging.info("cell name : {} - MAP : {}".format(rna_seq_chr.columns[col], mean_map))
 
-        # np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
+        np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
 
         return mean_map_dict
 
@@ -84,35 +93,38 @@ class AvocadoDownstreamTasks:
         pe_data_chr = pe_ob.filter_pe_data(self.chr_pe)
         mean_map_dict = {}
         cls_mode = 'ind'
-        feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
+        mask_vector, label_ar, gene_ar = None, None, None
 
         for cell in self.pe_cell_names:
-            pe_data_chr_cell = pe_data_chr.loc[pe_data_chr['cell'] == cell]
-            pe_window_labels = pe_data_chr_cell.filter(['window_start', 'window_end', 'label'], axis=1)
-            pe_window_labels.rename(columns={'window_start': 'start', 'window_end': 'end', 'label': 'target'},
-                                    inplace=True)
-            pe_window_labels = pe_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
+            feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
+            if self.run_features_pe:
+                pe_data_chr_cell = pe_data_chr.loc[pe_data_chr['cell'] == cell]
+                pe_window_labels = pe_data_chr_cell.filter(['window_start', 'window_end', 'label'], axis=1)
+                pe_window_labels.rename(columns={'window_start': 'start', 'window_end': 'end', 'label': 'target'},
+                                        inplace=True)
+                pe_window_labels = pe_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
 
-            mask_vector, label_ar = self.Avo_downstream_helper_ob.create_mask(pe_window_labels)
+                mask_vector, label_ar, gene_ar = self.Avo_downstream_helper_ob.create_mask(pe_window_labels)
 
-            gen_factors = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir,
-                                                                           self.model_name,
-                                                                           cfg, mask_vector)
+            feature_matrix = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir,
+                                                                              self.model_name,
+                                                                              cfg, mask_vector, feature_matrix,
+                                                                              self.run_features_pe, label_ar, gene_ar,
+                                                                              self.feat_avo_pe + cell + '.pkl',
+                                                                              mode='pe')
 
-            feature_matrix = self.Avo_downstream_helper_ob.filter_states(gen_factors, feature_matrix,
-                                                                         mask_vector, label_ar)
+            feature_matrix = self.downstream_helper_ob.get_window_features(feature_matrix)
 
-            save_path = self.data_dir + 'avocado/chr' + str(self.chr) + "/" + self.feat_avo_pe + cell
-            feature_matrix.to_pickle(save_path)
             logging.info("chr name : {} - cell name : {} - saved".format(str(self.chr), cell))
 
-            # mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
+            if self.calculate_map:
+                mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
-            # mean_map_dict[cell] = mean_map
+                mean_map_dict[cell] = mean_map
 
-            # logging.info("cell name : {} - MAP : {}".format(cell, mean_map))
+                logging.info("cell name : {} - MAP : {}".format(cell, mean_map))
 
-        # np.save(self.saved_model_dir + 'map_dict_pe.npy', mean_map_dict)
+        np.save(self.saved_model_dir + 'map_dict_pe.npy', mean_map_dict)
 
         return mean_map_dict
 
@@ -124,33 +136,36 @@ class AvocadoDownstreamTasks:
         fire_labeled = fire_ob.filter_fire_data(self.chr_fire)
         mean_map_dict = {}
         cls_mode = 'ind'
-        feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
 
         for cell in self.fire_cell_names:
+            feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
+
             fire_window_labels = fire_labeled.filter(['start', 'end', cell + '_l'], axis=1)
             fire_window_labels.rename(columns={cell + '_l': 'target'}, inplace=True)
             fire_window_labels = fire_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
 
-            mask_vector, label_ar = self.Avo_downstream_helper_ob.create_mask(fire_window_labels)
+            mask_vector, label_ar, gene_ar = self.Avo_downstream_helper_ob.create_mask(fire_window_labels)
 
-            gen_factors = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir,
-                                                                           self.model_name,
-                                                                           cfg, mask_vector)
+            feature_matrix = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir,
+                                                                              self.model_name,
+                                                                              cfg, mask_vector, feature_matrix,
+                                                                              self.run_features_fire, label_ar, gene_ar,
+                                                                              self.feat_avo_fire + '.pkl', mode='fire')
 
-            feature_matrix = self.Avo_downstream_helper_ob.filter_states(gen_factors, feature_matrix,
-                                                                         mask_vector, label_ar)
+            feature_matrix = self.downstream_helper_ob.get_window_features(feature_matrix)
 
-            save_path = self.data_dir + 'avocado/chr' + str(self.chr) + "/" + self.feat_avo_pe + cell
-            feature_matrix.to_pickle(save_path)
+            self.run_features_fire = False
+
             logging.info("chr name : {} - cell name : {} - saved".format(str(self.chr), cell))
 
-            # mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
+            if self.calculate_map:
+                mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
 
-            # mean_map_dict[cell] = mean_map
+                mean_map_dict[cell] = mean_map
 
-            # logging.info("cell name : {} - MAP : {}".format(cell, mean_map))
+                logging.info("cell name : {} - MAP : {}".format(cell, mean_map))
 
-        # np.save(self.saved_model_dir + 'map_dict_fire.npy', mean_map_dict)
+        np.save(self.saved_model_dir + 'map_dict_fire.npy', mean_map_dict)
 
         return mean_map_dict
 
@@ -168,6 +183,7 @@ if __name__ == '__main__':
 
     pd_col = list(np.arange(cfg.hidden_size_encoder))
     pd_col.append('target')
+    pd_col.append('gene_id')
     cfg = cfg._replace(downstream_df_columns=pd_col)
 
     Av_downstream_ob = AvocadoDownstreamTasks(model, chr, cfg, dir_name, mode='avocado')

@@ -26,6 +26,7 @@ def run_all(model, down_dir, chr_list):
     cfg = get_config(down_dir, config_base, result_base)
     pd_col = list(np.arange(cfg.hidden_size_encoder))
     pd_col.append('target')
+    pd_col.append('gene_id')
     cfg = cfg._replace(downstream_df_columns=pd_col)
 
     map_rna = []
@@ -44,7 +45,8 @@ def run_all(model, down_dir, chr_list):
 
         Av_downstream_ob = AvocadoDownstreamTasks(model_name, chr, cfg, dir_name, mode='avocado')
 
-        mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
+        mapdict_rna_seq = {}
+        # mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
         # mean_rna_map = get_avg_map(mapdict_rna_seq)
         # map_rna.append(mean_rna_map)
 
@@ -60,7 +62,7 @@ def run_all(model, down_dir, chr_list):
         # logging.info("chr: {} - map_pe: {}".format(chr, mean_pe_map))
         # logging.info("chr: {} - map_fire: {}".format(chr, mean_fire_map))
 
-    return map_rna, map_pe, map_fire
+    return mapdict_rna_seq, mapdict_pe, mapdict_fire
 
 
 if __name__ == "__main__":
@@ -71,7 +73,7 @@ if __name__ == "__main__":
 
     model = "avocado-chr"
     down_dir = "/data2/latent/data/avocado"
-    chr_list = np.arange(1, 23)
+    chr_list = np.arange(20, 22)
 
     map_rna, map_pe, map_fire = run_all(model, down_dir, chr_list)
 
