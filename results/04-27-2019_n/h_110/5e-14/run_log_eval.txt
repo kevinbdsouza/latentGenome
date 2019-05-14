@@ -1,319 +1,164 @@
 INFO:root:RNA-Seq start
-INFO:root:RNA-Seq start
-INFO:root:Downstream Start
-INFO:downstream.run_downstream:Iter: 500 - mse: 1190.2136095179728
-INFO:downstream.run_downstream:Iter: 1000 - mse: 1171.8464270942225
-INFO:downstream.run_downstream:Iter: 1500 - mse: 1195.9823649447917
-INFO:downstream.run_downstream:Iter: 2000 - mse: 1204.2636682178425
-INFO:downstream.run_downstream:Iter: 2500 - mse: 1176.4118290056156
-INFO:downstream.run_downstream:Iter: 3000 - mse: 1110.1511834127323
-INFO:downstream.run_downstream:Iter: 3500 - mse: 1066.7344909702301
-INFO:downstream.run_downstream:Iter: 4000 - mse: 1036.3245024087603
-INFO:downstream.run_downstream:Iter: 4500 - mse: 1026.9743002208163
-INFO:downstream.run_downstream:Iter: 5000 - mse: 1004.8864576805705
-INFO:downstream.run_downstream:Iter: 5500 - mse: 989.3065340002245
-INFO:downstream.run_downstream:Iter: 6000 - mse: 975.0715013316374
-INFO:downstream.run_downstream:Iter: 6500 - mse: 957.9274486146339
-INFO:downstream.run_downstream:Iter: 7000 - mse: 948.4780881976535
-INFO:downstream.run_downstream:Iter: 7500 - mse: 965.75853036537
-INFO:downstream.run_downstream:Iter: 8000 - mse: 962.5806792684092
-INFO:downstream.run_downstream:Iter: 8500 - mse: 962.0484939770399
-INFO:downstream.run_downstream:Iter: 9000 - mse: 960.2547521766905
-INFO:downstream.run_downstream:Iter: 9500 - mse: 963.252600935754
-INFO:downstream.run_downstream:Iter: 10000 - mse: 957.6524402507881
-INFO:downstream.run_downstream:Iter: 10500 - mse: 965.6513697306101
-INFO:downstream.run_downstream:Iter: 11000 - mse: 961.8983460691821
-INFO:downstream.run_downstream:Iter: 11500 - mse: 958.7225276374904
-INFO:downstream.run_downstream:Iter: 12000 - mse: 956.4729528588765
-INFO:downstream.run_downstream:Iter: 12500 - mse: 977.3661122258208
-INFO:downstream.run_downstream:Iter: 13000 - mse: 983.2953548420343
-INFO:downstream.run_downstream:Iter: 13500 - mse: 995.8617302724067
-INFO:downstream.run_downstream:Iter: 14000 - mse: 1007.8979608191424
-INFO:downstream.run_downstream:Iter: 14500 - mse: 1019.3921735028761
-INFO:downstream.run_downstream:Iter: 15000 - mse: 1025.5183816335414
-INFO:downstream.run_downstream:Iter: 15500 - mse: 1019.8661639076665
-INFO:downstream.run_downstream:Iter: 16000 - mse: 1020.6641440846137
-INFO:downstream.run_downstream:Iter: 16500 - mse: 1015.950616069916
-INFO:downstream.run_downstream:Iter: 17000 - mse: 1012.8220948889772
-INFO:downstream.run_downstream:Iter: 17500 - mse: 1019.9924343580626
-INFO:downstream.run_downstream:Iter: 18000 - mse: 1027.1835167907368
-INFO:downstream.run_downstream:Iter: 18500 - mse: 1031.9722590082033
-INFO:downstream.run_downstream:Iter: 19000 - mse: 1031.6656162210686
-INFO:downstream.run_downstream:Iter: 19500 - mse: 1041.6059023923283
-INFO:downstream.run_downstream:Iter: 20000 - mse: 1048.6374017640985
-INFO:downstream.run_downstream:Iter: 20500 - mse: 1047.129274625099
-INFO:downstream.run_downstream:Iter: 21000 - mse: 1045.6163925621424
-INFO:downstream.run_downstream:Iter: 21500 - mse: 1041.4019822585217
-INFO:downstream.run_downstream:Iter: 22000 - mse: 1037.915042489349
-INFO:downstream.run_downstream:Iter: 22500 - mse: 1038.9189759068731
-INFO:downstream.run_downstream:Iter: 23000 - mse: 1041.7295915904558
-INFO:downstream.run_downstream:Iter: 23500 - mse: 1040.8984814112173
-INFO:downstream.run_downstream:Iter: 24000 - mse: 1036.8305800045205
-INFO:downstream.run_downstream:Iter: 24500 - mse: 1041.4558404777183
-INFO:downstream.run_downstream:Iter: 25000 - mse: 1052.1324839963702
-ERROR:downstream.run_downstream:Traceback (most recent call last):
-  File "/home/kevindsouza/Documents/projects/latentGenome/src/downstream/run_downstream.py", line 95, in downstream_main
-    label_ar_cut, gene_ar_cut)
-  File "/home/kevindsouza/Documents/projects/latentGenome/src/downstream/downstream_helper.py", line 52, in filter_states
-    enc = encoder_hidden_states_np[mask_vector,]
-IndexError: boolean index did not match indexed array along dimension 0; dimension is 100 but corresponding boolean dimension is 21
-
 INFO:root:chr : 20 - cell : E000
-INFO:root:chr done: 20
-INFO:root:PE start
-INFO:root:Downstream Start
-INFO:downstream.run_downstream:Iter: 500 - mse: 1190.2509399580103
-INFO:downstream.run_downstream:Iter: 1000 - mse: 1171.851532437281
-INFO:downstream.run_downstream:Iter: 1500 - mse: 1195.9963311872052
-INFO:downstream.run_downstream:Iter: 2000 - mse: 1204.279031137019
-INFO:downstream.run_downstream:Iter: 2500 - mse: 1176.4246244711182
-INFO:downstream.run_downstream:Iter: 3000 - mse: 1110.1638908671864
-INFO:downstream.run_downstream:Iter: 3500 - mse: 1066.7483832409632
-INFO:downstream.run_downstream:Iter: 4000 - mse: 1036.3362084416995
-INFO:downstream.run_downstream:Iter: 4500 - mse: 1026.9842624886164
-INFO:downstream.run_downstream:Iter: 5000 - mse: 1004.8962228628887
-INFO:downstream.run_downstream:Iter: 5500 - mse: 989.3155859175383
-INFO:downstream.run_downstream:Iter: 6000 - mse: 975.0784653882796
-INFO:downstream.run_downstream:Iter: 6500 - mse: 957.9345501105648
-INFO:downstream.run_downstream:Iter: 7000 - mse: 948.4860809010735
-INFO:downstream.run_downstream:Iter: 7500 - mse: 965.7688273660007
-INFO:downstream.run_downstream:Iter: 8000 - mse: 962.5878310557266
-INFO:downstream.run_downstream:Iter: 8500 - mse: 962.0547476197823
-INFO:downstream.run_downstream:Iter: 9000 - mse: 960.2618279519961
-INFO:downstream.run_downstream:Iter: 9500 - mse: 963.2610585216593
-INFO:downstream.run_downstream:Iter: 10000 - mse: 957.6595312661567
-INFO:downstream.run_downstream:Iter: 10500 - mse: 965.6576815566848
-INFO:downstream.run_downstream:Iter: 11000 - mse: 961.9024301992687
-INFO:downstream.run_downstream:Iter: 11500 - mse: 958.7250529364021
-INFO:downstream.run_downstream:Iter: 12000 - mse: 956.4749910747609
-INFO:downstream.run_downstream:Iter: 12500 - mse: 977.3678079451562
-INFO:downstream.run_downstream:Iter: 13000 - mse: 983.2981081654295
-INFO:downstream.run_downstream:Iter: 13500 - mse: 995.8636234922861
-INFO:downstream.run_downstream:Iter: 14000 - mse: 1007.8992937857611
-INFO:downstream.run_downstream:Iter: 14500 - mse: 1019.3939316582469
-INFO:downstream.run_downstream:Iter: 15000 - mse: 1025.5189754587175
-INFO:downstream.run_downstream:Iter: 15500 - mse: 1019.8667232167668
-INFO:downstream.run_downstream:Iter: 16000 - mse: 1020.6647189351382
-INFO:downstream.run_downstream:Iter: 16500 - mse: 1015.9507068690787
-INFO:downstream.run_downstream:Iter: 17000 - mse: 1012.8218859460719
-INFO:downstream.run_downstream:Iter: 17500 - mse: 1019.9918068465778
-INFO:downstream.run_downstream:Iter: 18000 - mse: 1027.1822242489266
-INFO:downstream.run_downstream:Iter: 18500 - mse: 1031.9713041092728
-INFO:downstream.run_downstream:Iter: 19000 - mse: 1031.6651218132706
-INFO:downstream.run_downstream:Iter: 19500 - mse: 1041.605076004183
-INFO:downstream.run_downstream:Iter: 20000 - mse: 1048.6366387389248
-INFO:downstream.run_downstream:Iter: 20500 - mse: 1047.1284560004146
-INFO:downstream.run_downstream:Iter: 21000 - mse: 1045.6146480261866
-INFO:downstream.run_downstream:Iter: 21500 - mse: 1041.4004937892396
-INFO:downstream.run_downstream:Iter: 22000 - mse: 1037.913270807693
-INFO:downstream.run_downstream:Iter: 22500 - mse: 1038.917712330395
-INFO:downstream.run_downstream:Iter: 23000 - mse: 1041.7278155843417
-INFO:downstream.run_downstream:Iter: 23500 - mse: 1040.8967751844373
-INFO:downstream.run_downstream:Iter: 24000 - mse: 1036.8288365835792
-INFO:downstream.run_downstream:Iter: 24500 - mse: 1041.453795988995
-INFO:downstream.run_downstream:Iter: 25000 - mse: 1052.1297898814466
-ERROR:downstream.run_downstream:Traceback (most recent call last):
-  File "/home/kevindsouza/Documents/projects/latentGenome/src/downstream/run_downstream.py", line 95, in downstream_main
-    label_ar_cut, gene_ar_cut)
-  File "/home/kevindsouza/Documents/projects/latentGenome/src/downstream/downstream_helper.py", line 52, in filter_states
-    enc = encoder_hidden_states_np[mask_vector,]
-IndexError: boolean index did not match indexed array along dimension 0; dimension is 100 but corresponding boolean dimension is 21
-
-INFO:root:chr : 20 - cell : E123
-INFO:root:Downstream Start
-INFO:downstream.run_downstream:Iter: 500 - mse: 1190.2289532471052
-INFO:downstream.run_downstream:Iter: 1000 - mse: 1171.861937895878
-INFO:downstream.run_downstream:Iter: 1500 - mse: 1196.0020676318143
-INFO:downstream.run_downstream:Iter: 2000 - mse: 1204.2841873887987
-INFO:downstream.run_downstream:Iter: 2500 - mse: 1176.428425904861
-INFO:downstream.run_downstream:Iter: 3000 - mse: 1110.168046202155
-INFO:downstream.run_downstream:Iter: 3500 - mse: 1066.752016950637
-INFO:downstream.run_downstream:Iter: 4000 - mse: 1036.340071326442
-INFO:downstream.run_downstream:Iter: 4500 - mse: 1026.9890331918125
-INFO:downstream.run_downstream:Iter: 5000 - mse: 1004.8997441935699
-INFO:downstream.run_downstream:Iter: 5500 - mse: 989.3184994401513
-INFO:downstream.run_downstream:Iter: 6000 - mse: 975.0833005540806
-INFO:downstream.run_downstream:Iter: 6500 - mse: 957.9385931609743
-INFO:downstream.run_downstream:Iter: 7000 - mse: 948.4888846443009
-INFO:downstream.run_downstream:Iter: 7500 - mse: 965.7705066546469
-INFO:downstream.run_downstream:Iter: 8000 - mse: 962.5898736026301
-INFO:downstream.run_downstream:Iter: 8500 - mse: 962.0583319401011
-INFO:downstream.run_downstream:Iter: 9000 - mse: 960.2645613755079
-INFO:downstream.run_downstream:Iter: 9500 - mse: 963.2640576634383
-INFO:downstream.run_downstream:Iter: 10000 - mse: 957.6629983335724
-INFO:downstream.run_downstream:Iter: 10500 - mse: 965.6629288160902
-INFO:downstream.run_downstream:Iter: 11000 - mse: 961.9083438165434
-INFO:downstream.run_downstream:Iter: 11500 - mse: 958.7340873547394
-INFO:downstream.run_downstream:Iter: 12000 - mse: 956.4874554092953
-INFO:downstream.run_downstream:Iter: 12500 - mse: 977.38039888688
-INFO:downstream.run_downstream:Iter: 13000 - mse: 983.3089362089931
-INFO:downstream.run_downstream:Iter: 13500 - mse: 995.8747234987645
-INFO:downstream.run_downstream:Iter: 14000 - mse: 1007.9102290540525
-INFO:downstream.run_downstream:Iter: 14500 - mse: 1019.4038535743084
-INFO:downstream.run_downstream:Iter: 15000 - mse: 1025.528806642779
-INFO:downstream.run_downstream:Iter: 15500 - mse: 1019.876506769139
-INFO:downstream.run_downstream:Iter: 16000 - mse: 1020.6742540201328
-INFO:downstream.run_downstream:Iter: 16500 - mse: 1015.9601662698173
-INFO:downstream.run_downstream:Iter: 17000 - mse: 1012.8313219810206
-INFO:downstream.run_downstream:Iter: 17500 - mse: 1020.0015478873744
-INFO:downstream.run_downstream:Iter: 18000 - mse: 1027.1917828280646
-INFO:downstream.run_downstream:Iter: 18500 - mse: 1031.9802858181351
-INFO:downstream.run_downstream:Iter: 19000 - mse: 1031.6742208963767
-INFO:downstream.run_downstream:Iter: 19500 - mse: 1041.6134080029117
-INFO:downstream.run_downstream:Iter: 20000 - mse: 1048.6438559727853
-INFO:downstream.run_downstream:Iter: 20500 - mse: 1047.1357372254104
-INFO:downstream.run_downstream:Iter: 21000 - mse: 1045.6222450654186
-INFO:downstream.run_downstream:Iter: 21500 - mse: 1041.4080266931342
-INFO:downstream.run_downstream:Iter: 22000 - mse: 1037.9209483597133
-INFO:downstream.run_downstream:Iter: 22500 - mse: 1038.9250761702801
-INFO:downstream.run_downstream:Iter: 23000 - mse: 1041.735540779416
-INFO:downstream.run_downstream:Iter: 23500 - mse: 1040.9044495986977
-INFO:downstream.run_downstream:Iter: 24000 - mse: 1036.8365637291151
-INFO:downstream.run_downstream:Iter: 24500 - mse: 1041.4620015151104
-INFO:downstream.run_downstream:Iter: 25000 - mse: 1052.1384774185176
-ERROR:downstream.run_downstream:Traceback (most recent call last):
-  File "/home/kevindsouza/Documents/projects/latentGenome/src/downstream/run_downstream.py", line 95, in downstream_main
-    label_ar_cut, gene_ar_cut)
-  File "/home/kevindsouza/Documents/projects/latentGenome/src/downstream/downstream_helper.py", line 52, in filter_states
-    enc = encoder_hidden_states_np[mask_vector,]
-IndexError: boolean index did not match indexed array along dimension 0; dimension is 100 but corresponding boolean dimension is 21
-
-INFO:root:chr : 20 - cell : E117
-INFO:root:Downstream Start
-INFO:downstream.run_downstream:Iter: 500 - mse: 1190.2127419278593
-INFO:downstream.run_downstream:Iter: 1000 - mse: 1171.8427431796908
-INFO:downstream.run_downstream:Iter: 1500 - mse: 1195.9843889544459
-INFO:downstream.run_downstream:Iter: 2000 - mse: 1204.268278095929
-INFO:downstream.run_downstream:Iter: 2500 - mse: 1176.4183440440895
-INFO:downstream.run_downstream:Iter: 3000 - mse: 1110.1552636688318
-INFO:downstream.run_downstream:Iter: 3500 - mse: 1066.7412023397455
-INFO:downstream.run_downstream:Iter: 4000 - mse: 1036.3298826262476
-INFO:downstream.run_downstream:Iter: 4500 - mse: 1026.9809341859893
-INFO:downstream.run_downstream:Iter: 5000 - mse: 1004.892261615455
-INFO:downstream.run_downstream:Iter: 5500 - mse: 989.3119819606159
-INFO:downstream.run_downstream:Iter: 6000 - mse: 975.07631628877
-INFO:downstream.run_downstream:Iter: 6500 - mse: 957.9331626115784
-INFO:downstream.run_downstream:Iter: 7000 - mse: 948.4841360378632
-INFO:downstream.run_downstream:Iter: 7500 - mse: 965.7654283427921
-INFO:downstream.run_downstream:Iter: 8000 - mse: 962.5843499858335
-INFO:downstream.run_downstream:Iter: 8500 - mse: 962.0537873757324
-INFO:downstream.run_downstream:Iter: 9000 - mse: 960.2602143457691
-INFO:downstream.run_downstream:Iter: 9500 - mse: 963.2596597069587
-INFO:downstream.run_downstream:Iter: 10000 - mse: 957.6591013004381
-INFO:downstream.run_downstream:Iter: 10500 - mse: 965.6597565017596
-INFO:downstream.run_downstream:Iter: 11000 - mse: 961.9019662781321
-INFO:downstream.run_downstream:Iter: 11500 - mse: 958.7270927478374
-INFO:downstream.run_downstream:Iter: 12000 - mse: 956.4795606605121
-INFO:downstream.run_downstream:Iter: 12500 - mse: 977.3741599559669
-INFO:downstream.run_downstream:Iter: 13000 - mse: 983.3034992548866
-INFO:downstream.run_downstream:Iter: 13500 - mse: 995.8698412124753
-INFO:downstream.run_downstream:Iter: 14000 - mse: 1007.9053807986974
-INFO:downstream.run_downstream:Iter: 14500 - mse: 1019.399374577634
-INFO:downstream.run_downstream:Iter: 15000 - mse: 1025.5248399490165
-INFO:downstream.run_downstream:Iter: 15500 - mse: 1019.872381634901
-INFO:downstream.run_downstream:Iter: 16000 - mse: 1020.6706860374378
-INFO:downstream.run_downstream:Iter: 16500 - mse: 1015.9561927949857
-INFO:downstream.run_downstream:Iter: 17000 - mse: 1012.8277290715647
-INFO:downstream.run_downstream:Iter: 17500 - mse: 1019.9982126101469
-INFO:downstream.run_downstream:Iter: 18000 - mse: 1027.188521672772
-INFO:downstream.run_downstream:Iter: 18500 - mse: 1031.978134613095
-INFO:downstream.run_downstream:Iter: 19000 - mse: 1031.6715518179592
-INFO:downstream.run_downstream:Iter: 19500 - mse: 1041.6121190935546
-INFO:downstream.run_downstream:Iter: 20000 - mse: 1048.6427391602572
-INFO:downstream.run_downstream:Iter: 20500 - mse: 1047.134449470356
-INFO:downstream.run_downstream:Iter: 21000 - mse: 1045.6210486661535
-INFO:downstream.run_downstream:Iter: 21500 - mse: 1041.4070272979684
-INFO:downstream.run_downstream:Iter: 22000 - mse: 1037.9197070997798
-INFO:downstream.run_downstream:Iter: 22500 - mse: 1038.9240007455255
-INFO:downstream.run_downstream:Iter: 23000 - mse: 1041.7343027715044
-INFO:downstream.run_downstream:Iter: 23500 - mse: 1040.9028367130113
-INFO:downstream.run_downstream:Iter: 24000 - mse: 1036.8349017812984
-INFO:downstream.run_downstream:Iter: 24500 - mse: 1041.4595082491478
-INFO:downstream.run_downstream:Iter: 25000 - mse: 1052.1358251335885
-ERROR:downstream.run_downstream:Traceback (most recent call last):
-  File "/home/kevindsouza/Documents/projects/latentGenome/src/downstream/run_downstream.py", line 95, in downstream_main
-    label_ar_cut, gene_ar_cut)
-  File "/home/kevindsouza/Documents/projects/latentGenome/src/downstream/downstream_helper.py", line 52, in filter_states
-    enc = encoder_hidden_states_np[mask_vector,]
-IndexError: boolean index did not match indexed array along dimension 0; dimension is 100 but corresponding boolean dimension is 21
-
+INFO:root:chr : 20 - cell : E003
+INFO:root:chr : 20 - cell : E004
+INFO:root:chr : 20 - cell : E005
+INFO:root:chr : 20 - cell : E006
+INFO:root:chr : 20 - cell : E007
+INFO:root:chr : 20 - cell : E011
+INFO:root:chr : 20 - cell : E012
+INFO:root:chr : 20 - cell : E013
+INFO:root:chr : 20 - cell : E016
+INFO:root:chr : 20 - cell : E024
+INFO:root:chr : 20 - cell : E027
+INFO:root:chr : 20 - cell : E028
+INFO:root:chr : 20 - cell : E037
+INFO:root:chr : 20 - cell : E038
+INFO:root:chr : 20 - cell : E047
+INFO:root:chr : 20 - cell : E050
+INFO:root:chr : 20 - cell : E053
+INFO:root:chr : 20 - cell : E054
+INFO:root:chr : 20 - cell : E055
+INFO:root:chr : 20 - cell : E056
+INFO:root:chr : 20 - cell : E057
+INFO:root:chr : 20 - cell : E058
+INFO:root:chr : 20 - cell : E059
+INFO:root:chr : 20 - cell : E061
+INFO:root:chr : 20 - cell : E062
+INFO:root:chr : 20 - cell : E065
+INFO:root:chr : 20 - cell : E066
+INFO:root:chr : 20 - cell : E070
+INFO:root:chr : 20 - cell : E071
+INFO:root:chr : 20 - cell : E079
+INFO:root:chr : 20 - cell : E082
+INFO:root:chr : 20 - cell : E084
+INFO:root:chr : 20 - cell : E085
+INFO:root:chr : 20 - cell : E087
+INFO:root:chr : 20 - cell : E094
+INFO:root:chr : 20 - cell : E095
+INFO:root:chr : 20 - cell : E096
+INFO:root:chr : 20 - cell : E097
+INFO:root:chr : 20 - cell : E098
+INFO:root:chr : 20 - cell : E100
+INFO:root:chr : 20 - cell : E104
+INFO:root:chr : 20 - cell : E105
+INFO:root:chr : 20 - cell : E106
+INFO:root:chr : 20 - cell : E109
+INFO:root:chr : 20 - cell : E112
+INFO:root:chr : 20 - cell : E113
+INFO:root:chr : 20 - cell : E114
 INFO:root:chr : 20 - cell : E116
-INFO:root:Downstream Start
-INFO:downstream.run_downstream:Iter: 500 - mse: 1190.2463081349065
-INFO:downstream.run_downstream:Iter: 1000 - mse: 1171.8674422607303
-INFO:downstream.run_downstream:Iter: 1500 - mse: 1196.0072453361468
-INFO:downstream.run_downstream:Iter: 2000 - mse: 1204.2861578737297
-INFO:downstream.run_downstream:Iter: 2500 - mse: 1176.4322459285888
-INFO:downstream.run_downstream:Iter: 3000 - mse: 1110.1660310782192
-INFO:downstream.run_downstream:Iter: 3500 - mse: 1066.7469297452405
-INFO:downstream.run_downstream:Iter: 4000 - mse: 1036.332172040735
-INFO:downstream.run_downstream:Iter: 4500 - mse: 1026.982078038352
-INFO:downstream.run_downstream:Iter: 5000 - mse: 1004.8936757027069
-INFO:downstream.run_downstream:Iter: 5500 - mse: 989.3144904642099
-INFO:downstream.run_downstream:Iter: 6000 - mse: 975.0788640373579
-INFO:downstream.run_downstream:Iter: 6500 - mse: 957.9337583100088
-INFO:downstream.run_downstream:Iter: 7000 - mse: 948.4847843942731
-INFO:downstream.run_downstream:Iter: 7500 - mse: 965.7673700545276
-INFO:downstream.run_downstream:Iter: 8000 - mse: 962.5878377076854
-INFO:downstream.run_downstream:Iter: 8500 - mse: 962.056325662723
-INFO:downstream.run_downstream:Iter: 9000 - mse: 960.2628935990148
-INFO:downstream.run_downstream:Iter: 9500 - mse: 963.2614426676842
-INFO:downstream.run_downstream:Iter: 10000 - mse: 957.6605432334748
-INFO:downstream.run_downstream:Iter: 10500 - mse: 965.6605801731048
-INFO:downstream.run_downstream:Iter: 11000 - mse: 961.9052620151933
-INFO:downstream.run_downstream:Iter: 11500 - mse: 958.7313664964062
-INFO:downstream.run_downstream:Iter: 12000 - mse: 956.4836815188747
-INFO:downstream.run_downstream:Iter: 12500 - mse: 977.377097067958
-INFO:downstream.run_downstream:Iter: 13000 - mse: 983.3066836178655
-INFO:downstream.run_downstream:Iter: 13500 - mse: 995.8723322506127
-INFO:downstream.run_downstream:Iter: 14000 - mse: 1007.9089322156158
-INFO:downstream.run_downstream:Iter: 14500 - mse: 1019.4028302254691
-INFO:downstream.run_downstream:Iter: 15000 - mse: 1025.5276640938955
-INFO:downstream.run_downstream:Iter: 15500 - mse: 1019.8755309631056
-INFO:downstream.run_downstream:Iter: 16000 - mse: 1020.6733638073733
-INFO:downstream.run_downstream:Iter: 16500 - mse: 1015.9589232771629
-INFO:downstream.run_downstream:Iter: 17000 - mse: 1012.8303092567473
-INFO:downstream.run_downstream:Iter: 17500 - mse: 1020.0000801305949
-INFO:downstream.run_downstream:Iter: 18000 - mse: 1027.190056404405
-INFO:downstream.run_downstream:Iter: 18500 - mse: 1031.9788360753914
-INFO:downstream.run_downstream:Iter: 19000 - mse: 1031.672390668448
-INFO:downstream.run_downstream:Iter: 19500 - mse: 1041.6127183202627
-INFO:downstream.run_downstream:Iter: 20000 - mse: 1048.6435931224241
-INFO:downstream.run_downstream:Iter: 20500 - mse: 1047.1355099396205
-INFO:downstream.run_downstream:Iter: 21000 - mse: 1045.6227586184198
-INFO:downstream.run_downstream:Iter: 21500 - mse: 1041.408377343269
-INFO:downstream.run_downstream:Iter: 22000 - mse: 1037.9213815618807
-INFO:downstream.run_downstream:Iter: 22500 - mse: 1038.925163573039
-INFO:downstream.run_downstream:Iter: 23000 - mse: 1041.7352766004972
-INFO:downstream.run_downstream:Iter: 23500 - mse: 1040.9044668990744
-INFO:downstream.run_downstream:Iter: 24000 - mse: 1036.8366656460742
-INFO:downstream.run_downstream:Iter: 24500 - mse: 1041.4617054731586
-INFO:downstream.run_downstream:Iter: 25000 - mse: 1052.1383601274765
-ERROR:downstream.run_downstream:Traceback (most recent call last):
-  File "/home/kevindsouza/Documents/projects/latentGenome/src/downstream/run_downstream.py", line 95, in downstream_main
-    label_ar_cut, gene_ar_cut)
-  File "/home/kevindsouza/Documents/projects/latentGenome/src/downstream/downstream_helper.py", line 52, in filter_states
-    enc = encoder_hidden_states_np[mask_vector,]
-IndexError: boolean index did not match indexed array along dimension 0; dimension is 100 but corresponding boolean dimension is 21
-
+INFO:root:chr : 20 - cell : E117
+INFO:root:chr : 20 - cell : E118
+INFO:root:chr : 20 - cell : E119
+INFO:root:chr : 20 - cell : E120
+INFO:root:chr : 20 - cell : E122
+INFO:root:chr : 20 - cell : E123
+INFO:root:chr : 20 - cell : E127
+INFO:root:chr : 20 - cell : E128
+INFO:root:mean MAP RNA-Seq: 0.9865523180269349
+INFO:root:PE start
+INFO:root:chr : 20 - cell : E123
+INFO:root:chr : 20 - cell : E117
+INFO:root:chr : 20 - cell : E116
 INFO:root:chr : 20 - cell : E017
-INFO:root:chr done: 20
+INFO:root:mean MAP PE: nan
 INFO:root:fires start
+INFO:root:chr : 20 - cell : GM12878
+INFO:root:chr : 20 - cell : H1
+INFO:root:chr : 20 - cell : IMR90
+INFO:root:chr : 20 - cell : MES
+INFO:root:chr : 20 - cell : MSC
+INFO:root:chr : 20 - cell : NPC
+INFO:root:chr : 20 - cell : TRO
+INFO:root:mean MAP fire: 0.9746208654668121
+INFO:root:RNA-Seq start
+INFO:root:chr : 21 - cell : E000
+INFO:root:chr : 21 - cell : E003
+INFO:root:chr : 21 - cell : E004
+INFO:root:chr : 21 - cell : E005
+INFO:root:chr : 21 - cell : E006
+INFO:root:chr : 21 - cell : E007
+INFO:root:chr : 21 - cell : E011
+INFO:root:chr : 21 - cell : E012
+INFO:root:chr : 21 - cell : E013
+INFO:root:chr : 21 - cell : E016
+INFO:root:chr : 21 - cell : E024
+INFO:root:chr : 21 - cell : E027
+INFO:root:chr : 21 - cell : E028
+INFO:root:chr : 21 - cell : E037
+INFO:root:chr : 21 - cell : E038
+INFO:root:chr : 21 - cell : E047
+INFO:root:chr : 21 - cell : E050
+INFO:root:chr : 21 - cell : E053
+INFO:root:chr : 21 - cell : E054
+INFO:root:chr : 21 - cell : E055
+INFO:root:chr : 21 - cell : E056
+INFO:root:chr : 21 - cell : E057
+INFO:root:chr : 21 - cell : E058
+INFO:root:chr : 21 - cell : E059
+INFO:root:chr : 21 - cell : E061
+INFO:root:chr : 21 - cell : E062
+INFO:root:chr : 21 - cell : E065
+INFO:root:chr : 21 - cell : E066
+INFO:root:chr : 21 - cell : E070
+INFO:root:chr : 21 - cell : E071
+INFO:root:chr : 21 - cell : E079
+INFO:root:chr : 21 - cell : E082
+INFO:root:chr : 21 - cell : E084
+INFO:root:chr : 21 - cell : E085
+INFO:root:chr : 21 - cell : E087
+INFO:root:chr : 21 - cell : E094
+INFO:root:chr : 21 - cell : E095
+INFO:root:chr : 21 - cell : E096
+INFO:root:chr : 21 - cell : E097
+INFO:root:chr : 21 - cell : E098
+INFO:root:chr : 21 - cell : E100
+INFO:root:chr : 21 - cell : E104
+INFO:root:chr : 21 - cell : E105
+INFO:root:chr : 21 - cell : E106
+INFO:root:chr : 21 - cell : E109
+INFO:root:chr : 21 - cell : E112
+INFO:root:chr : 21 - cell : E113
+INFO:root:chr : 21 - cell : E114
+INFO:root:chr : 21 - cell : E116
+INFO:root:chr : 21 - cell : E117
+INFO:root:chr : 21 - cell : E118
+INFO:root:chr : 21 - cell : E119
+INFO:root:chr : 21 - cell : E120
+INFO:root:chr : 21 - cell : E122
+INFO:root:chr : 21 - cell : E123
+INFO:root:chr : 21 - cell : E127
+INFO:root:chr : 21 - cell : E128
+INFO:root:mean MAP RNA-Seq: 0.9683616698994542
+INFO:root:PE start
+INFO:root:chr : 21 - cell : E123
+INFO:root:chr : 21 - cell : E117
+INFO:root:chr : 21 - cell : E116
+INFO:root:chr : 21 - cell : E017
+INFO:root:mean MAP PE: nan
 INFO:root:fires start
-INFO:root:fires start
-INFO:root:fires start
-INFO:root:fires start
-INFO:root:fires start
-INFO:root:fires start
-INFO:root:Downstream Start
-INFO:downstream.run_downstream:Iter: 500 - mse: 1190.2476084403645
-INFO:downstream.run_downstream:Iter: 1000 - mse: 1171.8450127204542
-INFO:downstream.run_downstream:Iter: 1500 - mse: 1195.9879211876587
-INFO:downstream.run_downstream:Iter: 2000 - mse: 1204.2712368153286
-INFO:downstream.run_downstream:Iter: 2500 - mse: 1176.4245332322284
-INFO:downstream.run_downstream:Iter: 3000 - mse: 1110.162449340138
-INFO:downstream.run_downstream:Iter: 3500 - mse: 1066.7474914880809
-INFO:downstream.run_downstream:Iter: 4000 - mse: 1036.335822410649
-INFO:downstream.run_downstream:Iter: 4500 - mse: 1026.9856859113413
-INFO:downstream.run_downstream:Iter: 5000 - mse: 1004.8977213642713
-INFO:downstream.run_downstream:Iter: 5500 - mse: 989.3186278371649
+INFO:root:chr : 21 - cell : GM12878
+INFO:root:chr : 21 - cell : H1
+INFO:root:chr : 21 - cell : IMR90
+INFO:root:chr : 21 - cell : MES
+INFO:root:chr : 21 - cell : MSC
+INFO:root:chr : 21 - cell : NPC
+INFO:root:chr : 21 - cell : TRO
+INFO:root:mean MAP fire: 0.9688382682894426
+INFO:root:PE start
+INFO:root:chr : 20 - cell : E123
+INFO:root:PE start
+INFO:root:chr : 20 - cell : E123
+INFO:root:chr : 20 - cell : E117
+INFO:root:chr : 20 - cell : E116
+INFO:root:chr : 20 - cell : E017
+INFO:root:mean MAP PE: 0.5916450216450216
+INFO:root:PE start
+INFO:root:chr : 21 - cell : E123
+INFO:root:chr : 21 - cell : E117
+INFO:root:chr : 21 - cell : E116
+INFO:root:chr : 21 - cell : E017
+INFO:root:mean MAP PE: nan
+INFO:root:PE start
+INFO:root:chr : 20 - cell : E123
