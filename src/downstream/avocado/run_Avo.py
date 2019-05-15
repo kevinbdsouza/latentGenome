@@ -50,11 +50,13 @@ def run_all(model, down_dir, chr_list):
         # mean_rna_map = get_avg_map(mapdict_rna_seq)
         # map_rna.append(mean_rna_map)
 
+        # mapdict_pe = {}
         mapdict_pe = Av_downstream_ob.run_pe(cfg)
         # mean_pe_map = get_avg_map(mapdict_pe)
         # map_pe.append(mean_pe_map)
 
-        mapdict_fire = Av_downstream_ob.run_fires(cfg)
+        mapdict_fire = {}
+        # mapdict_fire = Av_downstream_ob.run_fires(cfg)
         # mean_fire_map = get_avg_map(mapdict_fire)
         # map_fire.append(mean_fire_map)
 
@@ -73,7 +75,7 @@ if __name__ == "__main__":
 
     model = "avocado-chr"
     down_dir = "/data2/latent/data/avocado"
-    chr_list = np.arange(20, 22)
+    chr_list = np.arange(20, 21)
 
     map_rna, map_pe, map_fire = run_all(model, down_dir, chr_list)
 
