@@ -54,7 +54,8 @@ def run_all(model, down_dir, chr_list):
         # mean_pe_map = get_avg_map(mapdict_pe)
         # map_pe.append(mean_pe_map)
 
-        mapdict_fire = Av_downstream_ob.run_fires(cfg)
+        mapdict_fire = {}
+        # mapdict_fire = Av_downstream_ob.run_fires(cfg)
         # mean_fire_map = get_avg_map(mapdict_fire)
         # map_fire.append(mean_fire_map)
 
@@ -68,7 +69,7 @@ def run_all(model, down_dir, chr_list):
 if __name__ == "__main__":
     # setup_logging()
     logging.basicConfig(
-        filename="/home/kevin/Documents/latentGenome/src/saved_model/avocado/avocado_log.txt",
+        filename="/home/kevindsouza/Documents/projects/latentGenome/src/saved_model/avocado/avocado_log.txt",
         level=logging.DEBUG)
 
     model = "avocado-chr"
