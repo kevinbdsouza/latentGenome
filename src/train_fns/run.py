@@ -47,20 +47,22 @@ def run_all(chr_list, down_dir):
         downstream_ob = DownstreamTasks(cfg, dir_name, chr, mode='lstm')
 
         # mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
-        # logging.info("chr done: {}".format(chr))
+        # mean_map_rna = get_avg_map(mapdict_rna_seq)
+        # logging.info("mean MAP RNA-Seq: {}".format(mean_map_rna))
 
-        # mapdict_pe_seq = downstream_ob.run_pe(cfg)
-        # logging.info("chr done: {}".format(chr))
+        mapdict_pe_seq = downstream_ob.run_pe(cfg)
+        mean_map_pe = get_avg_map(mapdict_pe_seq)
+        logging.info("mean MAP PE: {}".format(mean_map_pe))
 
-        mapdict_fire_seq = downstream_ob.run_fires(cfg)
-        logging.info("chr done: {}".format(chr))
+        # mapdict_fire_seq = downstream_ob.run_fires(cfg)
+        # mean_map_fire = get_avg_map(mapdict_fire_seq)
+        # logging.info("mean MAP fire: {}".format(mean_map_fire))
 
-    return mapdict_fire_seq
+    return mapdict_pe_seq
 
 
 if __name__ == "__main__":
-    # setup_logging()
-    chr_list = [20]
+    chr_list = [20, 21]
     down_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14"
 
     logging.basicConfig(filename=down_dir + "/run_log_eval.txt",

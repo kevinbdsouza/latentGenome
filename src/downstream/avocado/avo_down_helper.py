@@ -1,6 +1,7 @@
 import logging
 import numpy as np
 import pandas as pd
+import pickle
 from train_fns.test_gene import get_config
 from keras.models import load_model
 from downstream.avocado.run_avocado import AvocadoAnalysis

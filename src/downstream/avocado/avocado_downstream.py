@@ -23,7 +23,8 @@ class AvocadoDownstreamTasks:
         self.fire_path = self.data_dir + "downstream/FIREs"
         # self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
         self.fire_cell_names = ['GM12878']
-        self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
+        # self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
+        self.pe_cell_names = ['E123']
         self.feat_avo_rna = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr) + "_rna"
         self.feat_avo_pe = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr) + "_pe_"
         self.feat_avo_fire = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr) + "_fire"

@@ -127,7 +127,10 @@ class DownstreamHelper:
             y_hat = model.predict_proba(X_test)
             average_precisions[i] = average_precision_score(y_test, y_hat[:, 1])
 
-        mean_map = average_precisions.mean()
+        mean_map = np.nanmean(average_precisions)
+
+        if np.isnan(mean_map):
+            mean_map = 0
 
         return mean_map
 
@@ -161,7 +164,7 @@ class DownstreamHelper:
 
             average_precisions[i] = average_precision_score(X_test.iloc[:]["target"], y_hat[:, 1])
 
-        mean_map = average_precisions.mean()
+        mean_map = np.nanmean(average_precisions)
 
         return mean_map
 
