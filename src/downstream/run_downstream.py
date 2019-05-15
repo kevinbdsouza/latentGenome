@@ -28,8 +28,7 @@ class DownstreamTasks:
         self.rna_seq_path = self.data_dir + "downstream/RNA-seq"
         self.pe_int_path = self.data_dir + "downstream/PE-interactions"
         self.fire_path = self.data_dir + "downstream/FIREs"
-        # self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
-        self.fire_cell_names = ['GM12878']
+        self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
         self.chr = chr
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
         self.chr_list_rna = str(chr)
@@ -37,13 +36,13 @@ class DownstreamTasks:
         self.chr_list_tad = 'chr' + str(chr)
         self.chr_list_fire = chr
         self.saved_model_dir = dir
-        self.feat_mat_rna = self.saved_model_dir + "feat_chr_" + str(chr) + "_rna_"
+        self.feat_mat_rna = self.saved_model_dir + "feat_chr_" + str(chr) + "_rna"
         self.feat_mat_pe = self.saved_model_dir + "feat_chr_" + str(chr) + "_pe_"
-        self.feat_mat_fire = self.saved_model_dir + "feat_chr_" + str(chr) + "_fire_"
+        self.feat_mat_fire = self.saved_model_dir + "feat_chr_" + str(chr) + "_fire"
         self.new_features = self.saved_model_dir + "new_feat_.npy"
         self.run_features_rna = False
-        self.run_features_pe = True
-        self.run_features_fire = True
+        self.run_features_pe = False
+        self.run_features_fire = False
         self.concat_lstm = False
         self.run_concat_feat = False
         self.calculate_map = True
@@ -120,7 +119,7 @@ class DownstreamTasks:
         rna_seq_chr['target'] = 0
         mean_map_dict = {}
 
-        for col in range(1, 2):
+        for col in range(1, 58):
             rna_seq_chr.loc[rna_seq_chr.iloc[:, col] >= 0.5, 'target'] = 1
             rna_window_labels = rna_seq_chr.filter(['start', 'end', 'target'], axis=1)
             rna_window_labels = rna_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
@@ -130,8 +129,7 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_rna,
-                                                                          self.feat_mat_rna + rna_seq_chr.columns[
-                                                                              col] + '.pkl',
+                                                                          self.feat_mat_rna + '.pkl',
                                                                           self.downstream_main, self.chr)
 
             feature_matrix = self.downstream_helper_ob.get_window_features(feature_matrix)
@@ -219,7 +217,7 @@ class DownstreamTasks:
 
             feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
                                                                           self.run_features_fire,
-                                                                          self.feat_mat_fire + cell + ".pkl",
+                                                                          self.feat_mat_fire + ".pkl",
                                                                           self.downstream_main, self.chr)
 
             feature_matrix = self.downstream_helper_ob.get_window_features(feature_matrix)

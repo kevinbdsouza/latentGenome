@@ -10,23 +10,21 @@ logger = logging.getLogger(__name__)
 class PlotMap:
     def __init__(self, cfg):
         self.cfg = cfg
-        self.path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        self.path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/"
 
     def plot_all(self, path):
-        rna_seq_dict, pe_dict, fire_dict, tad_dict = self.get_dict(path)
+        rna_seq_dict, pe_dict, fire_dict = self.get_dict(path)
 
         self.plot_rna_seq(path, rna_seq_dict)
         self.plot_pe(path, pe_dict)
         self.plot_fire(path, fire_dict)
-        self.plot_tad(path, tad_dict)
-
+       
     def get_dict(self, path):
         rna_seq_dict = np.load(path + "map_dict_rnaseq.npy").item()
         pe_dict = np.load(path + "map_dict_pe.npy").item()
         fire_dict = np.load(path + "map_dict_fire.npy").item()
-        tad_dict = np.load(path + "map_dict_tad.npy").item()
 
-        return rna_seq_dict, pe_dict, fire_dict, tad_dict
+        return rna_seq_dict, pe_dict, fire_dict
 
     def get_lists(self, dict):
         key_list = []
@@ -87,7 +85,7 @@ class PlotMap:
 
         plt.figure()
         plt.plot(hidden_list, map_hidden)
-        #plt.xticks(range(len(key_list)), key_list)
+        # plt.xticks(range(len(key_list)), key_list)
         plt.title('MAP vs hidden nodes')
         plt.xlabel('hidden nodes')
         plt.ylabel('MAP')
@@ -100,14 +98,14 @@ if __name__ == "__main__":
     setup_logging()
     config_base = 'config.yaml'
     result_base = 'down_images'
-    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden"
+    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21"
 
     cfg = get_config(model_path, config_base, result_base)
     plot_ob = PlotMap(cfg)
 
-    # plot_ob.plot_all(plot_ob.path)
+    plot_ob.plot_all(plot_ob.path)
 
-    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
-    plot_ob.plot_hidden(plot_ob.path, hidden_list)
+    # hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    # plot_ob.plot_hidden(plot_ob.path, hidden_list)
 
     print("done")
