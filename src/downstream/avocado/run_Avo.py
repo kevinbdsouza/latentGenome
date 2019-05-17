@@ -95,6 +95,7 @@ if __name__ == "__main__":
 
     model = "avocado-chr"
     down_dir = "/data2/latent/data/avocado"
+
     chr_list = np.arange(5, 23)
 
     mean_rna_map, mean_pe_map, mean_fire_map = run_all(model, down_dir, chr_list)

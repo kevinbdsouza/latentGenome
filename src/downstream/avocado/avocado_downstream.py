@@ -36,7 +36,7 @@ class AvocadoDownstreamTasks:
         self.model_name = model
         self.run_features_rna = True
         self.run_features_pe = False
-        self.run_features_fire = True
+        self.run_features_fire = False
         self.calculate_map = True
         self.Avo_downstream_helper_ob = AvoDownstreamHelper(cfg)
         self.downstream_helper_ob = DownstreamHelper(cfg, chr, mode=mode)
