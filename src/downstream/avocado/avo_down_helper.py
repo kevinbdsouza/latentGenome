@@ -2,6 +2,7 @@ import logging
 import numpy as np
 import pandas as pd
 import pickle
+from sklearn.externals import joblib
 from train_fns.test_gene import get_config
 from keras.models import load_model
 from downstream.avocado.run_avocado import AvocadoAnalysis
@@ -66,10 +67,13 @@ class AvoDownstreamHelper:
             feature_matrix = self.filter_states(gen_factors, feature_matrix,
                                                 mask_vector, label_ar, gene_ar)
 
-            feature_matrix.to_pickle(feat_mat)
+            # feature_matrix.to_pickle(feat_mat)
+            joblib.dump(feature_matrix, feat_mat)
 
         else:
-            feature_matrix = pd.read_pickle(feat_mat)
+
+            feature_matrix = joblib.load(feat_mat)
+            # feature_matrix = pd.read_pickle(feat_mat)
             feature_matrix.gene_id = feature_matrix.gene_id.astype(int)
 
             if not mode == 'pe':
@@ -102,9 +106,6 @@ class AvoDownstreamHelper:
 
         feature_matrix = feature_matrix.append(pd.DataFrame(feat_mat, columns=self.columns),
                                                ignore_index=True)
-
-        feature_matrix.target = feature_matrix.target.astype(int)
-        feature_matrix.gene_id = feature_matrix.gene_id.astype(int)
 
         return feature_matrix
 

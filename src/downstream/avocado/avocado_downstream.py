@@ -21,10 +21,10 @@ class AvocadoDownstreamTasks:
         self.rna_seq_path = self.data_dir + "downstream/RNA-seq"
         self.pe_int_path = self.data_dir + "downstream/PE-interactions"
         self.fire_path = self.data_dir + "downstream/FIREs"
-        # self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
-        self.fire_cell_names = ['GM12878']
-        # self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
-        self.pe_cell_names = ['E123']
+        self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
+        # self.fire_cell_names = ['GM12878']
+        self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
+        # self.pe_cell_names = ['E017']
         self.feat_avo_rna = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr) + "_rna"
         self.feat_avo_pe = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr) + "_pe_"
         self.feat_avo_fire = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr) + "_fire"
@@ -34,7 +34,7 @@ class AvocadoDownstreamTasks:
         self.chr_fire = chr
         self.saved_model_dir = dir_name
         self.model_name = model
-        self.run_features_rna = False
+        self.run_features_rna = True
         self.run_features_pe = False
         self.run_features_fire = True
         self.calculate_map = True
@@ -58,7 +58,7 @@ class AvocadoDownstreamTasks:
             rna_seq_chr.loc[rna_seq_chr.iloc[:, col] >= 0.5, 'target'] = 1
             rna_window_labels = rna_seq_chr.filter(['start', 'end', 'target'], axis=1)
             rna_window_labels = rna_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
-            rna_window_labels = rna_window_labels.drop([410, 598]).reset_index(drop=True)
+            # rna_window_labels = rna_window_labels.drop([410, 598]).reset_index(drop=True)
 
             mask_vector, label_ar, gene_ar = self.Avo_downstream_helper_ob.create_mask(rna_window_labels)
 

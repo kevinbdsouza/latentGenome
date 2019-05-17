@@ -32,6 +32,15 @@ def run_all(model, down_dir, chr_list):
     map_rna = []
     map_pe = []
     map_fire = []
+
+    mapdict_rna_seq = {}
+    mapdict_pe = {}
+    mapdict_fire = {}
+
+    run_rna = False
+    run_pe = True
+    run_fire = False
+
     for chr in chr_list:
         dir_name = down_dir + "/" + "chr" + str(chr) + "/"
         file_name = down_dir + "/" + "chr" + str(chr) + "/" + model + str(chr)
@@ -45,25 +54,37 @@ def run_all(model, down_dir, chr_list):
 
         Av_downstream_ob = AvocadoDownstreamTasks(model_name, chr, cfg, dir_name, mode='avocado')
 
-        mapdict_rna_seq = {}
-        # mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
-        # mean_rna_map = get_avg_map(mapdict_rna_seq)
-        # map_rna.append(mean_rna_map)
+        if run_rna:
+            try:
+                mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
+                mean_rna_map = get_avg_map(mapdict_rna_seq)
+                map_rna.append(mean_rna_map)
 
-        mapdict_pe = Av_downstream_ob.run_pe(cfg)
-        # mean_pe_map = get_avg_map(mapdict_pe)
-        # map_pe.append(mean_pe_map)
+                logging.info("chr: {} - map_rna:{}".format(chr, mean_rna_map))
+            except Exception as e:
+                logging.info("RNA-Seq Exception: {}".format(e))
 
-        mapdict_fire = {}
-        # mapdict_fire = Av_downstream_ob.run_fires(cfg)
-        # mean_fire_map = get_avg_map(mapdict_fire)
-        # map_fire.append(mean_fire_map)
+        if run_pe:
+            try:
+                mapdict_pe = Av_downstream_ob.run_pe(cfg)
+                mean_pe_map = get_avg_map(mapdict_pe)
+                map_pe.append(mean_pe_map)
 
-        # logging.info("chr: {} - map_rna:{}".format(chr, mean_rna_map))
-        # logging.info("chr: {} - map_pe: {}".format(chr, mean_pe_map))
-        # logging.info("chr: {} - map_fire: {}".format(chr, mean_fire_map))
+                logging.info("chr: {} - map_pe: {}".format(chr, mean_pe_map))
+            except Exception as e:
+                logging.info("RNA-Seq Exception: {}".format(e))
 
-    return mapdict_rna_seq, mapdict_pe, mapdict_fire
+        if run_fire:
+            try:
+                mapdict_fire = Av_downstream_ob.run_fires(cfg)
+                mean_fire_map = get_avg_map(mapdict_fire)
+                map_fire.append(mean_fire_map)
+
+                logging.info("chr: {} - map_fire: {}".format(chr, mean_fire_map))
+            except Exception as e:
+                logging.info("RNA-Seq Exception: {}".format(e))
+
+    return map_rna, map_pe, map_fire
 
 
 if __name__ == "__main__":
@@ -74,12 +95,14 @@ if __name__ == "__main__":
 
     model = "avocado-chr"
     down_dir = "/data2/latent/data/avocado"
-    chr_list = np.arange(20, 22)
+    chr_list = np.arange(5, 23)
 
-    map_rna, map_pe, map_fire = run_all(model, down_dir, chr_list)
+    mean_rna_map, mean_pe_map, mean_fire_map = run_all(model, down_dir, chr_list)
 
-    np.save(down_dir + "/" + "map_rna.npy", map_rna)
-    np.save(down_dir + "/" + "map_pe.npy", map_pe)
-    np.save(down_dir + "/" + "map_fire.npy", map_fire)
+    # np.save(down_dir + "/" + "map_rna.npy", map_rna)
+    # np.save(down_dir + "/" + "map_pe.npy", map_pe)
+    # np.save(down_dir + "/" + "map_fire.npy", map_fire)
+
+    logging.info("Pickle creation done")
 
     print("done")
