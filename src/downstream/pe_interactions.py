@@ -14,6 +14,10 @@ class PeInteractions:
         pe_pairs = pe_pairs.drop_duplicates(subset="promoter_name", keep='first').reset_index(drop=True)
         pe_pairs["window_start"] = pe_pairs["window_start"] // 25
         pe_pairs["window_end"] = pe_pairs["window_end"] // 25
+        pe_pairs["promoter_start"] = pe_pairs["promoter_start"] // 25
+        pe_pairs["promoter_end"] = pe_pairs["promoter_end"] // 25
+        pe_pairs["enhancer_start"] = pe_pairs["enhancer_start"] // 25
+        pe_pairs["enhancer_end"] = pe_pairs["enhancer_end"] // 25
         pe_pairs["cell"] = None
 
         self.pe_data = pe_pairs

@@ -15,6 +15,7 @@ import pandas as pd
 from downstream.downstream_helper import DownstreamHelper
 from downstream.downstream_lstm import DownstreamLSTM
 from downstream.fires import Fires
+from downstream.rep_timing import Rep_timing
 
 gpu_id = 1
 mode = "test"
@@ -28,21 +29,26 @@ class DownstreamTasks:
         self.rna_seq_path = self.data_dir + "downstream/RNA-seq"
         self.pe_int_path = self.data_dir + "downstream/PE-interactions"
         self.fire_path = self.data_dir + "downstream/FIREs"
+        self.rep_timing_path = self.data_dir + "downstream/replication_timing"
         self.fire_cell_names = ['GM12878', 'H1', 'IMR90', 'MES', 'MSC', 'NPC', 'TRO']
+        self.rep_cell_names = ['HUVEC', 'IMR90', 'K562']
         self.chr = chr
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
         self.chr_list_rna = str(chr)
         self.chr_list_pe = 'chr' + str(chr)
         self.chr_list_tad = 'chr' + str(chr)
+        self.chr_list_rep = 'chr' + str(chr)
         self.chr_list_fire = chr
         self.saved_model_dir = dir
         self.feat_mat_rna = self.saved_model_dir + "feat_chr_" + str(chr) + "_rna"
         self.feat_mat_pe = self.saved_model_dir + "feat_chr_" + str(chr) + "_pe_"
         self.feat_mat_fire = self.saved_model_dir + "feat_chr_" + str(chr) + "_fire"
+        self.feat_mat_rep = self.saved_model_dir + "feat_chr_" + str(chr) + "_rep"
         self.new_features = self.saved_model_dir + "new_feat_.npy"
         self.run_features_rna = False
         self.run_features_pe = False
         self.run_features_fire = False
+        self.run_features_rep = True 
         self.concat_lstm = False
         self.run_concat_feat = False
         self.calculate_map = True
@@ -235,6 +241,43 @@ class DownstreamTasks:
 
         return mean_map_dict
 
+    def run_rep_timings(self, cfg):
+        logging.info("rep start")
+
+        rep_ob = Rep_timing()
+        rep_ob.get_rep_data(self.rep_timing_path, self.rep_cell_names)
+        rep_filtered = rep_ob.filter_rep_data(self.chr_list_rep)
+        mean_map_dict = {}
+        cls_mode = 'ind'
+
+        for i, cell in enumerate(self.rep_cell_names):
+            
+            rep_data_cell = rep_filtered[i]
+            rep_data_cell = rep_data_cell.filter(['start', 'end', 'target'], axis=1)
+            rep_data_cell = rep_data_cell.drop_duplicates(keep='first').reset_index(drop=True)
+
+            mask_vector, label_ar, gene_ar = self.downstream_helper_ob.create_mask(rep_data_cell)
+
+            feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
+                                                                          self.run_features_rep,
+                                                                          self.feat_mat_rep + ".pkl",
+                                                                          self.downstream_main, self.chr)
+
+            feature_matrix = self.downstream_helper_ob.get_window_features(feature_matrix)
+
+            self.run_features_rep = False
+
+            logging.info("chr : {} - cell : {}".format(str(self.chr), cell))
+
+            if self.calculate_map:
+                mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
+
+                mean_map_dict[cell] = mean_map
+
+        np.save(self.saved_model_dir + 'map_dict_fire.npy', mean_map_dict)
+
+        return mean_map_dict
+
 
 if __name__ == '__main__':
     setup_logging()
@@ -252,10 +295,12 @@ if __name__ == '__main__':
 
     downstream_ob = DownstreamTasks(cfg, dir, chr, mode='lstm')
 
-    mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
+    # mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
 
     # mapdict_pe = downstream_ob.run_pe(cfg)
 
     # mapdict_fire = downstream_ob.run_fires(cfg)
+
+    mapdict_rep = downstream_ob.run_rep_timings(cfg)
 
     print("done")

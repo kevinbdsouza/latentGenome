@@ -1,6 +1,10 @@
 from Bio import SeqIO
 
-fasta_path = "/opt/data/latent/data/dna/chr03.fa"
+fasta_dir = "/data2/latent/data/dna/"
+
+chr = 21
+
+fasta_path = fasta_dir + "chr" + str(chr) + ".fa"
 
 records = list(SeqIO.parse(fasta_path, "fasta"))
 new_seq = records[0].seq[:100]

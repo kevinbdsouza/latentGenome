@@ -56,7 +56,7 @@ class AvocadoDownstreamTasks:
             feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
 
             rna_seq_chr.loc[rna_seq_chr.iloc[:, col] >= 0.5, 'target'] = 1
-            rna_window_labels = rna_seq_chr.filter(['start', 'end', 'target'], axis=1)
+            rna_window_labels = rna_seq_chr.filter(['start', 'end', 'target', 'gene_id'], axis=1)
             rna_window_labels = rna_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
             # rna_window_labels = rna_window_labels.drop([410, 598]).reset_index(drop=True)
 
@@ -189,9 +189,9 @@ if __name__ == '__main__':
 
     Av_downstream_ob = AvocadoDownstreamTasks(model, chr, cfg, dir_name, mode='avocado')
 
-    # mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
+    mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
 
-    mapdict_pe = Av_downstream_ob.run_pe(cfg)
+    # mapdict_pe = Av_downstream_ob.run_pe(cfg)
 
     # map_dict_fire = Av_downstream_ob.run_fires(cfg)
 
