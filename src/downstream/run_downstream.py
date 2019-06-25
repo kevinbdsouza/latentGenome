@@ -48,7 +48,7 @@ class DownstreamTasks:
         self.run_features_rna = False
         self.run_features_pe = False
         self.run_features_fire = False
-        self.run_features_rep = True 
+        self.run_features_rep = True
         self.concat_lstm = False
         self.run_concat_feat = False
         self.calculate_map = True
@@ -251,7 +251,7 @@ class DownstreamTasks:
         cls_mode = 'ind'
 
         for i, cell in enumerate(self.rep_cell_names):
-            
+
             rep_data_cell = rep_filtered[i]
             rep_data_cell = rep_data_cell.filter(['start', 'end', 'target'], axis=1)
             rep_data_cell = rep_data_cell.drop_duplicates(keep='first').reset_index(drop=True)
@@ -302,5 +302,7 @@ if __name__ == '__main__':
     # mapdict_fire = downstream_ob.run_fires(cfg)
 
     mapdict_rep = downstream_ob.run_rep_timings(cfg)
+
+    # mapdict_fire = downstream_ob.run_fires(cfg)
 
     print("done")
