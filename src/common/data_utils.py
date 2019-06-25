@@ -42,7 +42,7 @@ def download_bigWig(name, bigwigPath, chrom,
                                                            bedgraph, chrom))
 
     os.system("/data2/latent/bigWigToBedGraph {} {} -chrom=chr{}".format(bigwig,
-                                                                            bedgraph, chrom))
+                                                                         bedgraph, chrom))
 
     if verbose == True:
         print("bedgraph_to_dense({})".format(bedgraph))
