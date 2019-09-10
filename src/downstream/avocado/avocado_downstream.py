@@ -223,7 +223,6 @@ if __name__ == '__main__':
         features = Av_downstream_ob.get_features(cfg)
 
         # mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
-
         # mapdict_pe = Av_downstream_ob.run_pe(cfg)
         # map_dict_fire = Av_downstream_ob.run_fires(cfg)
 

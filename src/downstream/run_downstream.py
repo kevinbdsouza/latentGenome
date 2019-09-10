@@ -381,4 +381,6 @@ if __name__ == '__main__':
 
     # mapdict_fire = downstream_ob.run_fires(cfg)
 
+    # mapdict_fire = downstream_ob.run_fires(cfg)
+
     print("done")
