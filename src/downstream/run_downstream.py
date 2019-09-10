@@ -377,4 +377,6 @@ if __name__ == '__main__':
 
     # assay_matrix = downstream_ob.get_assays_at_positions(cfg)
 
+    # mapdict_fire = downstream_ob.run_fires(cfg)
+
     print("done")
