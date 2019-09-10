@@ -8,6 +8,7 @@ import pandas as pd
 from downstream.avocado.avo_down_helper import AvoDownstreamHelper
 from downstream.downstream_helper import DownstreamHelper
 from downstream.fires import Fires
+import json
 
 gpu_id = 0
 mode = "test"
@@ -25,10 +26,11 @@ class AvocadoDownstreamTasks:
         # self.fire_cell_names = ['GM12878']
         self.pe_cell_names = ['E123', 'E117', 'E116', 'E017']
         # self.pe_cell_names = ['E017']
-        self.feat_avo_rna = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr) + "_rna"
+        self.feat_avo_rna = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr)
         self.feat_avo_pe = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr) + "_pe_"
         self.feat_avo_fire = self.data_dir + 'avocado/chr' + str(chr) + "/" + "feat_avo_chr_" + str(chr) + "_fire"
         self.chr = chr
+        self.feat_avo = "/data2/latent/data/avocado/avocado_features/" + "avo_chr_" + str(chr)
         self.chr_rna = str(chr)
         self.chr_pe = 'chr' + str(chr)
         self.chr_fire = chr
@@ -37,6 +39,7 @@ class AvocadoDownstreamTasks:
         self.run_features_rna = True
         self.run_features_pe = False
         self.run_features_fire = False
+        self.run_features = True
         self.calculate_map = True
         self.Avo_downstream_helper_ob = AvoDownstreamHelper(cfg)
         self.downstream_helper_ob = DownstreamHelper(cfg, chr, mode=mode)
@@ -170,29 +173,59 @@ class AvocadoDownstreamTasks:
 
         return mean_map_dict
 
+    def get_features(self, cfg):
+
+        window = None
+        feature_matrix = pd.DataFrame(columns=cfg.downstream_df_columns)
+
+        mask_vector, label_ar, gene_ar = self.Avo_downstream_helper_ob.create_mask(window)
+
+        feature_matrix = self.Avo_downstream_helper_ob.get_feature_matrix(self.saved_model_dir,
+                                                                          self.model_name,
+                                                                          cfg, mask_vector, feature_matrix,
+                                                                          self.run_features, label_ar, gene_ar,
+                                                                          self.feat_avo + '.pkl', mode='features')
+
+        feature_matrix.to_pickle(self.feat_avo + '.pkl')
+        return feature_matrix
+
 
 if __name__ == '__main__':
     setup_logging()
     config_base = 'avocado_config.yaml'
     result_base = 'down_images'
     model_path = "/data2/latent/data/avocado"
-    dir_name = "/data2/latent/data/avocado/"
-    model = "avocado-chr21"
-    chr = 21
+    main_dir_name = "/data2/latent/data/avocado/"
+    main_model = "avocado-chr"
 
-    cfg = get_config(model_path, config_base, result_base)
+    chr_list = np.arange(22, 23)
 
-    pd_col = list(np.arange(cfg.hidden_size_encoder))
-    pd_col.append('target')
-    pd_col.append('gene_id')
-    cfg = cfg._replace(downstream_df_columns=pd_col)
+    for chr in chr_list:
+        dir_name = main_dir_name + 'chr' + str(chr) + '/'
+        model = main_model + str(chr)
+        cfg = get_config(model_path, config_base, result_base)
 
-    Av_downstream_ob = AvocadoDownstreamTasks(model, chr, cfg, dir_name, mode='avocado')
+        pd_col = list(np.arange(cfg.hidden_size_encoder))
+        pd_col.append('target')
+        pd_col.append('gene_id')
+        cfg = cfg._replace(downstream_df_columns=pd_col)
 
-    mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
+        file_name = dir_name + model
 
-    mapdict_pe = Av_downstream_ob.run_pe(cfg)
+        with open(file_name + '.json') as json_file:
+            data = json.load(json_file)
+            chr_len = data["n_genomic_positions"]
 
-    # map_dict_fire = Av_downstream_ob.run_fires(cfg)
+        cfg = cfg._replace(chr_len=chr_len)
+
+        Av_downstream_ob = AvocadoDownstreamTasks(model, chr, cfg, dir_name, mode='avocado')
+
+        features = Av_downstream_ob.get_features(cfg)
+
+        # mapdict_rna_seq = Av_downstream_ob.run_rna_seq(cfg)
+
+        # mapdict_pe = Av_downstream_ob.run_pe(cfg)
+
+        # map_dict_fire = Av_downstream_ob.run_fires(cfg)
 
     print("done")

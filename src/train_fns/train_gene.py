@@ -29,9 +29,7 @@ def train_iter_gene(cfg, chr):
 
     data_ob_gene.prepare_id_dict()
     model = Model(cfg, data_ob_gene.vocab_size, gpu_id)
-    if cfg.load_weights:
-        model.load_weights()
-
+    
     monitor = MonitorTraining(cfg, data_ob_gene.vocab_size)
     callback = TensorBoard(cfg.tensorboard_log_path)
     monitor.save_config_as_yaml(cfg.config_file, cfg)
@@ -169,6 +167,6 @@ def unroll_loop(cfg, track_cut, model, encoder_optimizer,
 
 if __name__ == '__main__':
     setup_logging()
-    chr = '20'
+    chr = '21'
     cfg = config.Config()
     train_iter_gene(cfg, chr)

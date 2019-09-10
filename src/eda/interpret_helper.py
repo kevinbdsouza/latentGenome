@@ -46,6 +46,22 @@ class InterpretHelper:
 
         return mask_vec, label_ar, gene_ar
 
+    def filter_matrix(self, mask_vector, feat_mat, gene_ar):
+
+        feature_matrix = pd.read_pickle(feat_mat)
+
+        non_zero = 1924795
+        feature_matrix = feature_matrix.loc[:non_zero]
+        mask_vector = mask_vector[:non_zero]
+        gene_ar = gene_ar[: non_zero]
+        gene_id = gene_ar[mask_vector,]
+        
+        mask_feature_matrix = feature_matrix.loc[mask_vector, :]
+        mask_feature_matrix["gene_id"] = gene_id
+        mask_feature_matrix = mask_feature_matrix.reset_index(drop=True)
+
+        return mask_feature_matrix
+
     def update_feature_matrix(self, feature_matrix, append_mat, mode):
 
         if mode == "gc":

@@ -45,7 +45,8 @@ class DownstreamTasks:
         self.feat_mat_fire = self.saved_model_dir + "feat_chr_" + str(chr) + "_fire"
         self.feat_mat_rep = self.saved_model_dir + "feat_chr_" + str(chr) + "_rep"
         self.new_features = self.saved_model_dir + "new_feat_.npy"
-        self.run_features_rna = False
+        self.assay_path = self.saved_model_dir + "assay/new_positions/" + "assay_" + str(chr)
+        self.run_features_rna = True
         self.run_features_pe = False
         self.run_features_fire = False
         self.run_features_rep = True
@@ -278,6 +279,75 @@ class DownstreamTasks:
 
         return mean_map_dict
 
+    def get_assays_at_positions(self, cfg):
+
+        data_prep_ob = DataPrepGene(cfg, mode='test', chr=str(self.chr))
+        data_prep_ob.prepare_id_dict()
+        element_list = ['promoter', 'enhancer']
+
+        # enahncers
+        '''
+        e_path = "/data2/latent/data/interpretation/enhancers/enhancers.txt"
+        enhancers = pd.read_table(e_path, delim_whitespace=True)
+        enhancer_positions = enhancers['Id']
+        enhancer_positions = enhancer_positions.loc[37528:38586].reset_index(drop=True)
+        enhancer_positions = enhancer_positions.str.replace("chr21:", "")
+
+        enhancer_positions = enhancer_positions.str.split("-", n=1, expand=True)
+        enhancer_positions = enhancer_positions.astype(int)//25
+        enhancer_positions.columns = ['start', 'end']
+        enhancer_positions["target"] = 0
+
+        mask_vector, label_ar, gene_ar = self.downstream_helper_ob.create_mask(enhancer_positions)
+
+        assay_matrix = data_prep_ob.get_assay_data_at_positions(cfg, mask_vector, gene_ar)
+
+        assay_matrix = self.downstream_helper_ob.get_window_features(assay_matrix)
+
+        assay_matrix.to_pickle(self.assay_path + "_" + element_list[1])
+        '''
+
+
+        # promoters
+        rna_seq_ob = RnaSeq()
+        rna_seq_ob.get_rna_seq(self.rna_seq_path)
+        rna_seq_chr = rna_seq_ob.filter_rna_seq(self.chr_list_rna)
+        promoter_positions = rna_seq_chr['start']
+
+        mask_vector, label_ar, gene_ar = self.downstream_helper_ob.create_mask(promoter_positions)
+        assay_matrix = data_prep_ob.get_assay_data_at_positions(cfg, mask_vector, gene_ar)
+        assay_matrix.to_pickle(self.assay_path + "_" + element_list[0])
+
+        print("done")
+
+        '''
+        pe_ob = PeInteractions()
+        data_prep_ob = DataPrepGene(cfg, mode='test', chr=str(self.chr))
+        data_prep_ob.prepare_id_dict()
+        pe_ob.get_pe_data(self.pe_int_path)
+        pe_data_chr = pe_ob.filter_pe_data(self.chr_list_pe)
+        element_list = ['promoter', 'enhancer']
+        
+        for e in element_list:
+            for cell in self.pe_cell_names:
+                pe_data_chr_cell = pe_data_chr.loc[pe_data_chr['cell'] == cell]
+                pe_window_labels = pe_data_chr_cell.filter([e + '_start', e + '_end', 'label'], axis=1)
+                pe_window_labels.rename(columns={e + '_start': 'start', e + '_end': 'end', 'label': 'target'},
+                                        inplace=True)
+                pe_window_labels = pe_window_labels.drop_duplicates(keep='first').reset_index(drop=True)
+
+                mask_vector, label_ar, gene_ar = self.downstream_helper_ob.create_mask(pe_window_labels)
+
+                assay_matrix = data_prep_ob.get_assay_data_at_positions(cfg, mask_vector, gene_ar)
+
+                assay_matrix = self.downstream_helper_ob.get_window_features(assay_matrix)
+
+                assay_matrix.to_pickle(self.assay_path + "_" + e + '_' + cell)
+
+        '''
+
+        return assay_matrix
+
 
 if __name__ == '__main__':
     setup_logging()
@@ -295,14 +365,16 @@ if __name__ == '__main__':
 
     downstream_ob = DownstreamTasks(cfg, dir, chr, mode='lstm')
 
-    # mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
+    mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
 
     # mapdict_pe = downstream_ob.run_pe(cfg)
 
     # mapdict_fire = downstream_ob.run_fires(cfg)
 
-    mapdict_rep = downstream_ob.run_rep_timings(cfg)
+    # mapdict_rep = downstream_ob.run_rep_timings(cfg)
 
     # mapdict_fire = downstream_ob.run_fires(cfg)
+
+    # assay_matrix = downstream_ob.get_assays_at_positions(cfg)
 
     print("done")

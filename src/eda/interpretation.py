@@ -46,8 +46,8 @@ class Interpretation:
         pe_df = None
 
         pe_ob = PeInteractions()
-        pe_ob.get_pe_data(intp_ob.pe_int_path)
-        pe_data_chr = pe_ob.filter_pe_data(intp_ob.chr_pe)
+        pe_ob.get_pe_data(self.pe_int_path)
+        pe_data_chr = pe_ob.filter_pe_data(self.chr_pe)
 
         element_list = ["promoter", "enhancer"]
         for cell in self.pe_cell_names:
@@ -61,11 +61,8 @@ class Interpretation:
 
                 mask_vector, label_ar, gene_ar = self.downstream_helper_ob.create_mask(pe_window_labels)
 
-                feature_matrix = self.downstream_helper_ob.get_feature_matrix(cfg, mask_vector, label_ar, gene_ar,
-                                                                              self.run_features_pe,
-                                                                              self.feat_mat_pe + "_" + cell + "_" + e + ".pkl",
-                                                                              self.downstream_ob.downstream_main,
-                                                                              self.chr_pe)
+                feature_matrix = self.interpret_helper_ob.filter_matrix(mask_vector, self.feat_mat_whole + ".pkl",
+                                                                        gene_ar)
 
                 feature_matrix = self.downstream_helper_ob.get_window_features(feature_matrix)
 
@@ -119,6 +116,56 @@ class Interpretation:
 
         return feature_matrix
 
+    def run_density_plots(self, ):
+
+        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/gc_phylo/feat_phylo_chr_21.pkl"
+        phylo_df = pd.read_pickle(path)
+
+        for i in range(0, 24):
+            feat_cur = str(i + 1)
+            x = phylo_df[i]
+            y = phylo_df['p_score']
+            H, xedges, yedges = np.histogram2d(x, y, bins=10)
+
+
+            totals = []
+            for i in range(len(H)):
+                columns = H[:, i]
+                totals.append(np.sum(columns))
+            to_be_array = []
+
+            for i in range(len(H)):
+
+                cur = []
+                for j in range(len(H)):
+                    # cur.append(H[i][j]/totals[j])
+                    H[i][j] = H[i][j] / totals[j]
+                # to_be_array.append(cur)
+
+            new_H = np.array(to_be_array)
+
+
+            # newH = H.transpose()
+
+            newH = np.zeros((H.shape))
+            #newH[: len(newH) - 2, :] = H[2:len(newH), :]
+            #newH[len(newH) - 2:, :] = H[:2, :]
+            #newH = np.flip(H, axis=0)
+
+            plt.figure()
+            X, Y = np.meshgrid(xedges, yedges)
+            plt.pcolormesh(X, Y, H.T)
+
+            # plt.pcolormesh(xedges,yedges, new_H, cmap='Blues')
+            plt.xlabel('Values of Feature' + " " + feat_cur)
+            plt.ylabel('PhyloP Score')
+            cbar = plt.colorbar()
+            cbar.ax.set_ylabel('Counts')
+
+            plt.show()
+
+        return
+
 
 if __name__ == "__main__":
     setup_logging()
@@ -136,6 +183,10 @@ if __name__ == "__main__":
     # pe_df = intp_ob.get_pe_df(cfg)
 
     logging.info("Get GC DFs")
-    gc_df, gc_content = intp_ob.get_gc_df(cfg)
+    # gc_df, gc_content = intp_ob.get_gc_df(cfg)
 
-    phylo_df = intp_ob.get_phylo_df(cfg)
+    # phylo_df = intp_ob.get_phylo_df(cfg)
+
+    intp_ob.run_density_plots()
+
+    print("done")

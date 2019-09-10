@@ -8,6 +8,7 @@ from keras.models import load_model
 from downstream.avocado.run_avocado import AvocadoAnalysis
 import yaml
 import traceback
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,9 @@ class AvoDownstreamHelper:
         ind_list = []
         label_ar = np.zeros(self.chr_len)
         gene_ar = np.zeros(self.chr_len)
+        mask_vec = np.ones(self.chr_len, bool)
 
+        '''
         for i in range(window_labels.shape[0]):
 
             start = window_labels.loc[i, "start"]
@@ -54,6 +57,7 @@ class AvoDownstreamHelper:
         ind_ar = np.array(ind_list)
 
         mask_vec[ind_ar] = True
+        '''
 
         return mask_vec, label_ar, gene_ar
 
@@ -63,6 +67,7 @@ class AvoDownstreamHelper:
         if run_features:
             Avocado_ob = AvocadoAnalysis()
             model = load_model("{}.h5".format(model_path + model_name))
+
             gen_factors = Avocado_ob.get_genomic_factors(model, cfg, mask_vector)
             feature_matrix = self.filter_states(gen_factors, feature_matrix,
                                                 mask_vector, label_ar, gene_ar)

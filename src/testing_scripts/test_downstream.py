@@ -56,6 +56,7 @@ np.save(dir_path + "p_score.npy", p_score)
 
 '''
 
+'''
 dir_path = "/data2/latent/data/interpretation/phylogenetic_scores/"
 npy_path = dir_path + "p_score.npy"
 
@@ -67,5 +68,52 @@ count = 0
 for cut in range(int(len(p_score)/window)):
     reduced_p_score[count] = p_score[cut * window: (cut + 1) * window].mean()
     count += 1
+
+print("done")
+'''
+
+# gene_windows = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/rna_windows.pkl"
+# pe_windows = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/pe_windows.pkl"
+# chr_21 = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/feat_chr_21.pkl"
+# phylo = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/feat_phylo_chr_21.pkl"
+
+'''
+gene = pd.read_pickle(gene_windows)
+pe = pd.read_pickle(pe_windows)
+
+pe['promoter_middle'] = pd.to_numeric(np.floor(pe['promoter_start'] + (pe['promoter_end'] - pe['promoter_start']) / 2))
+pe['enhancer_middle'] = pd.to_numeric(np.ceil(pe['enhancer_start'] + (pe['enhancer_end'] - pe['enhancer_start']) / 2))
+
+pe_middle = pe.filter(['promoter_middle', 'enhancer_middle', 'cell'], axis=1)
+
+genes = gene_windows.loc[(gene_windows['end'] - gene_windows['start']) > 400]
+'''
+# phylo = pd.read_pickle(phylo)
+
+#p_path = "/home/kevindsouza/Documents/projects/latentGenome/results/06-25-2019_n/h3_ch21/assay/windows/assay_21_promoter_E017"
+#e_path = "/data2/latent/data/interpretation/enhancers/enhancers.txt"
+
+#prom = pd.read_pickle(p_path)
+#en = pd.read_pickle(e_path)
+
+#assay_path = "/home/kevindsouza/Documents/projects/latentGenome/results/06-25-2019_n/h3_ch21/assay/new_positions/assay_21_promoter.pkl"
+#assay = pd.read_pickle(assay_path)
+
+'''
+df = pd.read_table(e_path, delim_whitespace=True)
+enhancer_positions = df['Id']
+enhancer_positions = enhancer_positions.loc[37528:38586].reset_index(drop=True)
+'''
+
+'''
+chr_21 = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/lstm_features/feat_chr_21.pkl"
+chr_20 = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/lstm_features/feat_chr_20.pkl"
+
+feat_21 = pd.read_pickle(chr_21)
+feat_20 = pd.read_pickle(chr_20)
+'''
+
+chromosome_path = "/data2/latent/data/avocado/avocado_features/avo_chr_21.pkl"
+chromosome = pd.read_pickle(chromosome_path)
 
 print("done")

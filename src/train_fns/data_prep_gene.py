@@ -28,7 +28,7 @@ class DataPrepGene():
         self.epigenome_npz_path = cfg.epigenome_npz_path_train
         self.epigenome_bigwig_path = cfg.epigenome_bigwig_path
         self.fasta_path = cfg.fasta_path
-        
+
     def get_data(self):
 
         # fasta_files = [f for f in listdir(self.fasta_path) if isfile(join(self.fasta_path, f))]
@@ -135,6 +135,46 @@ class DataPrepGene():
                     yield track_cut
                 except Exception as e:
                     logger.error(traceback.format_exc())
+
+    def get_assay_data_at_positions(self, cfg, mask_vector, gene_ar):
+
+        max_len = 0
+        last_pos = self.chr_cuts * self.ch_cut_len
+        pd_col = list(np.arange(cfg.input_size_encoder))
+        pd_col.append('gene_id')
+        assay_matrix = pd.DataFrame(columns=pd_col)
+
+        for num in range(self.chr_cuts):
+
+            print("num {}".format(num))
+
+            for epgen_assay, epgen_assay_id in sorted(self.epigenome_assay_dict.items()):
+                full_track_path = self.epigenome_npz_path + "/" + epgen_assay + ".npz"
+                track = np.load(full_track_path)
+                track = track['arr_0'][0]
+
+                if len(track) > max_len:
+                    max_len = len(track)
+
+                if num == self.chr_cuts - 1 and len(track) <= last_pos:
+                    track_patch = track[num * self.ch_cut_len:len(track)]
+                    self.tracks[epgen_assay_id][:len(track_patch)] = track_patch
+                    self.tracks[epgen_assay_id][len(track_patch):self.ch_cut_len] = np.zeros(
+                        (1, self.ch_cut_len - len(track_patch)))
+                else:
+                    track_patch = track[num * self.ch_cut_len:(num + 1) * self.ch_cut_len]
+                    self.tracks[epgen_assay_id][:len(track_patch)] = track_patch
+
+            mask_vec_cut = mask_vector[num * self.ch_cut_len: (num + 1) * self.ch_cut_len]
+            gene_ar_cut = gene_ar[num * self.ch_cut_len: (num + 1) * self.ch_cut_len]
+
+            gene_id = gene_ar_cut[mask_vec_cut,]
+            assays = self.tracks[:, mask_vec_cut]
+            temp_df = pd.DataFrame(assays.transpose(), columns=list(np.arange(cfg.input_size_encoder)))
+            temp_df['gene_id'] = gene_id
+            assay_matrix = assay_matrix.append(temp_df)
+
+        return assay_matrix
 
 
 if __name__ == '__main__':

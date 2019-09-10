@@ -24,7 +24,9 @@ class DownstreamHelper:
 
         label_ar = np.zeros(self.chr_len)
         gene_ar = np.zeros(self.chr_len)
+        mask_vec = np.ones(self.chr_len, bool)
 
+        '''
         for i in range(window_labels.shape[0]):
 
             start = window_labels.loc[i, "start"]
@@ -40,10 +42,13 @@ class DownstreamHelper:
                 label_ar[start - 1 + j] = window_labels.loc[i, "target"]
                 gene_ar[start - 1 + j] = i
 
+        
+        
         mask_vec = np.zeros(self.chr_len, bool)
         ind_ar = np.array(ind_list)
 
         mask_vec[ind_ar] = True
+        '''
 
         return mask_vec, label_ar, gene_ar
 
@@ -69,8 +74,9 @@ class DownstreamHelper:
 
     def get_window_features(self, feature_matrix):
 
-        pd_col = list(np.arange(self.cfg.hidden_size_encoder))
-        pd_col.append('target')
+        col_length = self.cfg.input_size_encoder
+        pd_col = list(np.arange(col_length))
+        # pd_col.append('target')
         window_feature_matrix = pd.DataFrame(columns=pd_col)
 
         n_genes = feature_matrix['gene_id'].nunique()
@@ -79,14 +85,14 @@ class DownstreamHelper:
             subset_gene_df = feature_matrix.loc[feature_matrix["gene_id"] == i,]
 
             if not subset_gene_df.empty:
-                window_feature_matrix.loc[count, 0:self.cfg.hidden_size_encoder] = subset_gene_df.iloc[:,
-                                                                                   0:self.cfg.hidden_size_encoder].mean()
+                window_feature_matrix.loc[count, 0:col_length] = subset_gene_df.iloc[:,
+                                                                                   0:col_length].mean()
 
-                window_feature_matrix.iloc[count]["target"] = subset_gene_df.iloc[0]["target"]
+                # window_feature_matrix.iloc[count]["target"] = subset_gene_df.iloc[0]["target"]
                 count += 1
 
         window_feature_matrix = window_feature_matrix.apply(pd.to_numeric)
-        window_feature_matrix.target = window_feature_matrix.target.astype(int)
+        # window_feature_matrix.target = window_feature_matrix.target.astype(int)
 
         return window_feature_matrix
 

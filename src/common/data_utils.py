@@ -167,7 +167,7 @@ def decimate_vector(x, k=25, func=numpy.mean):
 if __name__ == "__main__":
     # chroms = list(range(1, 23)) + ['X']
 
-    chroms = [15, 16, 17, 18]
+    chroms = [12, 13, 14]
     bigwigPath = "/data2/latent/data/bigwig"
 
     bigwigfiles = [f for f in listdir(bigwigPath) if isfile(join(bigwigPath, f))]

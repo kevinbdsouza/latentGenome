@@ -7,7 +7,7 @@ class Config:
         self.load_weights = False
 
         self.input_size_encoder = 1030
-        self.hidden_size_encoder = 24
+        self.hidden_size_encoder = 3
 
         self.cell_assay_embed_size = self.hidden_size_encoder
 
@@ -24,8 +24,8 @@ class Config:
 
         self.fasta_path = "/opt/data/latent/data/dna"
 
-        self.epigenome_npz_path_train = '/data2/latent/data/npz/ch21_arc_sinh_znorm'
-        self.epigenome_npz_path_test = '/data2/latent/data/npz/ch21_arc_sinh_znorm'
+        self.epigenome_npz_path_train = '/data2/latent/data/npz/chr21_arc_sinh_znorm'
+        self.epigenome_npz_path_test = '/data2/latent/data/npz/chr21_arc_sinh_znorm'
         self.epigenome_bigwig_path = '/opt/data/latent/data/bigwig'
 
         self.model_dir = '/home/kevindsouza/Documents/projects/latentGenome/src/saved_model/model_all_ca'
@@ -43,6 +43,8 @@ class Config:
         self.chr_cuts = {'20': 7, '21': 5}
         self.chr_len = {'20': 2518700, '21': 1926400}
 
-        self.downstream_df_columns = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', 'f13',
-                                      'f14', 'f15', 'f16', 'f17', 'f18', 'f19', 'f20', 'f21', 'f22', 'f23', 'f24',
-                                      'target', 'gene_id']
+        # self.downstream_df_columns = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', 'f13',
+        #                              'f14', 'f15', 'f16', 'f17', 'f18', 'f19', 'f20', 'f21', 'f22', 'f23', 'f24',
+        #                              'target', 'gene_id']
+
+        self.downstream_df_columns = ['f1', 'f2', 'f3', 'target', 'gene_id']
