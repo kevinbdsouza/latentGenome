@@ -30,14 +30,14 @@ def run_all(chr_list, down_dir):
         dir_name = down_dir + "/" + str(chr) + "/"
         model_dir_name = down_dir + "/model"
 
-        '''
+        """
         train_gene.train_iter_gene(cfg, chr=chr)
 
         os.system("mkdir {}".format(dir_name))
         os.system("mkdir {}".format(model_dir_name))
         os.system("mv -v {}/* {}/".format(cfg.model_dir, model_dir_name))
-        '''
-
+        """
+        
         cfg = get_config(model_dir_name, config_base, result_base)
         pd_col = list(np.arange(cfg.hidden_size_encoder))
         pd_col.append('target')
@@ -46,19 +46,19 @@ def run_all(chr_list, down_dir):
 
         downstream_ob = DownstreamTasks(cfg, dir_name, chr, mode='lstm')
 
-        # mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
-        # mean_map_rna = get_avg_map(mapdict_rna_seq)
-        # logging.info("mean MAP RNA-Seq: {}".format(mean_map_rna))
+        mapdict_rna_seq = downstream_ob.run_rna_seq(cfg)
+        mean_map_rna = get_avg_map(mapdict_rna_seq)
+        logging.info("mean MAP RNA-Seq: {}".format(mean_map_rna))
 
         mapdict_pe_seq = downstream_ob.run_pe(cfg)
         mean_map_pe = get_avg_map(mapdict_pe_seq)
         logging.info("mean MAP PE: {}".format(mean_map_pe))
 
-        # mapdict_fire_seq = downstream_ob.run_fires(cfg)
-        # mean_map_fire = get_avg_map(mapdict_fire_seq)
-        # logging.info("mean MAP fire: {}".format(mean_map_fire))
+        mapdict_fire_seq = downstream_ob.run_fires(cfg)
+        mean_map_fire = get_avg_map(mapdict_fire_seq)
+        logging.info("mean MAP fire: {}".format(mean_map_fire))
 
-    return mapdict_pe_seq
+    return mapdict_rna_seq, mapdict_pe_seq, mapdict_pe_seq
 
 
 if __name__ == "__main__":
@@ -70,8 +70,6 @@ if __name__ == "__main__":
 
     # hidden_nodes = [6, 12, 24, 36, 48, 60, 96, 110]
 
-    mapdict_fire_seq = run_all(chr_list, down_dir)
+    mapdict_rna_seq, mapdict_pe_seq, mapdict_pe_seq = run_all(chr_list, down_dir)
 
     # np.save(down_dir + "/" + "map_norm.npy", map_list_norm)
-
-    print("done")
