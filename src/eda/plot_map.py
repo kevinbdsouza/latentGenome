@@ -79,7 +79,9 @@ class PlotMap:
             plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i])
 
         plt.legend(fontsize=12)
-        plt.savefig(path + 'lstm_rna.png')
+        plt.show()
+        print("done")
+        #plt.savefig(path + 'lstm_rna.png')
 
     def plot_pe(self, path, avocado_pe, lstm_pe):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_pe)
