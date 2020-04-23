@@ -60,7 +60,7 @@ class PlotMap:
     def plot_rna_seq(self, path, lstm_rna, avocado_rna):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_rna)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_rna)
-        value_list_baseline = list(np.load(path + "baseline_rna.npy"))
+        value_list_baseline = list(np.load(self.path + "baseline_rna.npy"))
         # value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
         plt.figure(figsize=(14, 6))
@@ -87,7 +87,7 @@ class PlotMap:
     def plot_pe(self, path, avocado_pe, lstm_pe):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_pe)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_pe)
-        value_list_baseline = list(np.load(path + "baseline_pe.npy"))
+        value_list_baseline = list(np.load(self.path + "baseline_pe.npy"))
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
@@ -141,7 +141,7 @@ class PlotMap:
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
         value_list_baseline = [x - 0.01 for x in value_list_lstm]
-        
+
         df = pd.DataFrame(
             zip(key_list_avocado * 5, ["avocado"] * 5 + ["lstm"] * 5 + ["baseline"]*5, value_list_avocado + value_list_lstm + value_list_baseline),
             columns=["cell types", "labels", "MAP"])
