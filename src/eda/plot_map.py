@@ -97,7 +97,7 @@ class PlotMap:
         df.loc[df["labels"] == "lstm", "color"] = "red"
         plt.figure()
         sns.set(font_scale=1.5)
-        sns.barplot(x="cell types", hue="labels", y="MAP", color="color", data=df)
+        sns.barplot(x="cell types", hue="labels", y="MAP", palette="color", data=df)
 
         plt.legend(fontsize=14)
         plt.show()
