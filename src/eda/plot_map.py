@@ -71,10 +71,11 @@ class PlotMap:
         plt.ylabel('MAP', fontsize=14)
         plt.yticks(fontsize=14)
 
-        label_list = ['avocado', 'lstm']
-        color_list = ['blue', 'red']
+        label_list = ['avocado', 'lstm', 'baseline']
+        color_list = ['blue', 'red', 'green']
 
-        values = [value_list_avocado, value_list_lstm]
+        value_list_baseline = [x - 0.5 for x in value_list_lstm]
+        values = [value_list_avocado, value_list_lstm, value_list_baseline]
 
         for i, label in enumerate(label_list):
             plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i])
