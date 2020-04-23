@@ -93,9 +93,9 @@ class PlotMap:
         df = pd.DataFrame(
             zip(key_list_avocado * 4, ["avocado"] * 4 + ["lstm"] * 4, value_list_avocado + value_list_lstm),
             columns=["cell types", "labels", "MAP"])
-        palette = {"avocado": "C0", "lstm": "C3"}
+        palette = {"avocado": "C0", "lstm": "C4"}
         plt.figure()
-        sns.set(font_scale=1.5)
+        sns.set(font_scale=1.3)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
 
         plt.legend(fontsize=14)
