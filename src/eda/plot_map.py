@@ -18,8 +18,8 @@ class PlotMap:
     def plot_all(self, path):
         avocado_rna, avocado_pe, avocado_fire, avocado_rep, lstm_rna, lstm_pe, lstm_fire, lstm_rep = self.get_dict(path)
 
-        # self.plot_rna_seq(path, lstm_rna, avocado_rna)
-        self.plot_pe(path, avocado_pe, lstm_pe)
+        self.plot_rna_seq(path, lstm_rna, avocado_rna)
+        # self.plot_pe(path, avocado_pe, lstm_pe)
         # self.plot_fire(path, avocado_fire, lstm_fire)
         # self.plot_rep(path, avocado_rep, lstm_rep)
 
