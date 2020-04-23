@@ -65,10 +65,10 @@ class PlotMap:
 
         plt.figure(figsize=(14, 6))
         plt.ylim(0, 1)
-        plt.xticks(rotation=90, fontsize=10)
-        plt.title('Gene Expression', fontsize=12)
+        plt.xticks(rotation=90, fontsize=14)
+        # plt.title('Gene Expression', fontsize=12)
         # plt.xlabel('Cell Types')
-        plt.ylabel('MAP', fontsize=12)
+        plt.ylabel('MAP', fontsize=14)
 
         label_list = ['avocado', 'lstm']
         color_list = ['red', 'blue']
@@ -78,7 +78,7 @@ class PlotMap:
         for i, label in enumerate(label_list):
             plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i])
 
-        plt.legend(fontsize=12)
+        plt.legend(fontsize=14)
         plt.show()
         print("done")
         #plt.savefig(path + 'lstm_rna.png')
