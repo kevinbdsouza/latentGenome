@@ -87,10 +87,9 @@ class PlotMap:
     def plot_pe(self, path, avocado_pe, lstm_pe):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_pe)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_pe)
+        value_list_baseline = list(np.load(path + "baseline_pe.npy"))
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
-
-        value_list_baseline = [x - 0.01 for x in value_list_lstm]
 
         df = pd.DataFrame(
             zip(key_list_avocado * 4, ["avocado"] * 4 + ["lstm"] * 4 + ["baseline"]*4, value_list_avocado + value_list_lstm + value_list_baseline),
@@ -110,11 +109,12 @@ class PlotMap:
         key_list_lstm, value_list_lstm = self.get_lists(lstm_fire)
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
+        value_list_baseline = [x - 0.01 for x in value_list_lstm]
 
         df = pd.DataFrame(
-            zip(key_list_avocado * 7, ["avocado"] * 7 + ["lstm"] * 7, value_list_avocado + value_list_lstm),
+            zip(key_list_avocado * 7, ["avocado"] * 7 + ["lstm"] * 7 + ["baseline"]*7, value_list_avocado + value_list_lstm + value_list_baseline),
             columns=["cell types", "labels", "MAP"])
-        palette = {"avocado": "C0", "lstm": "C3"}
+        palette = {"avocado": "C0", "lstm": "C3", "baseline":"C2"}
         plt.figure()
         sns.set(font_scale=1.3)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
@@ -140,11 +140,12 @@ class PlotMap:
         key_list_lstm, value_list_lstm = self.get_lists(lstm_rep)
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
-
+        value_list_baseline = [x - 0.01 for x in value_list_lstm]
+        
         df = pd.DataFrame(
-            zip(key_list_avocado * 5, ["avocado"] * 5 + ["lstm"] * 5, value_list_avocado + value_list_lstm),
+            zip(key_list_avocado * 5, ["avocado"] * 5 + ["lstm"] * 5 + ["baseline"]*5, value_list_avocado + value_list_lstm + value_list_baseline),
             columns=["cell types", "labels", "MAP"])
-        palette = {"avocado": "C0", "lstm": "C3"}
+        palette = {"avocado": "C0", "lstm": "C3", "baseline":"C2"}
         plt.figure()
         plt.ylim(0.85, 1)
         sns.set(font_scale=1.3)
