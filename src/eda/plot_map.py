@@ -145,11 +145,11 @@ class PlotMap:
         #value_list_baseline = [x - 0.01 for x in value_list_lstm]
 
         df = pd.DataFrame(
-            zip(key_list_avocado * 5, ["avocado"] * 5 + ["lstm"] * 5 + ["baseline"]*5, value_list_avocado + value_list_lstm + value_list_baseline),
+            zip(key_list_avocado * 5, ["avocado"] * 5 + ["lstm"] * 5 + ["baseline"] * 5, value_list_avocado + value_list_lstm + value_list_baseline),
             columns=["cell types", "labels", "MAP"])
         palette = {"avocado": "C0", "lstm": "C3", "baseline":"C2"}
         plt.figure()
-        plt.ylim(0.85, 1)
+        plt.ylim(0.45, 1)
         sns.set(font_scale=1.2)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
 
