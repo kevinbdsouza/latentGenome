@@ -18,10 +18,10 @@ class PlotMap:
     def plot_all(self, path):
         avocado_rna, avocado_pe, avocado_fire, avocado_rep, lstm_rna, lstm_pe, lstm_fire, lstm_rep = self.get_dict(path)
 
-        #self.plot_rna_seq(path, lstm_rna, avocado_rna)
+        # self.plot_rna_seq(path, lstm_rna, avocado_rna)
         self.plot_pe(path, avocado_pe, lstm_pe)
-        #self.plot_fire(path, avocado_fire, lstm_fire)
-        #self.plot_rep(path, avocado_rep, lstm_rep)
+        # self.plot_fire(path, avocado_fire, lstm_fire)
+        # self.plot_rep(path, avocado_rep, lstm_rep)
 
     def get_dict(self, path):
 
@@ -82,7 +82,7 @@ class PlotMap:
         plt.legend(fontsize=14)
         plt.show()
         print("done")
-        #plt.savefig(path + 'lstm_rna.png')
+        # plt.savefig(path + 'lstm_rna.png')
 
     def plot_pe(self, path, avocado_pe, lstm_pe):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_pe)
@@ -93,16 +93,15 @@ class PlotMap:
         df = pd.DataFrame(
             zip(key_list_avocado * 4, ["avocado"] * 4 + ["lstm"] * 4, value_list_avocado + value_list_lstm),
             columns=["cell types", "labels", "MAP"])
-        df["color"] = "blue"
-        df.loc[df["labels"] == "lstm", "color"] = "red"
+        palette = {"avocado": "C0", "lstm": "k"}
         plt.figure()
         sns.set(font_scale=1.5)
-        sns.barplot(x="cell types", hue="labels", y="MAP", palette=df["color"], data=df)
+        sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
 
         plt.legend(fontsize=14)
         plt.show()
         print("done")
-        #plt.savefig(path + 'map_pe.png')
+        # plt.savefig(path + 'map_pe.png')
 
     def plot_fire(self, path, avocado_fire, lstm_fire):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_fire)
@@ -138,7 +137,7 @@ class PlotMap:
         key_list_lstm, value_list_lstm = self.get_lists(lstm_rep)
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
-        
+
         df = pd.DataFrame(
             zip(key_list_avocado * 5, ["avocado"] * 5 + ["lstm"] * 5, value_list_avocado + value_list_lstm),
             columns=["cell types", "labels", "MAP"])
@@ -149,10 +148,11 @@ class PlotMap:
 
         plt.legend(fontsize=14)
         plt.show()
-        #plt.savefig(path + 'map_rep.png')
+        # plt.savefig(path + 'map_rep.png')
 
     def plot_hidden(self, path, hidden_list):
-        map_hidden = np.load("/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/map_hidden.npy")
+        map_hidden = np.load(
+            "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/map_hidden.npy")
         map_hidden[7] = 0.913
         map_2_layer = [0.71, 0.76, 0.825, 0.857, 0.87, 0.885, 0.912, 0.915]
         map_dropout = [0.65, 0.71, 0.785, 0.812, 0.851, 0.862, 0.89, 0.90]
@@ -190,6 +190,6 @@ if __name__ == "__main__":
     plot_ob.plot_all(plot_ob.path)
 
     hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
-    #plot_ob.plot_hidden(plot_ob.path, hidden_list)
+    # plot_ob.plot_hidden(plot_ob.path, hidden_list)
 
     print("done")
