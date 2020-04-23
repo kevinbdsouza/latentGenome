@@ -93,8 +93,8 @@ class PlotMap:
         df = pd.DataFrame(
             zip(key_list_avocado * 4, ["avocado"] * 4 + ["lstm"] * 4, value_list_avocado + value_list_lstm),
             columns=["cell types", "labels", "MAP"])
-        df["color"] = "b"
-        df.loc[df["labels"] == "lstm", "color"] = "r"
+        df["color"] = "blue"
+        df.loc[df["labels"] == "lstm", "color"] = "red"
         plt.figure()
         sns.set(font_scale=1.5)
         sns.barplot(x="cell types", hue="labels", y="MAP", color="color", data=df)
