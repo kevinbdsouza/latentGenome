@@ -93,7 +93,7 @@ class PlotMap:
         df = pd.DataFrame(
             zip(key_list_avocado * 4, ["avocado"] * 4 + ["lstm"] * 4, value_list_avocado + value_list_lstm),
             columns=["cell types", "labels", "MAP"])
-        palette = {"avocado": "C0", "lstm": "C2"}
+        palette = {"avocado": "C0", "lstm": "C3"}
         plt.figure()
         sns.set(font_scale=1.3)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
@@ -112,7 +112,7 @@ class PlotMap:
         df = pd.DataFrame(
             zip(key_list_avocado * 7, ["avocado"] * 7 + ["lstm"] * 7, value_list_avocado + value_list_lstm),
             columns=["cell types", "labels", "MAP"])
-        palette = {"avocado": "C0", "lstm": "C4"}
+        palette = {"avocado": "C0", "lstm": "C3"}
         plt.figure()
         sns.set(font_scale=1.3)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
@@ -142,7 +142,7 @@ class PlotMap:
         df = pd.DataFrame(
             zip(key_list_avocado * 5, ["avocado"] * 5 + ["lstm"] * 5, value_list_avocado + value_list_lstm),
             columns=["cell types", "labels", "MAP"])
-        palette = {"avocado": "C0", "lstm": "C4"}
+        palette = {"avocado": "C0", "lstm": "C3"}
         plt.figure()
         plt.ylim(0.85, 1)
         sns.set(font_scale=1.3)
