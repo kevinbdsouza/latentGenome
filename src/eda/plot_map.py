@@ -107,9 +107,9 @@ class PlotMap:
     def plot_fire(self, path, avocado_fire, lstm_fire):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_fire)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_fire)
+        value_list_baseline = list(np.load(self.path + "baseline_fire.npy"))
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
-        value_list_baseline = [x - 0.01 for x in value_list_lstm]
 
         df = pd.DataFrame(
             zip(key_list_avocado * 7, ["avocado"] * 7 + ["lstm"] * 7 + ["baseline"]*7, value_list_avocado + value_list_lstm + value_list_baseline),
