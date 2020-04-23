@@ -79,7 +79,7 @@ class PlotMap:
         for i, label in enumerate(label_list):
             plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i])
 
-        plt.legend(fontsize=14)
+        plt.legend(fontsize=15)
         plt.show()
         print("done")
         # plt.savefig(path + 'lstm_rna.png')
@@ -98,7 +98,7 @@ class PlotMap:
         sns.set(font_scale=1.3)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
 
-        plt.legend(fontsize=14)
+        plt.legend(fontsize=15)
         plt.show()
         print("done")
         # plt.savefig(path + 'map_pe.png')
@@ -112,11 +112,12 @@ class PlotMap:
         df = pd.DataFrame(
             zip(key_list_avocado * 7, ["avocado"] * 7 + ["lstm"] * 7, value_list_avocado + value_list_lstm),
             columns=["cell types", "labels", "MAP"])
+        palette = {"avocado": "C0", "lstm": "C4"}
         plt.figure()
-        sns.set(font_scale=1.5)
-        sns.barplot(x="cell types", hue="labels", y="MAP", data=df)
+        sns.set(font_scale=1.3)
+        sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
 
-        plt.legend(fontsize=14)
+        plt.legend(fontsize=15)
         plt.show()
         plt.savefig(path + 'map_fire.png')
 
@@ -141,12 +142,13 @@ class PlotMap:
         df = pd.DataFrame(
             zip(key_list_avocado * 5, ["avocado"] * 5 + ["lstm"] * 5, value_list_avocado + value_list_lstm),
             columns=["cell types", "labels", "MAP"])
+        palette = {"avocado": "C0", "lstm": "C4"}
         plt.figure()
         plt.ylim(0.85, 1)
-        sns.set(font_scale=1.5)
-        sns.barplot(x="cell types", hue="labels", y="MAP", data=df)
+        sns.set(font_scale=1.3)
+        sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
 
-        plt.legend(fontsize=14)
+        plt.legend(fontsize=15)
         plt.show()
         # plt.savefig(path + 'map_rep.png')
 
