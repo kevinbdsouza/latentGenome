@@ -19,8 +19,8 @@ class PlotMap:
         avocado_rna, avocado_pe, avocado_fire, avocado_rep, lstm_rna, lstm_pe, lstm_fire, lstm_rep = self.get_dict(path)
 
         # self.plot_rna_seq(path, lstm_rna, avocado_rna)
-        self.plot_pe(path, avocado_pe, lstm_pe)
-        # self.plot_fire(path, avocado_fire, lstm_fire)
+        # self.plot_pe(path, avocado_pe, lstm_pe)
+        self.plot_fire(path, avocado_fire, lstm_fire)
         # self.plot_rep(path, avocado_rep, lstm_rep)
 
     def get_dict(self, path):
@@ -121,7 +121,8 @@ class PlotMap:
 
         plt.legend(fontsize=15)
         plt.show()
-        plt.savefig(path + 'map_fire.png')
+        print("done")
+        #plt.savefig(path + 'map_fire.png')
 
     def plot_tad(self, path, tad_dict):
         key_list, value_list = self.get_lists(tad_dict)
