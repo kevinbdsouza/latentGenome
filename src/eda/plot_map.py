@@ -149,7 +149,7 @@ class PlotMap:
             columns=["cell types", "labels", "MAP"])
         palette = {"avocado": "C0", "lstm": "C3", "baseline":"C2"}
         plt.figure()
-        plt.ylim(0.45, 1)
+        plt.ylim(0.65, 1)
         sns.set(font_scale=1.2)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
 
