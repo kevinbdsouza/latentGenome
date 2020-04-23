@@ -96,7 +96,7 @@ class PlotMap:
             columns=["cell types", "labels", "MAP"])
         palette = {"avocado": "C0", "lstm": "C3", "baseline":"C2"}
         plt.figure()
-        sns.set(font_scale=1.3)
+        sns.set(font_scale=1.2)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
 
         plt.legend(fontsize=15)
@@ -116,7 +116,7 @@ class PlotMap:
             columns=["cell types", "labels", "MAP"])
         palette = {"avocado": "C0", "lstm": "C3", "baseline":"C2"}
         plt.figure()
-        sns.set(font_scale=1.3)
+        sns.set(font_scale=1.2)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
 
         plt.legend(fontsize=15)
@@ -149,7 +149,7 @@ class PlotMap:
         palette = {"avocado": "C0", "lstm": "C3", "baseline":"C2"}
         plt.figure()
         plt.ylim(0.85, 1)
-        sns.set(font_scale=1.3)
+        sns.set(font_scale=1.2)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
 
         plt.legend(fontsize=15)
