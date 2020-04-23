@@ -18,8 +18,8 @@ class PlotMap:
     def plot_all(self, path):
         avocado_rna, avocado_pe, avocado_fire, avocado_rep, lstm_rna, lstm_pe, lstm_fire, lstm_rep = self.get_dict(path)
 
-        self.plot_rna_seq(path, lstm_rna, avocado_rna)
-        #self.plot_pe(path, avocado_pe, lstm_pe)
+        #self.plot_rna_seq(path, lstm_rna, avocado_rna)
+        self.plot_pe(path, avocado_pe, lstm_pe)
         #self.plot_fire(path, avocado_fire, lstm_fire)
         #self.plot_rep(path, avocado_rep, lstm_rep)
 
@@ -71,7 +71,7 @@ class PlotMap:
         plt.ylabel('MAP', fontsize=14)
 
         label_list = ['avocado', 'lstm']
-        color_list = ['red', 'blue']
+        color_list = ['blue', 'red']
 
         values = [value_list_avocado, value_list_lstm]
 
@@ -93,11 +93,12 @@ class PlotMap:
             zip(key_list_avocado * 4, ["avocado"] * 4 + ["lstm"] * 4, value_list_avocado + value_list_lstm),
             columns=["cell types", "labels", "MAP"])
         plt.figure()
-        sns.set(font_scale=1)
+        sns.set(font_scale=2)
         sns.barplot(x="cell types", hue="labels", y="MAP", data=df)
 
-        plt.legend()
-        plt.savefig(path + 'map_pe.png')
+        plt.legend(fontsize=14)
+        plt.show()
+        #plt.savefig(path + 'map_pe.png')
 
     def plot_fire(self, path, avocado_fire, lstm_fire):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_fire)
@@ -112,8 +113,8 @@ class PlotMap:
         sns.set(font_scale=1)
         sns.barplot(x="cell types", hue="labels", y="MAP", data=df)
 
-        plt.legend(fontsize=12)
-
+        plt.legend(fontsize=14)
+        plt.show()
         plt.savefig(path + 'map_fire.png')
 
     def plot_tad(self, path, tad_dict):
@@ -142,9 +143,9 @@ class PlotMap:
         sns.set(font_scale=1)
         sns.barplot(x="cell types", hue="labels", y="MAP", data=df)
 
-        plt.legend()
-
-        plt.savefig(path + 'map_rep.png')
+        plt.legend(fontsize=14)
+        plt.show()
+        #plt.savefig(path + 'map_rep.png')
 
     def plot_hidden(self, path, hidden_list):
         map_hidden = np.load("/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/map_hidden.npy")
