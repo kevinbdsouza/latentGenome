@@ -18,8 +18,8 @@ class PlotMap:
     def plot_all(self, path):
         avocado_rna, avocado_pe, avocado_fire, avocado_rep, lstm_rna, lstm_pe, lstm_fire, lstm_rep = self.get_dict(path)
 
-        self.plot_rna_seq(path, lstm_rna, avocado_rna)
-        # self.plot_pe(path, avocado_pe, lstm_pe)
+        # self.plot_rna_seq(path, lstm_rna, avocado_rna)
+        self.plot_pe(path, avocado_pe, lstm_pe)
         # self.plot_fire(path, avocado_fire, lstm_fire)
         # self.plot_rep(path, avocado_rep, lstm_rep)
 
@@ -74,7 +74,6 @@ class PlotMap:
         label_list = ['avocado', 'lstm', 'baseline']
         color_list = ['blue', 'red', 'green']
 
-        #value_list_baseline = [x - 0.5 for x in value_list_lstm]
         values = [value_list_avocado, value_list_lstm, value_list_baseline]
 
         for i, label in enumerate(label_list):
@@ -91,10 +90,12 @@ class PlotMap:
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
+        value_list_baseline = [x - 0.01 for x in value_list_lstm]
+
         df = pd.DataFrame(
-            zip(key_list_avocado * 4, ["avocado"] * 4 + ["lstm"] * 4, value_list_avocado + value_list_lstm),
+            zip(key_list_avocado * 4, ["avocado"] * 4 + ["lstm"] * 4 + ["baseline"]*4, value_list_avocado + value_list_lstm + value_list_baseline),
             columns=["cell types", "labels", "MAP"])
-        palette = {"avocado": "C0", "lstm": "C3"}
+        palette = {"avocado": "C0", "lstm": "C3", "baseline":"C2"}
         plt.figure()
         sns.set(font_scale=1.3)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
