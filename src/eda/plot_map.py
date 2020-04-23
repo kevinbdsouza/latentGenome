@@ -60,7 +60,7 @@ class PlotMap:
     def plot_rna_seq(self, path, lstm_rna, avocado_rna):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_rna)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_rna)
-
+        value_list_baseline = np.load(path + "baseline_rna.npy").item()
         # value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
         plt.figure(figsize=(14, 6))
@@ -74,7 +74,7 @@ class PlotMap:
         label_list = ['avocado', 'lstm', 'baseline']
         color_list = ['blue', 'red', 'green']
 
-        value_list_baseline = [x - 0.5 for x in value_list_lstm]
+        #value_list_baseline = [x - 0.5 for x in value_list_lstm]
         values = [value_list_avocado, value_list_lstm, value_list_baseline]
 
         for i, label in enumerate(label_list):
