@@ -139,9 +139,10 @@ class PlotMap:
     def plot_rep(self, path, avocado_rep, lstm_rep):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_rep)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_rep)
+        value_list_baseline = list(np.load(self.path + "baseline_rep.npy"))
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
-        value_list_baseline = [x - 0.01 for x in value_list_lstm]
+        #value_list_baseline = [x - 0.01 for x in value_list_lstm]
 
         df = pd.DataFrame(
             zip(key_list_avocado * 5, ["avocado"] * 5 + ["lstm"] * 5 + ["baseline"]*5, value_list_avocado + value_list_lstm + value_list_baseline),
