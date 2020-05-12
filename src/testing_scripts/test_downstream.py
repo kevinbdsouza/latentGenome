@@ -118,7 +118,7 @@ chromosome_path = "/data2/latent/data/avocado/avocado_features/avo_chr_21.pkl"
 chromosome = pd.read_pickle(chromosome_path)
 '''
 
-data_path = "/Users/kevindsouza/Documents/UBC/PhD/Research/latent_genome/latentGenome/src/common/data/"
+data_path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
 
 gc_path = data_path + "gccorrelations.pkl"
 phylo_path = data_path + "phylo_abs_corr.pkl"
