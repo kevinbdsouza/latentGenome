@@ -3,6 +3,7 @@ from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.ensemble import GradientBoostingClassifier
 import numpy as np
 import re
+import matplotlib.pyplot as plt
 
 '''
 pe_int_path = "/opt/data/latent/data/downstream/PE-interactions"
@@ -125,5 +126,13 @@ phylo_path = data_path + "phylo_abs_corr.pkl"
 
 gc_corr = pd.read_pickle(gc_path)
 phylo_corr = pd.read_pickle(phylo_path)
+pearson_avo = []
+pearson_lstm = []
+
+features = np.linspace(1, 24, num=24, endpoint=True)
+
+plt.plot(features, gc_corr)
+plt.show()
+
 
 print("done")
