@@ -132,12 +132,13 @@ pearson_lstm = []
 features = np.linspace(1, 24, num=24, endpoint=True)
 
 plt.xticks(features)
-# "AbsVal phyloP Score Correlation"
-plt.ylabel('GC Content Correlation', fontsize=14)
+
+plt.ylabel('AbsVal phyloP Score Correlation', fontsize=14)
+#plt.ylabel('GC Content Correlation', fontsize=14)
 plt.xlabel('Features', fontsize=14)
 plt.xticks(rotation=90, fontsize=14)
 plt.yticks(fontsize=14)
-plt.scatter(features, gc_corr, s=100)
+plt.scatter(features, phylo_corr, s=100)
 plt.show()
 
 print("done")
