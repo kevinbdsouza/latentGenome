@@ -91,14 +91,14 @@ genes = gene_windows.loc[(gene_windows['end'] - gene_windows['start']) > 400]
 '''
 # phylo = pd.read_pickle(phylo)
 
-#p_path = "/home/kevindsouza/Documents/projects/latentGenome/results/06-25-2019_n/h3_ch21/assay/windows/assay_21_promoter_E017"
-#e_path = "/data2/latent/data/interpretation/enhancers/enhancers.txt"
+# p_path = "/home/kevindsouza/Documents/projects/latentGenome/results/06-25-2019_n/h3_ch21/assay/windows/assay_21_promoter_E017"
+# e_path = "/data2/latent/data/interpretation/enhancers/enhancers.txt"
 
-#prom = pd.read_pickle(p_path)
-#en = pd.read_pickle(e_path)
+# prom = pd.read_pickle(p_path)
+# en = pd.read_pickle(e_path)
 
-#assay_path = "/home/kevindsouza/Documents/projects/latentGenome/results/06-25-2019_n/h3_ch21/assay/new_positions/assay_21_promoter.pkl"
-#assay = pd.read_pickle(assay_path)
+# assay_path = "/home/kevindsouza/Documents/projects/latentGenome/results/06-25-2019_n/h3_ch21/assay/new_positions/assay_21_promoter.pkl"
+# assay = pd.read_pickle(assay_path)
 
 '''
 df = pd.read_table(e_path, delim_whitespace=True)
@@ -131,8 +131,13 @@ pearson_lstm = []
 
 features = np.linspace(1, 24, num=24, endpoint=True)
 
-plt.plot(features, gc_corr)
+plt.xticks(features)
+# "AbsVal phyloP Score Correlation"
+plt.ylabel('GC Content Correlation', fontsize=14)
+plt.xlabel('GC Content Correlation', fontsize=14)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.plot(features, gc_corr, 'o')
 plt.show()
-
 
 print("done")
