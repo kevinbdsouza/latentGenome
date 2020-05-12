@@ -118,12 +118,12 @@ chromosome_path = "/data2/latent/data/avocado/avocado_features/avo_chr_21.pkl"
 chromosome = pd.read_pickle(chromosome_path)
 '''
 
-avocado = []
-lstm = []
+data_path = "/Users/kevindsouza/Documents/UBC/PhD/Research/latent_genome/latentGenome/src/common/data/"
 
-xaxis = []
+gc_path = data_path + "gccorrelations.pkl"
+phylo_path = data_path + "phylo_abs_corr.pkl"
 
-import matplotlib.pyplot as plt
-
+gc_corr = pd.read_pickle(gc_path)
+phylo_corr = pd.read_pickle(phylo_path)
 
 print("done")
