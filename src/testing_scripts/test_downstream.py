@@ -113,7 +113,17 @@ feat_21 = pd.read_pickle(chr_21)
 feat_20 = pd.read_pickle(chr_20)
 '''
 
+'''
 chromosome_path = "/data2/latent/data/avocado/avocado_features/avo_chr_21.pkl"
 chromosome = pd.read_pickle(chromosome_path)
+'''
+
+avocado = []
+lstm = []
+
+xaxis = []
+
+import matplotlib.pyplot as plt
+
 
 print("done")

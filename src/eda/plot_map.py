@@ -153,7 +153,7 @@ class PlotMap:
         sns.set(font_scale=1.2)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
 
-        plt.legend(fontsize=15)
+        plt.legend(fontsize=15, loc="center right")
         plt.show()
         print("done")
         # plt.savefig(path + 'map_rep.png')
