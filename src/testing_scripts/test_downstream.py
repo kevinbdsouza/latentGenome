@@ -131,17 +131,18 @@ features = np.linspace(1, 24, num=24, endpoint=True)
 '''
 
 pos = [100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600]
-r2_lstm = [0.5, 1.27, 1.32, 1.38, 1.42, 1.45, 1.49, 1.54, 1.62]
-r2_avo = [0.5, 1.45, 1.51, 1.56, 1.58, 1.62, 1.7, 1.8, 1.9]
+r2_lstm = [0.5, 1.22, 1.28, 1.34, 1.39, 1.45, 1.49, 1.54, 1.62]
+r2_avo = [0.5, 1.47, 1.52, 1.56, 1.59, 1.62, 1.7, 1.8, 1.9]
 
 #plt.xticks(pos)
 plt.ylabel('Modified Euclidean Metric', fontsize=14)
 #plt.xlabel('Features', fontsize=14)
 #plt.xticks(rotation=90, fontsize=14)
 plt.yticks(fontsize=14)
+plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 plt.plot(pos, r2_lstm, color='red', label='lstm')
 plt.plot(pos, r2_avo, color='blue', label='avocado')
-plt.legend(fontsize=14)
+plt.legend(fontsize=14, )
 plt.show()
 
 print("done")
