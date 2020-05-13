@@ -119,26 +119,27 @@ chromosome_path = "/data2/latent/data/avocado/avocado_features/avo_chr_21.pkl"
 chromosome = pd.read_pickle(chromosome_path)
 '''
 
+'''
 data_path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
-
 gc_path = data_path + "gccorrelations.pkl"
 phylo_path = data_path + "phylo_abs_corr.pkl"
 
 gc_corr = pd.read_pickle(gc_path)
 phylo_corr = pd.read_pickle(phylo_path)
-pearson_avo = []
-pearson_lstm = []
 
 features = np.linspace(1, 24, num=24, endpoint=True)
+'''
 
-plt.xticks(features)
+pos = [100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600]
+r2_lstm = [0.5, 1.27, 1.32, 1.36, 1.39, 1.42, 1.45, 1.5, 1.6]
+r2_avo = [0.5, 1.47, 1.52, 1.56, 1.59, 1.62, 1.7, 1.8, 1.9]
 
-plt.ylabel('AbsVal phyloP Score Correlation', fontsize=14)
-#plt.ylabel('GC Content Correlation', fontsize=14)
-plt.xlabel('Features', fontsize=14)
-plt.xticks(rotation=90, fontsize=14)
+#plt.xticks(pos)
+plt.ylabel('Modified Euclidean Metric', fontsize=14)
+#plt.xlabel('Features', fontsize=14)
+#plt.xticks(rotation=90, fontsize=14)
 plt.yticks(fontsize=14)
-plt.scatter(features, phylo_corr, s=100)
+plt.plot(pos, r2_lstm, 'red', pos, r2_avo, 'blue')
 plt.show()
 
 print("done")
