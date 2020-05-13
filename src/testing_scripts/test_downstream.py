@@ -149,8 +149,8 @@ pos = [100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600]
 plt.ylabel('Modified Euclidean Metric', fontsize=14)
 plt.yticks(fontsize=14)
 plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
-plt.plot(pos, r2_lstm, color='blue', label='avocado')
-plt.plot(pos, r2_avo, color='red', label='lstm')
+plt.plot(pos, r2_avo, color='blue', label='avocado')
+plt.plot(pos, r2_lstm, color='red', label='lstm')
 plt.legend(fontsize=14, )
 plt.show()
 
