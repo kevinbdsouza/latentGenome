@@ -128,22 +128,29 @@ gc_corr = pd.read_pickle(gc_path)
 phylo_corr = pd.read_pickle(phylo_path)
 
 features = np.linspace(1, 24, num=24, endpoint=True)
+#plt.xticks(pos)
+#plt.xlabel('Features', fontsize=14)
+#plt.xticks(rotation=90, fontsize=14)
 '''
 
-pos = [100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600]
+'''
 r2_lstm = [0.5, 1.14, 1.2, 1.3, 1.37, 1.46, 1.51, 1.6, 1.7]
 r2_lstm = r2_lstm / np.mean(r2_lstm)
 r2_avo = [0.5, 1.4, 1.51, 1.56, 1.59, 1.65, 1.7, 1.81, 1.91]
 r2_avo = r2_avo / np.mean(r2_avo)
 
-#plt.xticks(pos)
+'''
+
+path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
+r2_lstm = np.load(path + "mod_euclid_lstm.npy")
+r2_avo = np.load(path + "mod_euclid_avocado.npy")
+pos = [100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600]
+
 plt.ylabel('Modified Euclidean Metric', fontsize=14)
-#plt.xlabel('Features', fontsize=14)
-#plt.xticks(rotation=90, fontsize=14)
 plt.yticks(fontsize=14)
 plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
-plt.plot(pos, r2_lstm, color='red', label='lstm')
-plt.plot(pos, r2_avo, color='blue', label='avocado')
+plt.plot(pos, r2_lstm, color='blue', label='avocado')
+plt.plot(pos, r2_avo, color='red', label='lstm')
 plt.legend(fontsize=14, )
 plt.show()
 
