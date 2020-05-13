@@ -132,7 +132,9 @@ features = np.linspace(1, 24, num=24, endpoint=True)
 
 pos = [100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600]
 r2_lstm = [0.5, 1.22, 1.28, 1.34, 1.39, 1.45, 1.49, 1.54, 1.62]
+r2_lstm = r2_lstm / np.mean(r2_lstm)
 r2_avo = [0.5, 1.47, 1.52, 1.56, 1.59, 1.62, 1.7, 1.8, 1.9]
+r2_avo = r2_avo / np.mean(r2_avo)
 
 #plt.xticks(pos)
 plt.ylabel('Modified Euclidean Metric', fontsize=14)
