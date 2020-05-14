@@ -145,7 +145,7 @@ path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
 r2_lstm = np.load(path + "mod_euclid_lstm.npy")
 r2_avo = np.load(path + "mod_euclid_avocado.npy")
 pos = [0, 100, 200, 400, 800, 1600, 3200, 6400, 9000, 10000]
-pos = [i * 10000 for i in pos]
+pos = [i * 250000 for i in pos]
 
 plt.ylabel('R-squared', fontsize=14)
 plt.xlabel('Distance between positions', fontsize=14)
