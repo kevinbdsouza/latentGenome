@@ -144,7 +144,7 @@ r2_avo = r2_avo / np.mean(r2_avo)
 path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
 r2_lstm = np.load(path + "mod_euclid_lstm.npy")
 r2_avo = np.load(path + "mod_euclid_avocado.npy")
-pos = [0, 100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600]
+pos = [0, 100, 200, 400, 800, 1600, 3200, 6400, 9000, 12800] * 10e4
 
 plt.ylabel('R-squared', fontsize=14)
 plt.xlabel('Distance between positions', fontsize=14)
