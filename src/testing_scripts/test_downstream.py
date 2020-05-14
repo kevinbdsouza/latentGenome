@@ -146,13 +146,16 @@ r2_lstm = np.load(path + "mod_euclid_lstm.npy")
 r2_avo = np.load(path + "mod_euclid_avocado.npy")
 pos = [0, 100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600]
 
-plt.ylabel('Modified Euclidean Metric', fontsize=14)
+plt.ylabel('R-squared', fontsize=14)
 plt.xlabel('Distance between positions', fontsize=14)
 plt.yticks(fontsize=14)
-plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+plt.xticks(fontsize=14)
+#plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 plt.plot(pos, r2_avo, color='blue', label='avocado')
 plt.plot(pos, r2_lstm, color='red', label='lstm')
 plt.legend(fontsize=14, )
 plt.show()
 
 print("done")
+
+#np.save(path + "mod_euclid_lstm.npy", r2_lstm)
