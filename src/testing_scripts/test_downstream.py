@@ -145,15 +145,15 @@ path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
 r2_lstm = np.load(path + "mod_euclid_lstm.npy")
 r2_avo = np.load(path + "mod_euclid_avocado.npy")
 pos = [0, 100, 200, 400, 800, 1600, 3200, 6400, 9000, 10000]
-pos = [i * 250000 for i in pos]
+pos = [i * 25000 for i in pos]
 
 plt.ylabel('R-squared', fontsize=14)
-plt.xlabel('Distance between positions', fontsize=14)
+plt.xlabel('Distance between positions (bp)', fontsize=14)
 plt.yticks(fontsize=14)
 plt.xticks(fontsize=14)
 #plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
-plt.plot(pos, r2_avo, color='blue', label='avocado')
-plt.plot(pos, r2_lstm, color='red', label='lstm')
+plt.plot(pos, r2_avo, linestyle='--', marker='o', color='blue', label='avocado')
+plt.plot(pos, r2_lstm, linestyle='--', marker='o', color='red', label='lstm')
 plt.legend(fontsize=14, )
 plt.show()
 
