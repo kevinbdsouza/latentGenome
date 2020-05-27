@@ -34,6 +34,7 @@ feature_matrix_enhancer = pd.read_pickle(enhancer_path + "/feat_chr_21_E116_enha
 print("done")
 '''
 
+'''
 dir_path = "/data2/latent/data/interpretation/phylogenetic_scores/"
 chrom = 21
 chrom_data = []
@@ -55,6 +56,7 @@ chrom_data.append(data)
 np.savez(npz_path, chrom_data)
 
 print("done")
+'''
 
 '''
 f = open(file_path)
@@ -64,4 +66,12 @@ for line in f:
     else:
         score = float(line.strip())
         s.append(score)
+'''
+
+'''
+map_hidden[7] = 0.913
+        map_2_layer = [0.71, 0.76, 0.825, 0.857, 0.87, 0.885, 0.912, 0.915]
+        map_dropout = [0.65, 0.71, 0.785, 0.812, 0.851, 0.862, 0.89, 0.90]
+        map_no_ln = [0.657, 0.715, 0.795, 0.82, 0.86, 0.869, 0.892, 0.905]
+        map_bidir = [0.692, 0.750, 0.82, 0.847, 0.862, 0.882, 0.91, 0.914]
 '''
