@@ -129,37 +129,27 @@ class PlotMap:
         print("done")
         # plt.savefig(self.path + 'map_fire.png')
 
-    def plot_tad(self, tad_dict):
-        key_list, value_list = self.get_lists(tad_dict)
-
-        plt.figure()
-        plt.bar(range(len(key_list)), value_list, align='center')
-        plt.xticks(range(len(key_list)), key_list)
-        plt.title('Topologically Associated Domains (TADs)')
-        # plt.xlabel('Cell Types')
-        plt.ylabel('MAP')
-        plt.legend()
-        plt.savefig(self.path + 'tad.png')
-
     def plot_rep(self, avocado_rep, lstm_rep):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_rep)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_rep)
         value_list_baseline = list(np.load(self.path + "baseline_rep.npy"))
+        value_list_refined = list(np.load(self.path + "refined_rep.npy"))
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
         # value_list_baseline = [x - 0.01 for x in value_list_lstm]
 
         df = pd.DataFrame(
-            zip(key_list_avocado * 5, ["avocado"] * 5 + ["lstm"] * 5 + ["baseline"] * 5,
-                value_list_avocado + value_list_lstm + value_list_baseline),
-            columns=["cell types", "labels", "MAP"])
-        palette = {"avocado": "C0", "lstm": "C3", "baseline": "C2"}
+            zip(key_list_avocado * 5, ["Epi-LSTM"] * 5 + ["Avocado"] * 5 + ["Refined+CNN"] * 5 + ["Baseline"] * 5,
+                value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
+            columns=["Cell Types", "labels", "mAP"])
+        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
         plt.figure()
         plt.ylim(0.65, 1)
         sns.set(font_scale=1.2)
-        sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
-
-        plt.legend(fontsize=15, loc="center right")
+        sns.set_style("whitegrid")
+        ax = sns.barplot(x="Cell Types", hue="labels", y="mAP", palette=palette, data=df)
+        ax.grid(False)
+        plt.legend(fontsize=16)
         plt.show()
         print("done")
         # plt.savefig(path + 'map_rep.png')
@@ -191,6 +181,17 @@ class PlotMap:
 
         pass
 
+    def plot_tad(self, tad_dict):
+        key_list, value_list = self.get_lists(tad_dict)
+
+        plt.figure()
+        plt.bar(range(len(key_list)), value_list, align='center')
+        plt.xticks(range(len(key_list)), key_list)
+        plt.title('Topologically Associated Domains (TADs)')
+        # plt.xlabel('Cell Types')
+        plt.ylabel('MAP')
+        plt.legend()
+        plt.savefig(self.path + 'tad.png')
 
 if __name__ == "__main__":
     setup_logging()
@@ -201,8 +202,8 @@ if __name__ == "__main__":
     cfg = get_config(model_path, config_base, result_base)
     plot_ob = PlotMap(cfg)
 
-    plot_ob.plot_gene()
-    #plot_ob.plot_all()
+    #plot_ob.plot_gene()
+    plot_ob.plot_all()
 
     # hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
