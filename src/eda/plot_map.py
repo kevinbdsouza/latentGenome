@@ -19,8 +19,8 @@ class PlotMap:
         avocado_pe, avocado_fire, avocado_rep, lstm_pe, lstm_fire, lstm_rep = self.get_dict()
 
         # self.plot_pe(avocado_pe, lstm_pe)
-        self.plot_fire(avocado_fire, lstm_fire)
-        # self.plot_rep(avocado_rep, lstm_rep)
+        #self.plot_fire(avocado_fire, lstm_fire)
+        self.plot_rep(avocado_rep, lstm_rep)
 
     def get_dict(self):
 
