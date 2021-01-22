@@ -97,9 +97,10 @@ class PlotMap:
             columns=["Cell Types", "labels", "mAP"])
         palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C1", "Baseline": "C2"}
         plt.figure()
-        sns.set(font_scale=1.3)
-        sns.barplot(x="Cell Types", hue="labels", y="mAP", palette=palette, data=df)
-
+        sns.set(font_scale=1.2)
+        sns.set_style("whitegrid")
+        ax = sns.barplot(x="Cell Types", hue="labels", y="mAP", palette=palette, data=df)
+        ax.grid(False)
         plt.legend(fontsize=16)
         plt.show()
         print("done")
