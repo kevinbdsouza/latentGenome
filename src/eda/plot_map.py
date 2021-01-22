@@ -64,7 +64,7 @@ class PlotMap:
 
         plt.figure(figsize=(14, 6))
         plt.ylim(0, 1)
-        plt.xticks(rotation=90, fontsize=15)
+        plt.xticks(rotation=90, fontsize=14)
         plt.xlabel('Cell Types', fontsize=15)
         plt.ylabel('MAP', fontsize=15)
         plt.yticks(fontsize=15)
