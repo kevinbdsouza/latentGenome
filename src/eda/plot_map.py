@@ -143,13 +143,13 @@ class PlotMap:
                 value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
             columns=["Cell Types", "labels", "mAP"])
         palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
-        plt.figure(figsize=(8,8))
+        plt.figure(figsize=(10,6))
         plt.ylim(0.65, 1)
         sns.set(font_scale=1.2)
         sns.set_style("whitegrid")
         ax = sns.barplot(x="Cell Types", hue="labels", y="mAP", palette=palette, data=df)
         ax.grid(False)
-        plt.legend(fontsize=16)
+        plt.legend(fontsize=16, bbox_to_anchor=(1.05, 1), loc='upper left')
         plt.show()
         print("done")
         # plt.savefig(path + 'map_rep.png')
@@ -203,9 +203,9 @@ if __name__ == "__main__":
     plot_ob = PlotMap(cfg)
 
     #plot_ob.plot_gene()
-    plot_ob.plot_all()
+    #plot_ob.plot_all()
 
-    # hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
-    # plot_ob.plot_hidden(hidden_list)
+    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    plot_ob.plot_hidden(hidden_list)
 
     print("done")
