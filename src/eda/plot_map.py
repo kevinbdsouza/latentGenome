@@ -60,6 +60,7 @@ class PlotMap:
         key_list_avocado, value_list_avocado = self.get_lists(avocado_rna)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_rna)
         value_list_baseline = list(np.load(self.path + "baseline_rna.npy"))
+        value_list_refined = list(np.load(self.path + "refined_rna.npy"))
         #value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
         plt.figure(figsize=(14, 6))
@@ -69,10 +70,10 @@ class PlotMap:
         plt.ylabel('MAP', fontsize=15)
         plt.yticks(fontsize=15)
 
-        label_list = ['avocado', 'lstm', 'baseline']
-        color_list = ['blue', 'red', 'green']
+        label_list = ['Avocado', 'Epi-LSTM', 'Refined+CNN', 'Baseline']
+        color_list = ['blue', 'red', 'brown', 'green']
 
-        values = [value_list_avocado, value_list_lstm, value_list_baseline]
+        values = [value_list_avocado, value_list_lstm, value_list_refined, value_list_baseline]
 
         for i, label in enumerate(label_list):
             plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i])
