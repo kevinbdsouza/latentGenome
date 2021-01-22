@@ -15,6 +15,51 @@ class PlotMap:
         self.cfg = cfg
         self.path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/"
 
+    def plot_combined(self):
+        tasks = ["Gene Expression", "Replication Timing", "Enhancers", "TSS", "PE-Interactions", "FIREs",
+                 "Non-loop Domains",
+                 "Loop Domains", "Subcompartments"]
+
+        lstm_values_all_tasks = np.load(self.path + "lstm/" + "lstm_values_all_tasks.npy")
+        sniper_intra_values_all_tasks = np.load(self.path + "lstm/" + "sniper_intra_values_all_tasks.npy")
+        sniper_inter_values_all_tasks = np.load(self.path + "lstm/" + "sniper_inter_values_all_tasks.npy")
+        graph_values_all_tasks = np.load(self.path + "lstm/" + "graph_values_all_tasks.npy")
+        pca_values_all_tasks = np.load(self.path + "lstm/" + "pca_values_all_tasks.npy")
+        sbcid_values_all_tasks = np.load(self.path + "lstm/" + "sbcid_values_all_tasks.npy")
+
+        methods = ["Hi-C-LSTM", "SNIPER-INTRA", "SNIPER-INTER", "SCI", "PCA", "SBCID"]
+
+        df_main = pd.DataFrame(columns=["Tasks", "Hi-C-LSTM", "SNIPER-INTRA", "SNIPER-INTER", "SCI", "PCA", "SBCID"])
+        df_main["Tasks"] = tasks
+        df_main["Hi-C-LSTM"] = lstm_values_all_tasks
+        df_main["SNIPER-INTRA"] = sniper_intra_values_all_tasks
+        df_main["SNIPER-INTER"] = sniper_inter_values_all_tasks
+        df_main["SCI"] = graph_values_all_tasks
+        df_main["PCA"] = pca_values_all_tasks
+        df_main["SBCID"] = sbcid_values_all_tasks
+
+        palette = {"Hi-C-LSTM": "C3", "SNIPER-INTRA": "C0", "SNIPER-INTER": "C1", "SCI": "C2", "PCA": "C4",
+                   "SBCID": "C5"}
+        plt.figure(figsize=(12, 10))
+        plt.xticks(rotation=90, fontsize=20)
+        plt.yticks(fontsize=20)
+        plt.xlabel("Prediction Target", fontsize=20)
+        plt.ylabel("mAP ", fontsize=20)
+        plt.plot('Tasks', 'Hi-C-LSTM', data=df_main, marker='o', markersize=14, color="C3", linewidth=2,
+                 label="Hi-C-LSTM")
+        plt.plot('Tasks', 'SNIPER-INTRA', data=df_main, marker='', markersize=14, color="C0", linewidth=2,
+                 label="SNIPER-INTRA")
+        plt.plot('Tasks', 'SNIPER-INTER', data=df_main, marker='', markersize=14, color="C1", linewidth=2,
+                 linestyle='dashed',
+                 label="SNIPER-INTER")
+        plt.plot('Tasks', 'SCI', data=df_main, marker='^', markersize=14, color="C2", linewidth=2, label="SCI")
+        plt.plot('Tasks', 'PCA', data=df_main, marker='+', markersize=14, color="C4", linewidth=2, label="PCA")
+        plt.plot('Tasks', 'SBCID', data=df_main, marker='v', markersize=14, color="C5", linewidth=2, label="SBCID")
+        plt.legend(fontsize=18)
+        plt.show()
+
+        pass
+
     def plot_all(self):
         avocado_pe, avocado_fire, avocado_rep, lstm_pe, lstm_fire, lstm_rep = self.get_dict()
 
@@ -70,10 +115,10 @@ class PlotMap:
         plt.ylabel('MAP', fontsize=15)
         plt.yticks(fontsize=15)
 
-        label_list = ['Avocado', 'Epi-LSTM', 'Refined+CNN', 'Baseline']
-        color_list = ['blue', 'red', 'brown', 'green']
+        label_list = ['Epi-LSTM', 'Avocado', 'Refined+CNN', 'Baseline']
+        color_list = ['red', 'blue', 'brown', 'green']
 
-        values = [value_list_avocado, value_list_lstm, value_list_refined, value_list_baseline]
+        values = [value_list_lstm, value_list_avocado, value_list_refined, value_list_baseline]
 
         for i, label in enumerate(label_list):
             plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i])
@@ -194,8 +239,8 @@ if __name__ == "__main__":
     cfg = get_config(model_path, config_base, result_base)
     plot_ob = PlotMap(cfg)
 
-    plot_ob.plot_gene()
-    #plot_ob.plot_all()
+    #plot_ob.plot_gene()
+    plot_ob.plot_combined()
 
     #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)

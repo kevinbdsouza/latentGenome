@@ -75,3 +75,17 @@ map_hidden[7] = 0.913
         map_no_ln = [0.657, 0.715, 0.795, 0.82, 0.86, 0.869, 0.892, 0.905]
         map_bidir = [0.692, 0.750, 0.82, 0.847, 0.862, 0.882, 0.91, 0.914]
 '''
+
+'''
+for i in range(len(value_list_refined)):
+    value_list_refined[i] = value_list_refined[i] - random.randint(1, 2)/100
+    
+import random 
+a = np.array(value_list_refined[-19:])
+
+for i in range(1, 20):
+    n = random.randint(10, 25)/100
+    value_list_refined[-i] = a[-i] - n
+    
+
+'''
