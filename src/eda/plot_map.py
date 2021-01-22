@@ -15,29 +15,25 @@ class PlotMap:
         self.cfg = cfg
         self.path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/"
 
-    def plot_all(self, path):
-        avocado_rna, avocado_pe, avocado_fire, avocado_rep, lstm_rna, lstm_pe, lstm_fire, lstm_rep = self.get_dict(path)
+    def plot_all(self):
+        avocado_pe, avocado_fire, avocado_rep, lstm_pe, lstm_fire, lstm_rep = self.get_dict()
 
-        # self.plot_rna_seq(path, lstm_rna, avocado_rna)
-        # self.plot_pe(path, avocado_pe, lstm_pe)
-        # self.plot_fire(path, avocado_fire, lstm_fire)
-        self.plot_rep(path, avocado_rep, lstm_rep)
+        # self.plot_pe(self.path, avocado_pe, lstm_pe)
+        # self.plot_fire(self.path, avocado_fire, lstm_fire)
+        self.plot_rep(self.path, avocado_rep, lstm_rep)
 
-    def get_dict(self, path):
+    def get_dict(self):
 
-        avocado_rna = np.load(path + "avocado_rna.npy").item()
-        lstm_rna = np.load(path + "lstm_rna.npy").item()
+        avocado_pe = np.load(self.path + "avocado_pe.npy").item()
+        lstm_pe = np.load(self.path + "lstm_pe.npy").item()
 
-        avocado_pe = np.load(path + "avocado_pe.npy").item()
-        lstm_pe = np.load(path + "lstm_pe.npy").item()
+        avocado_fire = np.load(self.path + "avocado_fire.npy").item()
+        lstm_fire = np.load(self.path + "lstm_fire.npy").item()
 
-        avocado_fire = np.load(path + "avocado_fire.npy").item()
-        lstm_fire = np.load(path + "lstm_fire.npy").item()
+        avocado_rep = np.load(self.path + "avocado_rep_timing.npy").item()
+        lstm_rep = np.load(self.path + "lstm_rep.npy").item()
 
-        avocado_rep = np.load(path + "avocado_rep_timing.npy").item()
-        lstm_rep = np.load(path + "lstm_rep.npy").item()
-
-        return avocado_rna, avocado_pe, avocado_fire, avocado_rep, lstm_rna, lstm_pe, lstm_fire, lstm_rep
+        return avocado_pe, avocado_fire, avocado_rep, lstm_pe, lstm_fire, lstm_rep
 
     def get_lists(self, dict):
         key_list = []
@@ -57,17 +53,19 @@ class PlotMap:
 
         return value_list_lstm
 
-    def plot_rna_seq(self, path, lstm_rna, avocado_rna):
+    def plot_gene(self):
+        avocado_rna = np.load(self.path + "avocado_rna.npy").item()
+        lstm_rna = np.load(self.path + "lstm_rna.npy").item()
+
         key_list_avocado, value_list_avocado = self.get_lists(avocado_rna)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_rna)
         value_list_baseline = list(np.load(self.path + "baseline_rna.npy"))
-        # value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
+        #value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
         plt.figure(figsize=(14, 6))
         plt.ylim(0, 1)
         plt.xticks(rotation=90, fontsize=14)
-        # plt.title('Gene Expression', fontsize=12)
-        # plt.xlabel('Cell Types')
+        plt.xlabel('Cell Types')
         plt.ylabel('MAP', fontsize=14)
         plt.yticks(fontsize=14)
 
@@ -82,9 +80,9 @@ class PlotMap:
         plt.legend(fontsize=15)
         plt.show()
         print("done")
-        # plt.savefig(path + 'lstm_rna.png')
+        pass
 
-    def plot_pe(self, path, avocado_pe, lstm_pe):
+    def plot_pe(self, avocado_pe, lstm_pe):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_pe)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_pe)
         value_list_baseline = list(np.load(self.path + "baseline_pe.npy"))
@@ -104,7 +102,7 @@ class PlotMap:
         print("done")
         # plt.savefig(path + 'map_pe.png')
 
-    def plot_fire(self, path, avocado_fire, lstm_fire):
+    def plot_fire(self, avocado_fire, lstm_fire):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_fire)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_fire)
         value_list_baseline = list(np.load(self.path + "baseline_fire.npy"))
@@ -124,7 +122,7 @@ class PlotMap:
         print("done")
         #plt.savefig(path + 'map_fire.png')
 
-    def plot_tad(self, path, tad_dict):
+    def plot_tad(self, tad_dict):
         key_list, value_list = self.get_lists(tad_dict)
 
         plt.figure()
@@ -134,9 +132,9 @@ class PlotMap:
         # plt.xlabel('Cell Types')
         plt.ylabel('MAP')
         plt.legend()
-        plt.savefig(path + 'tad.png')
+        plt.savefig(self.path + 'tad.png')
 
-    def plot_rep(self, path, avocado_rep, lstm_rep):
+    def plot_rep(self, avocado_rep, lstm_rep):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_rep)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_rep)
         value_list_baseline = list(np.load(self.path + "baseline_rep.npy"))
@@ -158,7 +156,7 @@ class PlotMap:
         print("done")
         # plt.savefig(path + 'map_rep.png')
 
-    def plot_hidden(self, path, hidden_list):
+    def plot_hidden(self, hidden_list):
         map_hidden = np.load(
             "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/map_hidden.npy")
 
@@ -180,7 +178,7 @@ class PlotMap:
         plt.ylabel('MAP')
         # plt.savefig(path + 'hidden.png')
         plt.legend()
-        plt.savefig(path + 'hidden.png')
+        plt.savefig(self.path + 'hidden.png')
         plt.show()
 
         pass
@@ -195,9 +193,10 @@ if __name__ == "__main__":
     cfg = get_config(model_path, config_base, result_base)
     plot_ob = PlotMap(cfg)
 
-    plot_ob.plot_all(plot_ob.path)
+    plot_ob.plot_gene()
+    #plot_ob.plot_all()
 
-    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
-    # plot_ob.plot_hidden(plot_ob.path, hidden_list)
+    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    # plot_ob.plot_hidden(hidden_list)
 
     print("done")
