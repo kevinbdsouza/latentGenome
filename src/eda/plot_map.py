@@ -143,7 +143,7 @@ class PlotMap:
                 value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
             columns=["Cell Types", "labels", "mAP"])
         palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
-        plt.figure()
+        plt.figure(figsize=(8,8))
         plt.ylim(0.65, 1)
         sns.set(font_scale=1.2)
         sns.set_style("whitegrid")
