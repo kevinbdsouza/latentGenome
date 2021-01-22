@@ -15,57 +15,12 @@ class PlotMap:
         self.cfg = cfg
         self.path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/"
 
-    def plot_combined(self):
-        tasks = ["Gene Expression", "Replication Timing", "Enhancers", "TSS", "PE-Interactions", "FIREs",
-                 "Non-loop Domains",
-                 "Loop Domains", "Subcompartments"]
-
-        lstm_values_all_tasks = np.load(self.path + "lstm/" + "lstm_values_all_tasks.npy")
-        sniper_intra_values_all_tasks = np.load(self.path + "lstm/" + "sniper_intra_values_all_tasks.npy")
-        sniper_inter_values_all_tasks = np.load(self.path + "lstm/" + "sniper_inter_values_all_tasks.npy")
-        graph_values_all_tasks = np.load(self.path + "lstm/" + "graph_values_all_tasks.npy")
-        pca_values_all_tasks = np.load(self.path + "lstm/" + "pca_values_all_tasks.npy")
-        sbcid_values_all_tasks = np.load(self.path + "lstm/" + "sbcid_values_all_tasks.npy")
-
-        methods = ["Hi-C-LSTM", "SNIPER-INTRA", "SNIPER-INTER", "SCI", "PCA", "SBCID"]
-
-        df_main = pd.DataFrame(columns=["Tasks", "Hi-C-LSTM", "SNIPER-INTRA", "SNIPER-INTER", "SCI", "PCA", "SBCID"])
-        df_main["Tasks"] = tasks
-        df_main["Hi-C-LSTM"] = lstm_values_all_tasks
-        df_main["SNIPER-INTRA"] = sniper_intra_values_all_tasks
-        df_main["SNIPER-INTER"] = sniper_inter_values_all_tasks
-        df_main["SCI"] = graph_values_all_tasks
-        df_main["PCA"] = pca_values_all_tasks
-        df_main["SBCID"] = sbcid_values_all_tasks
-
-        palette = {"Hi-C-LSTM": "C3", "SNIPER-INTRA": "C0", "SNIPER-INTER": "C1", "SCI": "C2", "PCA": "C4",
-                   "SBCID": "C5"}
-        plt.figure(figsize=(12, 10))
-        plt.xticks(rotation=90, fontsize=20)
-        plt.yticks(fontsize=20)
-        plt.xlabel("Prediction Target", fontsize=20)
-        plt.ylabel("mAP ", fontsize=20)
-        plt.plot('Tasks', 'Hi-C-LSTM', data=df_main, marker='o', markersize=14, color="C3", linewidth=2,
-                 label="Hi-C-LSTM")
-        plt.plot('Tasks', 'SNIPER-INTRA', data=df_main, marker='', markersize=14, color="C0", linewidth=2,
-                 label="SNIPER-INTRA")
-        plt.plot('Tasks', 'SNIPER-INTER', data=df_main, marker='', markersize=14, color="C1", linewidth=2,
-                 linestyle='dashed',
-                 label="SNIPER-INTER")
-        plt.plot('Tasks', 'SCI', data=df_main, marker='^', markersize=14, color="C2", linewidth=2, label="SCI")
-        plt.plot('Tasks', 'PCA', data=df_main, marker='+', markersize=14, color="C4", linewidth=2, label="PCA")
-        plt.plot('Tasks', 'SBCID', data=df_main, marker='v', markersize=14, color="C5", linewidth=2, label="SBCID")
-        plt.legend(fontsize=18)
-        plt.show()
-
-        pass
-
     def plot_all(self):
         avocado_pe, avocado_fire, avocado_rep, lstm_pe, lstm_fire, lstm_rep = self.get_dict()
 
-        # self.plot_pe(self.path, avocado_pe, lstm_pe)
+        self.plot_pe(self.path, avocado_pe, lstm_pe)
         # self.plot_fire(self.path, avocado_fire, lstm_fire)
-        self.plot_rep(self.path, avocado_rep, lstm_rep)
+        # self.plot_rep(self.path, avocado_rep, lstm_rep)
 
     def get_dict(self):
 
@@ -106,13 +61,13 @@ class PlotMap:
         key_list_lstm, value_list_lstm = self.get_lists(lstm_rna)
         value_list_baseline = list(np.load(self.path + "baseline_rna.npy"))
         value_list_refined = list(np.load(self.path + "refined_rna.npy"))
-        #value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
+        # value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
         plt.figure(figsize=(14, 6))
         plt.ylim(0, 1)
         plt.xticks(rotation=90, fontsize=14)
         plt.xlabel('Cell Types', fontsize=15)
-        plt.ylabel('MAP', fontsize=15)
+        plt.ylabel('mAP', fontsize=15)
         plt.yticks(fontsize=15)
 
         label_list = ['Epi-LSTM', 'Avocado', 'Refined+CNN', 'Baseline']
@@ -132,18 +87,20 @@ class PlotMap:
         key_list_avocado, value_list_avocado = self.get_lists(avocado_pe)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_pe)
         value_list_baseline = list(np.load(self.path + "baseline_pe.npy"))
+        value_list_refined = list(np.load(self.path + "refined_pe.npy"))
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
         df = pd.DataFrame(
-            zip(key_list_avocado * 4, ["avocado"] * 4 + ["lstm"] * 4 + ["baseline"]*4, value_list_avocado + value_list_lstm + value_list_baseline),
+            zip(key_list_avocado * 4, ["Epi-LSTM"] * 4 + ["Avocado"] * 4 + ["Refined+CNN"] * 4 + ["baseline"] * 4,
+                value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
             columns=["cell types", "labels", "MAP"])
-        palette = {"avocado": "C0", "lstm": "C3", "baseline":"C2"}
+        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C1", "Baseline": "C2"}
         plt.figure()
-        sns.set(font_scale=1.2)
-        sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
+        sns.set(font_scale=1.3)
+        sns.barplot(x="Cell Types", hue="labels", y="mAP", palette=palette, data=df)
 
-        plt.legend(fontsize=15)
+        plt.legend(fontsize=16)
         plt.show()
         print("done")
         # plt.savefig(path + 'map_pe.png')
@@ -156,9 +113,10 @@ class PlotMap:
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
         df = pd.DataFrame(
-            zip(key_list_avocado * 7, ["avocado"] * 7 + ["lstm"] * 7 + ["baseline"]*7, value_list_avocado + value_list_lstm + value_list_baseline),
+            zip(key_list_avocado * 7, ["avocado"] * 7 + ["lstm"] * 7 + ["baseline"] * 7,
+                value_list_avocado + value_list_lstm + value_list_baseline),
             columns=["cell types", "labels", "MAP"])
-        palette = {"avocado": "C0", "lstm": "C3", "baseline":"C2"}
+        palette = {"avocado": "C0", "lstm": "C3", "baseline": "C2"}
         plt.figure()
         sns.set(font_scale=1.2)
         sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
@@ -166,7 +124,7 @@ class PlotMap:
         plt.legend(fontsize=15)
         plt.show()
         print("done")
-        #plt.savefig(path + 'map_fire.png')
+        # plt.savefig(path + 'map_fire.png')
 
     def plot_tad(self, tad_dict):
         key_list, value_list = self.get_lists(tad_dict)
@@ -186,12 +144,13 @@ class PlotMap:
         value_list_baseline = list(np.load(self.path + "baseline_rep.npy"))
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
-        #value_list_baseline = [x - 0.01 for x in value_list_lstm]
+        # value_list_baseline = [x - 0.01 for x in value_list_lstm]
 
         df = pd.DataFrame(
-            zip(key_list_avocado * 5, ["avocado"] * 5 + ["lstm"] * 5 + ["baseline"] * 5, value_list_avocado + value_list_lstm + value_list_baseline),
+            zip(key_list_avocado * 5, ["avocado"] * 5 + ["lstm"] * 5 + ["baseline"] * 5,
+                value_list_avocado + value_list_lstm + value_list_baseline),
             columns=["cell types", "labels", "MAP"])
-        palette = {"avocado": "C0", "lstm": "C3", "baseline":"C2"}
+        palette = {"avocado": "C0", "lstm": "C3", "baseline": "C2"}
         plt.figure()
         plt.ylim(0.65, 1)
         sns.set(font_scale=1.2)
@@ -210,7 +169,7 @@ class PlotMap:
         map_no_ln = None
         map_dropout = None
         map_bidir = None
-        
+
         plt.figure()
         plt.plot(hidden_list, map_hidden, label='one layer')
         plt.plot(hidden_list, map_2_layer, label='two layers')
@@ -239,10 +198,10 @@ if __name__ == "__main__":
     cfg = get_config(model_path, config_base, result_base)
     plot_ob = PlotMap(cfg)
 
-    plot_ob.plot_gene()
-    #plot_ob.plot_combined()
+    # plot_ob.plot_gene()
+    plot_ob.plot_all()
 
-    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    # hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
 
     print("done")
