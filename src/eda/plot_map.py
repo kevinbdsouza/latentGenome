@@ -95,7 +95,7 @@ class PlotMap:
             zip(key_list_avocado * 4, ["Epi-LSTM"] * 4 + ["Avocado"] * 4 + ["Refined+CNN"] * 4 + ["Baseline"] * 4,
                 value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
             columns=["Cell Types", "labels", "mAP"])
-        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C1", "Baseline": "C2"}
+        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C1", "Baseline": "C5"}
         plt.figure()
         sns.set(font_scale=1.2)
         sns.set_style("whitegrid")
