@@ -64,10 +64,10 @@ class PlotMap:
 
         plt.figure(figsize=(14, 6))
         plt.ylim(0, 1)
-        plt.xticks(rotation=90, fontsize=14)
-        plt.xlabel('Cell Types', fontsize=14)
-        plt.ylabel('MAP', fontsize=14)
-        plt.yticks(fontsize=14)
+        plt.xticks(rotation=90, fontsize=15)
+        plt.xlabel('Cell Types', fontsize=15)
+        plt.ylabel('MAP', fontsize=15)
+        plt.yticks(fontsize=15)
 
         label_list = ['avocado', 'lstm', 'baseline']
         color_list = ['blue', 'red', 'green']
@@ -77,7 +77,7 @@ class PlotMap:
         for i, label in enumerate(label_list):
             plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i])
 
-        plt.legend(fontsize=15)
+        plt.legend(fontsize=16)
         plt.show()
         print("done")
         pass
