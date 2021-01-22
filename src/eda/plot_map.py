@@ -201,8 +201,8 @@ if __name__ == "__main__":
     cfg = get_config(model_path, config_base, result_base)
     plot_ob = PlotMap(cfg)
 
-    # plot_ob.plot_gene()
-    plot_ob.plot_all()
+    plot_ob.plot_gene()
+    #plot_ob.plot_all()
 
     # hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
