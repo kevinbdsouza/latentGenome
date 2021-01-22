@@ -92,9 +92,9 @@ class PlotMap:
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
         df = pd.DataFrame(
-            zip(key_list_avocado * 4, ["Epi-LSTM"] * 4 + ["Avocado"] * 4 + ["Refined+CNN"] * 4 + ["baseline"] * 4,
+            zip(key_list_avocado * 4, ["Epi-LSTM"] * 4 + ["Avocado"] * 4 + ["Refined+CNN"] * 4 + ["Baseline"] * 4,
                 value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
-            columns=["cell types", "labels", "MAP"])
+            columns=["Cell Types", "labels", "mAP"])
         palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C1", "Baseline": "C2"}
         plt.figure()
         sns.set(font_scale=1.3)
