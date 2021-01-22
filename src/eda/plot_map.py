@@ -18,8 +18,8 @@ class PlotMap:
     def plot_all(self):
         avocado_pe, avocado_fire, avocado_rep, lstm_pe, lstm_fire, lstm_rep = self.get_dict()
 
-        self.plot_pe(avocado_pe, lstm_pe)
-        # self.plot_fire(avocado_fire, lstm_fire)
+        # self.plot_pe(avocado_pe, lstm_pe)
+        self.plot_fire(avocado_fire, lstm_fire)
         # self.plot_rep(avocado_rep, lstm_rep)
 
     def get_dict(self):
@@ -95,7 +95,7 @@ class PlotMap:
             zip(key_list_avocado * 4, ["Epi-LSTM"] * 4 + ["Avocado"] * 4 + ["Refined+CNN"] * 4 + ["Baseline"] * 4,
                 value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
             columns=["Cell Types", "labels", "mAP"])
-        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C1", "Baseline": "C5"}
+        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
         plt.figure()
         sns.set(font_scale=1.2)
         sns.set_style("whitegrid")
@@ -104,28 +104,30 @@ class PlotMap:
         plt.legend(fontsize=16)
         plt.show()
         print("done")
-        # plt.savefig(path + 'map_pe.png')
+        # plt.savefig(self.path + 'map_pe.png')
 
     def plot_fire(self, avocado_fire, lstm_fire):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_fire)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_fire)
         value_list_baseline = list(np.load(self.path + "baseline_fire.npy"))
+        value_list_refined = list(np.load(self.path + "refined_fire.npy"))
 
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
         df = pd.DataFrame(
-            zip(key_list_avocado * 7, ["avocado"] * 7 + ["lstm"] * 7 + ["baseline"] * 7,
-                value_list_avocado + value_list_lstm + value_list_baseline),
-            columns=["cell types", "labels", "MAP"])
-        palette = {"avocado": "C0", "lstm": "C3", "baseline": "C2"}
+            zip(key_list_avocado * 7, ["Epi-LSTM"] * 7 + ["Avocado"] * 7 + ["Refined+CNN"] * 7 + ["Baseline"] * 7,
+                value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
+            columns=["Cell Types", "labels", "mAP"])
+        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
         plt.figure()
         sns.set(font_scale=1.2)
-        sns.barplot(x="cell types", hue="labels", y="MAP", palette=palette, data=df)
-
-        plt.legend(fontsize=15)
+        sns.set_style("whitegrid")
+        ax = sns.barplot(x="Cell Types", hue="labels", y="mAP", palette=palette, data=df)
+        ax.grid(False)
+        plt.legend(fontsize=16)
         plt.show()
         print("done")
-        # plt.savefig(path + 'map_fire.png')
+        # plt.savefig(self.path + 'map_fire.png')
 
     def plot_tad(self, tad_dict):
         key_list, value_list = self.get_lists(tad_dict)
