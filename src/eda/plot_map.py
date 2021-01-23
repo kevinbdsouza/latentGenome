@@ -183,6 +183,29 @@ class PlotMap:
 
         pass
 
+    def plot_auto_ablation(self, hidden_list):
+        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        map_lstm = np.load(path + "map_hidden.npy")
+
+        map_rnn = np.load(path + "map_2_layer.npy")
+        map_ff = np.load(path + "map_dropout.npy")
+        map_cnn = np.load(path + "map_no_ln.npy")
+
+        plt.figure()
+        plt.plot(hidden_list, map_lstm, label='Epi-LSTM')
+        plt.plot(hidden_list, map_rnn, label='RNN')
+        plt.plot(hidden_list, map_cnn, label='Epi-CNN')
+        plt.plot(hidden_list, map_ff, label='Fully Connected')
+
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
+        plt.xlabel('Hidden Nodes', fontsize=15)
+        plt.ylabel('mAP', fontsize=15)
+        plt.legend(fontsize=16)
+        plt.show()
+
+        pass
+
     def plot_tad(self, tad_dict):
         key_list, value_list = self.get_lists(tad_dict)
 
@@ -208,6 +231,8 @@ if __name__ == "__main__":
     #plot_ob.plot_all()
 
     hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
-    plot_ob.plot_hidden(hidden_list)
+    #plot_ob.plot_hidden(hidden_list)
+
+    plot_ob.plot_auto_ablation(hidden_list)
 
     print("done")
