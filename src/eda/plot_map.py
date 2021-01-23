@@ -155,8 +155,8 @@ class PlotMap:
         # plt.savefig(path + 'map_rep.png')
 
     def plot_hidden(self, hidden_list):
-        map_hidden = np.load(
-            "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/map_hidden.npy")
+        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        map_hidden = np.load(path + "map_hidden.npy")
 
         map_2_layer = [0.71, 0.76, 0.825, 0.857, 0.87, 0.885, 0.912, 0.915]
         map_dropout = [0.65, 0.71, 0.785, 0.812, 0.851, 0.862, 0.89, 0.90]
