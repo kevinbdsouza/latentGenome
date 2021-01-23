@@ -172,6 +172,8 @@ class PlotMap:
 
         # plt.xticks(range(len(key_list)), key_list)
         #plt.title('MAP vs hidden nodes')
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
         plt.xlabel('Hidden Nodes', fontsize=15)
         plt.ylabel('mAP', fontsize=15)
         # plt.savefig(path + 'hidden.png')
