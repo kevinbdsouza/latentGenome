@@ -19,7 +19,7 @@ class PlotMap:
         avocado_pe, avocado_fire, avocado_rep, lstm_pe, lstm_fire, lstm_rep = self.get_dict()
 
         # self.plot_pe(avocado_pe, lstm_pe)
-        #self.plot_fire(avocado_fire, lstm_fire)
+        # self.plot_fire(avocado_fire, lstm_fire)
         self.plot_rep(avocado_rep, lstm_rep)
 
     def get_dict(self):
@@ -143,7 +143,7 @@ class PlotMap:
                 value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
             columns=["Cell Types", "labels", "mAP"])
         palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
-        plt.figure(figsize=(10,6))
+        plt.figure(figsize=(10, 6))
         plt.ylim(0.65, 1)
         sns.set(font_scale=1.2)
         sns.set_style("whitegrid")
@@ -171,14 +171,14 @@ class PlotMap:
         plt.plot(hidden_list, map_bidir, label='one layer bidirectional lstm')
 
         # plt.xticks(range(len(key_list)), key_list)
-        #plt.title('MAP vs hidden nodes')
+        # plt.title('MAP vs hidden nodes')
         plt.xticks(fontsize=14)
         plt.yticks(fontsize=14)
         plt.xlabel('Hidden Nodes', fontsize=15)
         plt.ylabel('mAP', fontsize=15)
         # plt.savefig(path + 'hidden.png')
         plt.legend(fontsize=16)
-        #plt.savefig(self.path + 'hidden.png')
+        # plt.savefig(self.path + 'hidden.png')
         plt.show()
 
         pass
@@ -206,6 +206,29 @@ class PlotMap:
 
         pass
 
+    def plot_cnn_ablation(self, conv_layers_list):
+        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        map_cnn = np.load(path + "map_cnn.npy")
+
+        map_3f = np.load(path + "map_rnn.npy")
+        map_5f = np.load(path + "map_ff.npy")
+        map_9f = np.load(path + "map_cnn.npy")
+
+        plt.figure()
+        plt.plot(conv_layers_list, map_3f, label='Filter Size = 3*3', color='r')
+        plt.plot(conv_layers_list, map_5f, label='Filter Size = 5*5')
+        plt.plot(conv_layers_list, map_cnn, label='Filter Size = 7*7')
+        plt.plot(conv_layers_list, map_9f, label='Filter Size = 9*9')
+
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
+        plt.xlabel('Hidden Nodes', fontsize=15)
+        plt.ylabel('R-squared', fontsize=15)
+        plt.legend(fontsize=16)
+        plt.show()
+
+        pass
+    
     def plot_tad(self, tad_dict):
         key_list, value_list = self.get_lists(tad_dict)
 
@@ -218,6 +241,7 @@ class PlotMap:
         plt.legend()
         plt.savefig(self.path + 'tad.png')
 
+
 if __name__ == "__main__":
     setup_logging()
     config_base = 'config.yaml'
@@ -227,12 +251,13 @@ if __name__ == "__main__":
     cfg = get_config(model_path, config_base, result_base)
     plot_ob = PlotMap(cfg)
 
-    #plot_ob.plot_gene()
-    #plot_ob.plot_all()
+    # plot_ob.plot_gene()
+    # plot_ob.plot_all()
 
-    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
-    #plot_ob.plot_hidden(hidden_list)
+    # hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    # plot_ob.plot_hidden(hidden_list)
+    # plot_ob.plot_auto_ablation(hidden_list)
 
-    plot_ob.plot_auto_ablation(hidden_list)
-
+    conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
+    plot_ob.plot_cnn_ablation(conv_layers_list)
     print("done")
