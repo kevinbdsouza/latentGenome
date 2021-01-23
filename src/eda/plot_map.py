@@ -171,12 +171,12 @@ class PlotMap:
         plt.plot(hidden_list, map_bidir, label='one layer bidirectional lstm')
 
         # plt.xticks(range(len(key_list)), key_list)
-        plt.title('MAP vs hidden nodes')
-        plt.xlabel('hidden nodes')
-        plt.ylabel('MAP')
+        #plt.title('MAP vs hidden nodes')
+        plt.xlabel('Hidden Nodes', fontsize=15)
+        plt.ylabel('mAP', fontsize=15)
         # plt.savefig(path + 'hidden.png')
-        plt.legend()
-        plt.savefig(self.path + 'hidden.png')
+        plt.legend(fontsize=16)
+        #plt.savefig(self.path + 'hidden.png')
         plt.show()
 
         pass
