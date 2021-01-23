@@ -185,14 +185,14 @@ class PlotMap:
 
     def plot_auto_ablation(self, hidden_list):
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
-        map_lstm = np.load(path + "map_hidden.npy")
+        map_lstm = np.load(path + "map_lstm.npy")
 
-        map_rnn = np.load(path + "map_2_layer.npy")
-        map_ff = np.load(path + "map_dropout.npy")
-        map_cnn = np.load(path + "map_no_ln.npy")
+        map_rnn = np.load(path + "map_rnn.npy")
+        map_ff = np.load(path + "map_ff.npy")
+        map_cnn = np.load(path + "map_cnn.npy")
 
         plt.figure()
-        plt.plot(hidden_list, map_lstm, label='Epi-LSTM')
+        plt.plot(hidden_list, map_lstm, label='Epi-LSTM', color='r')
         plt.plot(hidden_list, map_rnn, label='RNN')
         plt.plot(hidden_list, map_cnn, label='Epi-CNN')
         plt.plot(hidden_list, map_ff, label='Fully Connected')
@@ -200,7 +200,7 @@ class PlotMap:
         plt.xticks(fontsize=14)
         plt.yticks(fontsize=14)
         plt.xlabel('Hidden Nodes', fontsize=15)
-        plt.ylabel('mAP', fontsize=15)
+        plt.ylabel('R-squared', fontsize=15)
         plt.legend(fontsize=16)
         plt.show()
 
