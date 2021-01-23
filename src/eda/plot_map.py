@@ -208,27 +208,27 @@ class PlotMap:
 
     def plot_cnn_ablation(self, conv_layers_list):
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
-        map_cnn = np.load(path + "map_cnn.npy")
+        map_7f = np.load(path + "map_7f.npy")
 
-        map_3f = np.load(path + "map_rnn.npy")
-        map_5f = np.load(path + "map_ff.npy")
-        map_9f = np.load(path + "map_cnn.npy")
+        map_3f = np.load(path + "map_3f.npy")
+        map_5f = np.load(path + "map_5f.npy")
+        map_9f = np.load(path + "map_9f.npy")
 
         plt.figure()
         plt.plot(conv_layers_list, map_3f, label='Filter Size = 3*3', color='r')
         plt.plot(conv_layers_list, map_5f, label='Filter Size = 5*5')
-        plt.plot(conv_layers_list, map_cnn, label='Filter Size = 7*7')
+        plt.plot(conv_layers_list, map_7f, label='Filter Size = 7*7')
         plt.plot(conv_layers_list, map_9f, label='Filter Size = 9*9')
 
         plt.xticks(fontsize=14)
         plt.yticks(fontsize=14)
-        plt.xlabel('Hidden Nodes', fontsize=15)
+        plt.xlabel('Conv+Deconv Layers', fontsize=15)
         plt.ylabel('R-squared', fontsize=15)
         plt.legend(fontsize=16)
         plt.show()
 
         pass
-    
+
     def plot_tad(self, tad_dict):
         key_list, value_list = self.get_lists(tad_dict)
 
