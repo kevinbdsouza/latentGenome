@@ -227,25 +227,84 @@ class PlotMap:
 
     def plot_lr(self, epoch_list):
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
-        map_hidden = np.load(path + "map_hidden.npy")
-
-        map_2_layer = np.load(path + "map_2_layer.npy")
-        map_dropout = np.load(path + "map_dropout.npy")
-        map_no_ln = np.load(path + "map_no_ln.npy")
-        map_bidir = np.load(path + "map_bidir.npy")
+        r2_1 = np.load(path + "r2_1.npy")
+        r2_2 = np.load(path + "r2_2.npy")
+        r2_3 = np.load(path + "r2_3.npy")
+        r2_4 = np.load(path + "r2_4.npy")
 
         plt.figure()
-        plt.plot(epoch_list, map_hidden, label='one layer', marker='o', markersize=14)
-        plt.plot(epoch_list, map_2_layer, label='two layers', marker='^', markersize=14)
-        plt.plot(epoch_list, map_no_ln, label='one layer w/o layer norm', marker='v', markersize=14)
-        plt.plot(epoch_list, map_dropout, label='one layer w dropout', marker='+', markersize=14)
-        plt.plot(epoch_list, map_bidir, label='one layer bidirectional lstm', marker='', markersize=14)
-
+        plt.plot(epoch_list, r2_1, label='LR=1e-1', marker='o', markersize=14)
+        plt.plot(epoch_list, r2_2, label='LR=1e-2', marker='^', markersize=14)
+        plt.plot(epoch_list, r2_3, label='LR=1e-3', marker='v', markersize=14)
+        plt.plot(epoch_list, r2_4, label='LR=1e-4', marker='+', markersize=14)
         plt.xticks(fontsize=14)
         plt.yticks(fontsize=14)
-        plt.xlabel('Hidden Nodes', fontsize=15)
-        plt.ylabel('mAP', fontsize=15)
+        plt.xlabel('Epochs', fontsize=15)
+        plt.ylabel('R-squared', fontsize=15)
         plt.legend(fontsize=16)
+        plt.show()
+        pass
+
+    def plot_hyper_xgb(self):
+        depth_list = [2, 4, 6, 8, 12, 20]
+        estimators_list = [2000, 4000, 5000, 6000, 8000, 10000]
+
+        plt.figure(figsize=(10, 6))
+        map_depth_2000 = np.load(self.path + "lstm/" + "xgb_map_depth_2000.npy")
+        map_depth_4000 = np.load(self.path + "lstm/" + "xgb_map_depth_4000.npy")
+        map_depth_5000 = np.load(self.path + "lstm/" + "xgb_map_depth_5000.npy")
+        map_depth_6000 = np.load(self.path + "lstm/" + "xgb_map_depth_6000.npy")
+        map_depth_10000 = np.load(self.path + "lstm/" + "xgb_map_depth_10000.npy")
+
+        map_est_2 = np.load(self.path + "lstm/" + "xgb_map_est_2.npy")
+        map_est_4 = np.load(self.path + "lstm/" + "xgb_map_est_4.npy")
+        map_est_6 = np.load(self.path + "lstm/" + "xgb_map_est_6.npy")
+        map_est_12 = np.load(self.path + "lstm/" + "xgb_map_est_12.npy")
+        map_est_20 = np.load(self.path + "lstm/" + "xgb_map_est_20.npy")
+
+        fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(12, 6))
+
+        ax1.plot(depth_list, map_depth_2000, marker='', markersize=14, color="C0", linewidth=2,
+                 label='Max Estimators: 2000')
+        ax1.plot(depth_list, map_depth_4000, marker='', markersize=14, color="C1", linewidth=2, linestyle='dashed',
+                 label='Max Estimators: 4000')
+        ax1.plot(depth_list, map_depth_5000, marker='^', markersize=14, color="C2", linewidth=2,
+                 label='Max Estimators: 5000')
+        ax1.plot(depth_list, map_depth_6000, marker='+', markersize=14, color="C4", linewidth=2,
+                 label='Max Estimators: 6000')
+        ax1.plot(depth_list, map_depth_10000, marker='v', markersize=14, color="C5", linewidth=2,
+                 label='Max Estimators: 10000')
+
+        ax2.plot(estimators_list, map_est_2, marker='', markersize=14, color="C0", linewidth=2,
+                 label='Max Depth: 2')
+        ax2.plot(estimators_list, map_est_4, marker='', markersize=14, color="C1", linewidth=2, linestyle='dashed',
+                 label='Max Depth: 4')
+        ax2.plot(estimators_list, map_est_6, marker='^', markersize=14, color="C2", linewidth=2,
+                 label='Max Depth: 6')
+        ax2.plot(estimators_list, map_est_12, marker='+', markersize=14, color="C4", linewidth=2,
+                 label='Max Depth: 12')
+        ax2.plot(estimators_list, map_est_20, marker='v', markersize=14, color="C5", linewidth=2, label='Max Depth: 20')
+
+        ax1.tick_params(axis="x", labelrotation=90, labelsize=20)
+        ax2.tick_params(axis="x", labelrotation=90, labelsize=20)
+        ax1.tick_params(axis="y", labelsize=20)
+        ax1.set_xticks(depth_list)
+        ax1.set_xticklabels(depth_list)
+        ax2.set_xticks(estimators_list)
+        ax2.set_xticklabels(estimators_list)
+        ax1.set_xlabel('Max Depth', fontsize=20)
+        ax2.set_xlabel('Max Estimators', fontsize=20)
+        ax1.set_ylabel('Avg mAP Across Tasks', fontsize=20)
+        ax2.set_ylabel('Avg mAP Across Tasks', fontsize=20)
+
+        # handles_1, labels_1 = ax1.get_legend_handles_labels()
+        # handles_2, labels_2 = ax1.get_legend_handles_labels()
+        # fig.legend(handles_1, labels_1, loc='center right', fontsize=18)
+        # fig.legend(handles_2, labels_2, loc='center right', fontsize=18)
+        ax1.legend(fontsize=18)
+        ax2.legend(fontsize=18)
+
+        plt.show()
         pass
 
     def plot_auto_ablation(self, hidden_list):
@@ -341,17 +400,18 @@ if __name__ == "__main__":
     # plot_ob.plot_gene()
     # plot_ob.plot_all()
 
-    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
-    #plot_ob.plot_hidden(hidden_list)
-    #plot_ob.plot_auto_ablation(hidden_list)
-    #plot_ob.plot_hyper_lstm(hidden_list)
+    # hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    # plot_ob.plot_hidden(hidden_list)
+    # plot_ob.plot_auto_ablation(hidden_list)
+    # plot_ob.plot_hyper_lstm(hidden_list)
 
-    #conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
-    #plot_ob.plot_cnn_ablation(conv_layers_list)
+    # conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
+    # plot_ob.plot_cnn_ablation(conv_layers_list)
 
-    #tasks = ["Gene Expression", "P-E Interactions", "FIREs", "Replication Timing"]
-    #plot_ob.plot_class_ablation(tasks)
+    # tasks = ["Gene Expression", "P-E Interactions", "FIREs", "Replication Timing"]
+    # plot_ob.plot_class_ablation(tasks)
 
-    epoch_list = [2, 4, 6, 8, 10, 12, 14, 16]
-    plot_ob.plot_lr(epoch_list)
+    #epoch_list = [2, 4, 6, 8, 10, 12, 14, 16]
+    #plot_ob.plot_lr(epoch_list)
+    plot_ob.plot_hyper_xgb()
     print("done")
