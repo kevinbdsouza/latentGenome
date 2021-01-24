@@ -224,24 +224,22 @@ class PlotMap:
             plt.legend(fontsize=16)
             plt.show()
         elif mode == "train_time":
-            r2_1layer = np.load(path + "r2_1layer.npy")
+            map_1_layer = np.load(path + "map_1_layer.npy")
 
-            r2_2layer = np.load(path + "r2_2layer.npy")
-            r2_dropout = np.load(path + "r2_dropout.npy")
-            r2_no_ln = np.load(path + "r2_no_ln.npy")
-            r2_bidir = np.load(path + "r2_bidir.npy")
+            map_2_layer = np.load(path + "map_2_layer.npy")
+            map_3_layer = np.load(path + "map_3_layer.npy")
+            map_4_layer = np.load(path + "map_no_ln.npy")
 
             plt.figure()
-            plt.plot(hidden_list, r2_1layer, label='one layer', marker='o', markersize=14)
-            plt.plot(hidden_list, r2_2layer, label='two layers', marker='^', markersize=14)
-            plt.plot(hidden_list, r2_no_ln, label='one layer w/o layer norm', marker='v', markersize=14)
-            plt.plot(hidden_list, r2_dropout, label='one layer w dropout', marker='+', markersize=14)
-            plt.plot(hidden_list, r2_bidir, label='one layer bidirectional lstm', marker='', markersize=14)
+            plt.plot(hidden_list, map_1_layer, label='No. layers: 1', marker='o', markersize=14)
+            plt.plot(hidden_list, map_2_layer, label='No. layers: 2', marker='^', markersize=14)
+            plt.plot(hidden_list, map_3_layer, label='No. layers: 3', marker='v', markersize=14)
+            plt.plot(hidden_list, map_4_layer, label='No. layers: 4', marker='+', markersize=14)
 
             plt.xticks(fontsize=14)
             plt.yticks(fontsize=14)
             plt.xlabel('Hidden Nodes', fontsize=15)
-            plt.ylabel('R-squared', fontsize=15)
+            plt.ylabel('Training Time (Seconds)', fontsize=15)
             plt.legend(fontsize=16)
             plt.show()
         pass
@@ -436,5 +434,5 @@ if __name__ == "__main__":
     #epoch_list = [2, 4, 6, 8, 10, 12, 14, 16]
     #plot_ob.plot_lr(epoch_list)
     #plot_ob.plot_hyper_xgb()
-    
+
     print("done")
