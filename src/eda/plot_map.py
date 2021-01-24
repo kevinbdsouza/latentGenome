@@ -251,17 +251,17 @@ class PlotMap:
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
 
         plt.figure(figsize=(10, 6))
-        map_depth_2000 = np.load(path + "lstm/" + "xgb_map_depth_2000.npy")
-        map_depth_4000 = np.load(path + "lstm/" + "xgb_map_depth_4000.npy")
-        map_depth_5000 = np.load(path + "lstm/" + "xgb_map_depth_5000.npy")
-        map_depth_6000 = np.load(path + "lstm/" + "xgb_map_depth_6000.npy")
-        map_depth_10000 = np.load(path + "lstm/" + "xgb_map_depth_10000.npy")
+        map_depth_2000 = np.load(path + "xgb_map_depth_2000.npy")
+        map_depth_4000 = np.load(path + "xgb_map_depth_4000.npy")
+        map_depth_5000 = np.load(path + "xgb_map_depth_5000.npy")
+        map_depth_6000 = np.load(path + "xgb_map_depth_6000.npy")
+        map_depth_10000 = np.load(path + "xgb_map_depth_10000.npy")
 
-        map_est_2 = np.load(path + "lstm/" + "xgb_map_est_2.npy")
-        map_est_4 = np.load(path + "lstm/" + "xgb_map_est_4.npy")
-        map_est_6 = np.load(path + "lstm/" + "xgb_map_est_6.npy")
-        map_est_12 = np.load(path + "lstm/" + "xgb_map_est_12.npy")
-        map_est_20 = np.load(path + "lstm/" + "xgb_map_est_20.npy")
+        map_est_2 = np.load(path + "xgb_map_est_2.npy")
+        map_est_4 = np.load(path + "xgb_map_est_4.npy")
+        map_est_6 = np.load(path + "xgb_map_est_6.npy")
+        map_est_12 = np.load(path + "xgb_map_est_12.npy")
+        map_est_20 = np.load(path + "xgb_map_est_20.npy")
 
         fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(12, 6))
 
