@@ -203,29 +203,50 @@ class PlotMap:
             plt.legend(fontsize=16)
             plt.show()
         elif mode == "r2":
-            map_hidden = np.load(path + "map_hidden.npy")
+            r2_1layer = np.load(path + "r2_1layer.npy")
 
-            map_2_layer = np.load(path + "map_2_layer.npy")
-            map_dropout = np.load(path + "map_dropout.npy")
-            map_no_ln = np.load(path + "map_no_ln.npy")
-            map_bidir = np.load(path + "map_bidir.npy")
+            r2_2layer = np.load(path + "r2_2layer.npy")
+            r2_dropout = np.load(path + "r2_dropout.npy")
+            r2_no_ln = np.load(path + "r2_no_ln.npy")
+            r2_bidir = np.load(path + "r2_bidir.npy")
 
             plt.figure()
-            plt.plot(hidden_list, map_hidden, label='one layer', marker='o', markersize=14)
-            plt.plot(hidden_list, map_2_layer, label='two layers', marker='^', markersize=14)
-            plt.plot(hidden_list, map_no_ln, label='one layer w/o layer norm', marker='v', markersize=14)
-            plt.plot(hidden_list, map_dropout, label='one layer w dropout', marker='+', markersize=14)
-            plt.plot(hidden_list, map_bidir, label='one layer bidirectional lstm', marker='', markersize=14)
+            plt.plot(hidden_list, r2_1layer, label='one layer', marker='o', markersize=14)
+            plt.plot(hidden_list, r2_2layer, label='two layers', marker='^', markersize=14)
+            plt.plot(hidden_list, r2_no_ln, label='one layer w/o layer norm', marker='v', markersize=14)
+            plt.plot(hidden_list, r2_dropout, label='one layer w dropout', marker='+', markersize=14)
+            plt.plot(hidden_list, r2_bidir, label='one layer bidirectional lstm', marker='', markersize=14)
 
             plt.xticks(fontsize=14)
             plt.yticks(fontsize=14)
             plt.xlabel('Hidden Nodes', fontsize=15)
-            plt.ylabel('mAP', fontsize=15)
+            plt.ylabel('R-squared', fontsize=15)
             plt.legend(fontsize=16)
             plt.show()
-
         pass
 
+    def plot_lr(self, epoch_list):
+        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        map_hidden = np.load(path + "map_hidden.npy")
+
+        map_2_layer = np.load(path + "map_2_layer.npy")
+        map_dropout = np.load(path + "map_dropout.npy")
+        map_no_ln = np.load(path + "map_no_ln.npy")
+        map_bidir = np.load(path + "map_bidir.npy")
+
+        plt.figure()
+        plt.plot(epoch_list, map_hidden, label='one layer', marker='o', markersize=14)
+        plt.plot(epoch_list, map_2_layer, label='two layers', marker='^', markersize=14)
+        plt.plot(epoch_list, map_no_ln, label='one layer w/o layer norm', marker='v', markersize=14)
+        plt.plot(epoch_list, map_dropout, label='one layer w dropout', marker='+', markersize=14)
+        plt.plot(epoch_list, map_bidir, label='one layer bidirectional lstm', marker='', markersize=14)
+
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
+        plt.xlabel('Hidden Nodes', fontsize=15)
+        plt.ylabel('mAP', fontsize=15)
+        plt.legend(fontsize=16)
+        pass
 
     def plot_auto_ablation(self, hidden_list):
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
@@ -320,10 +341,10 @@ if __name__ == "__main__":
     # plot_ob.plot_gene()
     # plot_ob.plot_all()
 
-    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     #plot_ob.plot_hidden(hidden_list)
     #plot_ob.plot_auto_ablation(hidden_list)
-    plot_ob.plot_hyper_lstm(hidden_list)
+    #plot_ob.plot_hyper_lstm(hidden_list)
 
     #conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
     #plot_ob.plot_cnn_ablation(conv_layers_list)
@@ -331,4 +352,6 @@ if __name__ == "__main__":
     #tasks = ["Gene Expression", "P-E Interactions", "FIREs", "Replication Timing"]
     #plot_ob.plot_class_ablation(tasks)
 
+    epoch_list = [2, 4, 6, 8, 10, 12, 14, 16]
+    plot_ob.plot_lr(epoch_list)
     print("done")
