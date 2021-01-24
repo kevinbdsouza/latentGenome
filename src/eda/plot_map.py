@@ -179,25 +179,51 @@ class PlotMap:
         pass
 
     def plot_hyper_lstm(self, hidden_list):
+
+        mode = "r2"
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
-        map_hidden = np.load(path + "map_hidden.npy")
 
-        map_2_layer = np.load(path + "map_2_layer.npy")
-        map_3_layer = np.load(path + "map_dropout.npy")
-        map_4_layer = np.load(path + "map_no_ln.npy")
+        if mode == "mAP":
+            map_1_layer = np.load(path + "map_1_layer.npy")
 
-        plt.figure()
-        plt.plot(hidden_list, map_hidden, label='one layer', marker='o', markersize=14)
-        plt.plot(hidden_list, map_2_layer, label='two layers', marker='^', markersize=14)
-        plt.plot(hidden_list, map_3_layer, label='one layer w/o layer norm', marker='v', markersize=14)
-        plt.plot(hidden_list, map_4_layer, label='one layer w dropout', marker='+', markersize=14)
+            map_2_layer = np.load(path + "map_2_layer.npy")
+            map_3_layer = np.load(path + "map_3_layer.npy")
+            map_4_layer = np.load(path + "map_no_ln.npy")
 
-        plt.xticks(fontsize=14)
-        plt.yticks(fontsize=14)
-        plt.xlabel('Hidden Nodes', fontsize=15)
-        plt.ylabel('R-squared', fontsize=15)
-        plt.legend(fontsize=16)
-        plt.show()
+            plt.figure()
+            plt.plot(hidden_list, map_1_layer, label='No. layers: 1', marker='o', markersize=14)
+            plt.plot(hidden_list, map_2_layer, label='No. layers: 2', marker='^', markersize=14)
+            plt.plot(hidden_list, map_3_layer, label='No. layers: 3', marker='v', markersize=14)
+            plt.plot(hidden_list, map_4_layer, label='No. layers: 4', marker='+', markersize=14)
+
+            plt.xticks(fontsize=14)
+            plt.yticks(fontsize=14)
+            plt.xlabel('Hidden Nodes', fontsize=15)
+            plt.ylabel('mAP', fontsize=15)
+            plt.legend(fontsize=16)
+            plt.show()
+        elif mode == "r2":
+            map_hidden = np.load(path + "map_hidden.npy")
+
+            map_2_layer = np.load(path + "map_2_layer.npy")
+            map_dropout = np.load(path + "map_dropout.npy")
+            map_no_ln = np.load(path + "map_no_ln.npy")
+            map_bidir = np.load(path + "map_bidir.npy")
+
+            plt.figure()
+            plt.plot(hidden_list, map_hidden, label='one layer', marker='o', markersize=14)
+            plt.plot(hidden_list, map_2_layer, label='two layers', marker='^', markersize=14)
+            plt.plot(hidden_list, map_no_ln, label='one layer w/o layer norm', marker='v', markersize=14)
+            plt.plot(hidden_list, map_dropout, label='one layer w dropout', marker='+', markersize=14)
+            plt.plot(hidden_list, map_bidir, label='one layer bidirectional lstm', marker='', markersize=14)
+
+            plt.xticks(fontsize=14)
+            plt.yticks(fontsize=14)
+            plt.xlabel('Hidden Nodes', fontsize=15)
+            plt.ylabel('mAP', fontsize=15)
+            plt.legend(fontsize=16)
+            plt.show()
+
         pass
 
 
