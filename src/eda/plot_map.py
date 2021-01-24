@@ -84,15 +84,14 @@ class PlotMap:
         pass
 
     def plot_gene_regression(self):
+        value_list_avocado = np.load(self.path + "avocado_regres.npy")
+        value_list_lstm = np.load(self.path + "lstm_regress.npy")
+        value_list_baseline = list(np.load(self.path + "baseline_regress.npy"))
+        value_list_refined = list(np.load(self.path + "refined_regress.npy"))
+
         avocado_rna = np.load(self.path + "avocado_rna.npy").item()
-        lstm_rna = np.load(self.path + "lstm_rna.npy").item()
-
         key_list_avocado, value_list_avocado = self.get_lists(avocado_rna)
-        key_list_lstm, value_list_lstm = self.get_lists(lstm_rna)
-        value_list_baseline = list(np.load(self.path + "baseline_rna.npy"))
-        value_list_refined = list(np.load(self.path + "refined_rna.npy"))
-        # value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
-
+        
         plt.figure(figsize=(14, 6))
         plt.ylim(0, 1)
         plt.xticks(rotation=90, fontsize=14)
