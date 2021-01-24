@@ -180,7 +180,7 @@ class PlotMap:
 
     def plot_hyper_lstm(self, hidden_list):
 
-        mode = "train_time"
+        mode = "test_time"
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
 
         if mode == "mAP":
@@ -224,6 +224,25 @@ class PlotMap:
             plt.legend(fontsize=16)
             plt.show()
         elif mode == "train_time":
+            train_time_1_layer = np.load(path + "train_time_1_layer.npy")
+
+            train_time_2_layer = np.load(path + "train_time_2_layer.npy")
+            train_time_3_layer = np.load(path + "train_time_3_layer.npy")
+            train_time_4_layer = np.load(path + "train_time_4_layer.npy")
+
+            plt.figure()
+            plt.plot(hidden_list, train_time_1_layer, label='No. layers: 1', marker='o', markersize=14)
+            plt.plot(hidden_list, train_time_2_layer, label='No. layers: 2', marker='^', markersize=14)
+            plt.plot(hidden_list, train_time_3_layer, label='No. layers: 3', marker='v', markersize=14)
+            plt.plot(hidden_list, train_time_4_layer, label='No. layers: 4', marker='+', markersize=14)
+
+            plt.xticks(fontsize=14)
+            plt.yticks(fontsize=14)
+            plt.xlabel('Hidden Nodes', fontsize=15)
+            plt.ylabel('Training Time (Seconds)', fontsize=15)
+            plt.legend(fontsize=16)
+            plt.show()
+        elif mode == "test_time":
             train_time_1_layer = np.load(path + "train_time_1_layer.npy")
 
             train_time_2_layer = np.load(path + "train_time_2_layer.npy")
