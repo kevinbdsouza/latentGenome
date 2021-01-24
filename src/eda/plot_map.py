@@ -164,11 +164,11 @@ class PlotMap:
         map_bidir = np.load(path + "map_bidir.npy")
 
         plt.figure()
-        plt.plot(hidden_list, map_hidden, label='one layer')
-        plt.plot(hidden_list, map_2_layer, label='two layers')
-        plt.plot(hidden_list, map_no_ln, label='one layer w/o layer norm')
-        plt.plot(hidden_list, map_dropout, label='one layer w dropout')
-        plt.plot(hidden_list, map_bidir, label='one layer bidirectional lstm')
+        plt.plot(hidden_list, map_hidden, label='one layer', marker='o', markersize=14)
+        plt.plot(hidden_list, map_2_layer, label='two layers', marker='^', markersize=14)
+        plt.plot(hidden_list, map_no_ln, label='one layer w/o layer norm', marker='v', markersize=14)
+        plt.plot(hidden_list, map_dropout, label='one layer w dropout', marker='+', markersize=14)
+        plt.plot(hidden_list, map_bidir, label='one layer bidirectional lstm', marker='', markersize=14)
 
         plt.xticks(fontsize=14)
         plt.yticks(fontsize=14)
@@ -273,8 +273,8 @@ if __name__ == "__main__":
     # plot_ob.plot_all()
 
     hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
-    # plot_ob.plot_hidden(hidden_list)
-    plot_ob.plot_auto_ablation(hidden_list)
+    plot_ob.plot_hidden(hidden_list)
+    #plot_ob.plot_auto_ablation(hidden_list)
 
     #conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
     #plot_ob.plot_cnn_ablation(conv_layers_list)
