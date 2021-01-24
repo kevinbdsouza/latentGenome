@@ -176,8 +176,30 @@ class PlotMap:
         plt.ylabel('mAP', fontsize=15)
         plt.legend(fontsize=16)
         plt.show()
-
         pass
+
+    def plot_hyper_lstm(self, hidden_list):
+        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        map_hidden = np.load(path + "map_hidden.npy")
+
+        map_2_layer = np.load(path + "map_2_layer.npy")
+        map_3_layer = np.load(path + "map_dropout.npy")
+        map_4_layer = np.load(path + "map_no_ln.npy")
+
+        plt.figure()
+        plt.plot(hidden_list, map_hidden, label='one layer', marker='o', markersize=14)
+        plt.plot(hidden_list, map_2_layer, label='two layers', marker='^', markersize=14)
+        plt.plot(hidden_list, map_3_layer, label='one layer w/o layer norm', marker='v', markersize=14)
+        plt.plot(hidden_list, map_4_layer, label='one layer w dropout', marker='+', markersize=14)
+
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
+        plt.xlabel('Hidden Nodes', fontsize=15)
+        plt.ylabel('R-squared', fontsize=15)
+        plt.legend(fontsize=16)
+        plt.show()
+        pass
+
 
     def plot_auto_ablation(self, hidden_list):
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
@@ -273,8 +295,9 @@ if __name__ == "__main__":
     # plot_ob.plot_all()
 
     hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
-    plot_ob.plot_hidden(hidden_list)
+    #plot_ob.plot_hidden(hidden_list)
     #plot_ob.plot_auto_ablation(hidden_list)
+    plot_ob.plot_hyper_lstm(hidden_list)
 
     #conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
     #plot_ob.plot_cnn_ablation(conv_layers_list)
