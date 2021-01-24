@@ -248,7 +248,7 @@ class PlotMap:
     def plot_hyper_xgb(self):
         depth_list = [2, 4, 6, 8, 12, 20]
         estimators_list = [2000, 4000, 5000, 6000, 8000, 10000]
-        path = "/home/kevindsouza/Documents/projects/hic_lstm/src/saved_model/model_lstm/log_run/"
+        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
 
         plt.figure(figsize=(10, 6))
         map_depth_2000 = np.load(path + "lstm/" + "xgb_map_depth_2000.npy")
