@@ -211,10 +211,10 @@ class PlotMap:
         map_9f = np.load(path + "map_9f.npy")
 
         plt.figure()
-        plt.plot(conv_layers_list, map_3f, label='Filter Size = 3*3', color='r')
-        plt.plot(conv_layers_list, map_5f, label='Filter Size = 5*5')
-        plt.plot(conv_layers_list, map_7f, label='Filter Size = 7*7')
-        plt.plot(conv_layers_list, map_9f, label='Filter Size = 9*9')
+        plt.plot(conv_layers_list, map_3f, label='Filter Size = 3*3', marker='o', markersize=14, color='r')
+        plt.plot(conv_layers_list, map_5f, label='Filter Size = 5*5', marker='^', markersize=14)
+        plt.plot(conv_layers_list, map_7f, label='Filter Size = 7*7', marker='v', markersize=14)
+        plt.plot(conv_layers_list, map_9f, label='Filter Size = 9*9', marker='+', markersize=14)
 
         plt.xticks(fontsize=14)
         plt.yticks(fontsize=14)
@@ -229,16 +229,15 @@ class PlotMap:
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
         map_xgb = np.load(path + "map_lstm.npy")
 
-        map_rf = np.load(path + "map_rnn.npy")
+        map_rf = np.load(path + "map_rf.npy")
         map_svm = np.load(path + "map_ff.npy")
         map_nn = np.load(path + "map_cnn.npy")
 
-        plt.figure()
-        plt.plot(tasks, map_xgb, label='XGBoost', color='r')
-        plt.plot(tasks, map_rf, label='Random Forest')
-        plt.plot(tasks, map_svm, label='RBF-SVM')
-        plt.plot(tasks, map_nn, label='NN')
-
+        plt.figure(figsize=(8, 6))
+        plt.plot(tasks, map_xgb, label='XGBoost', marker='o', markersize=14, color='r')
+        plt.plot(tasks, map_rf, label='Random Forest', marker='^', markersize=14)
+        plt.plot(tasks, map_svm, label='RBF-SVM', marker='v', markersize=14)
+        plt.plot(tasks, map_nn, label='NN', marker='+', markersize=14)
         plt.xticks(rotation=90, fontsize=14)
         plt.yticks(fontsize=14)
         plt.xlabel('Prediction Target', fontsize=15)
@@ -277,9 +276,10 @@ if __name__ == "__main__":
     # plot_ob.plot_hidden(hidden_list)
     # plot_ob.plot_auto_ablation(hidden_list)
 
-    #conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
-    #plot_ob.plot_cnn_ablation(conv_layers_list)
+    conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
+    plot_ob.plot_cnn_ablation(conv_layers_list)
 
-    tasks = ["Gene Expression", "P-E Interactions", "FIREs", "Replication Timing"]
-    plot_ob.plot_class_ablation(tasks)
+    #tasks = ["Gene Expression", "P-E Interactions", "FIREs", "Replication Timing"]
+    #plot_ob.plot_class_ablation(tasks)
+    
     print("done")
