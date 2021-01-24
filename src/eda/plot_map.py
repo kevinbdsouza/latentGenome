@@ -170,15 +170,11 @@ class PlotMap:
         plt.plot(hidden_list, map_dropout, label='one layer w dropout')
         plt.plot(hidden_list, map_bidir, label='one layer bidirectional lstm')
 
-        # plt.xticks(range(len(key_list)), key_list)
-        # plt.title('MAP vs hidden nodes')
         plt.xticks(fontsize=14)
         plt.yticks(fontsize=14)
         plt.xlabel('Hidden Nodes', fontsize=15)
         plt.ylabel('mAP', fontsize=15)
-        # plt.savefig(path + 'hidden.png')
         plt.legend(fontsize=16)
-        # plt.savefig(self.path + 'hidden.png')
         plt.show()
 
         pass
@@ -229,6 +225,29 @@ class PlotMap:
 
         pass
 
+    def plot_class_ablation(self, tasks):
+        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        map_xgb = np.load(path + "map_lstm.npy")
+
+        map_rf = np.load(path + "map_rnn.npy")
+        map_svm = np.load(path + "map_ff.npy")
+        map_nn = np.load(path + "map_cnn.npy")
+
+        plt.figure()
+        plt.plot(tasks, map_xgb, label='XGBoost', color='r')
+        plt.plot(tasks, map_rf, label='Random Forest')
+        plt.plot(tasks, map_svm, label='RBF-SVM')
+        plt.plot(tasks, map_nn, label='NN')
+
+        plt.xticks(rotation=90, fontsize=14)
+        plt.yticks(fontsize=14)
+        plt.xlabel('Prediction Target', fontsize=15)
+        plt.ylabel('mAP', fontsize=15)
+        plt.legend(fontsize=16)
+        plt.show()
+
+        pass
+
     def plot_tad(self, tad_dict):
         key_list, value_list = self.get_lists(tad_dict)
 
@@ -258,6 +277,9 @@ if __name__ == "__main__":
     # plot_ob.plot_hidden(hidden_list)
     # plot_ob.plot_auto_ablation(hidden_list)
 
-    conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
-    plot_ob.plot_cnn_ablation(conv_layers_list)
+    #conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
+    #plot_ob.plot_cnn_ablation(conv_layers_list)
+
+    tasks = ["Gene Expression", "P-E Interactions", "FIREs", "Replication Timing"]
+    plot_ob.plot_class_ablation(tasks)
     print("done")
