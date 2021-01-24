@@ -188,10 +188,10 @@ class PlotMap:
         map_cnn = np.load(path + "map_cnn.npy")
 
         plt.figure()
-        plt.plot(hidden_list, map_lstm, label='Epi-LSTM', color='r')
-        plt.plot(hidden_list, map_rnn, label='RNN')
-        plt.plot(hidden_list, map_cnn, label='Epi-CNN')
-        plt.plot(hidden_list, map_ff, label='Fully Connected')
+        plt.plot(hidden_list, map_lstm, label='Epi-LSTM', marker='o', markersize=14, color='r')
+        plt.plot(hidden_list, map_rnn, label='RNN', marker='^', markersize=14)
+        plt.plot(hidden_list, map_cnn, label='Epi-CNN', marker='v', markersize=14)
+        plt.plot(hidden_list, map_ff, label='Fully Connected', marker='+', markersize=14)
 
         plt.xticks(fontsize=14)
         plt.yticks(fontsize=14)
@@ -272,14 +272,14 @@ if __name__ == "__main__":
     # plot_ob.plot_gene()
     # plot_ob.plot_all()
 
-    # hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
-    # plot_ob.plot_auto_ablation(hidden_list)
+    plot_ob.plot_auto_ablation(hidden_list)
 
-    conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
-    plot_ob.plot_cnn_ablation(conv_layers_list)
+    #conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
+    #plot_ob.plot_cnn_ablation(conv_layers_list)
 
     #tasks = ["Gene Expression", "P-E Interactions", "FIREs", "Replication Timing"]
     #plot_ob.plot_class_ablation(tasks)
-    
+
     print("done")
