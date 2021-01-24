@@ -83,6 +83,36 @@ class PlotMap:
         print("done")
         pass
 
+    def plot_gene_regression(self):
+        avocado_rna = np.load(self.path + "avocado_rna.npy").item()
+        lstm_rna = np.load(self.path + "lstm_rna.npy").item()
+
+        key_list_avocado, value_list_avocado = self.get_lists(avocado_rna)
+        key_list_lstm, value_list_lstm = self.get_lists(lstm_rna)
+        value_list_baseline = list(np.load(self.path + "baseline_rna.npy"))
+        value_list_refined = list(np.load(self.path + "refined_rna.npy"))
+        # value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
+
+        plt.figure(figsize=(14, 6))
+        plt.ylim(0, 1)
+        plt.xticks(rotation=90, fontsize=14)
+        plt.xlabel('Cell Types', fontsize=15)
+        plt.ylabel('mAP', fontsize=15)
+        plt.yticks(fontsize=15)
+
+        label_list = ['Epi-LSTM', 'Avocado', 'Refined+CNN', 'Baseline']
+        color_list = ['red', 'blue', 'brown', 'green']
+
+        values = [value_list_lstm, value_list_avocado, value_list_refined, value_list_baseline]
+
+        for i, label in enumerate(label_list):
+            plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i])
+
+        plt.legend(fontsize=16)
+        plt.show()
+        print("done")
+        pass
+
     def plot_pe(self, avocado_pe, lstm_pe):
         key_list_avocado, value_list_avocado = self.get_lists(avocado_pe)
         key_list_lstm, value_list_lstm = self.get_lists(lstm_pe)
@@ -439,10 +469,10 @@ if __name__ == "__main__":
     # plot_ob.plot_gene()
     # plot_ob.plot_all()
 
-    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
     # plot_ob.plot_auto_ablation(hidden_list)
-    plot_ob.plot_hyper_lstm(hidden_list)
+    #plot_ob.plot_hyper_lstm(hidden_list)
 
     # conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
     # plot_ob.plot_cnn_ablation(conv_layers_list)
@@ -453,5 +483,7 @@ if __name__ == "__main__":
     #epoch_list = [2, 4, 6, 8, 10, 12, 14, 16]
     #plot_ob.plot_lr(epoch_list)
     #plot_ob.plot_hyper_xgb()
+
+    plot_ob.plot_gene_regression()
 
     print("done")
