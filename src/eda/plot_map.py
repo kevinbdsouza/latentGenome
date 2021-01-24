@@ -251,7 +251,7 @@ class PlotMap:
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
 
         plt.figure(figsize=(10, 6))
-        map_depth_2000 = np.load(path + "map_depth_2000.npy")
+        map_depth_2000 = np.load(path + "xgb_map_depth_2000.npy")
         map_depth_4000 = np.load(path + "map_depth_4000.npy")
         map_depth_5000 = np.load(path + "map_depth_5000.npy")
         map_depth_6000 = np.load(path + "map_depth_6000.npy")
