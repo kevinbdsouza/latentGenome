@@ -248,19 +248,20 @@ class PlotMap:
     def plot_hyper_xgb(self):
         depth_list = [2, 4, 6, 8, 12, 20]
         estimators_list = [2000, 4000, 5000, 6000, 8000, 10000]
+        path = "/home/kevindsouza/Documents/projects/hic_lstm/src/saved_model/model_lstm/log_run/"
 
         plt.figure(figsize=(10, 6))
-        map_depth_2000 = np.load(self.path + "lstm/" + "xgb_map_depth_2000.npy")
-        map_depth_4000 = np.load(self.path + "lstm/" + "xgb_map_depth_4000.npy")
-        map_depth_5000 = np.load(self.path + "lstm/" + "xgb_map_depth_5000.npy")
-        map_depth_6000 = np.load(self.path + "lstm/" + "xgb_map_depth_6000.npy")
-        map_depth_10000 = np.load(self.path + "lstm/" + "xgb_map_depth_10000.npy")
+        map_depth_2000 = np.load(path + "lstm/" + "xgb_map_depth_2000.npy")
+        map_depth_4000 = np.load(path + "lstm/" + "xgb_map_depth_4000.npy")
+        map_depth_5000 = np.load(path + "lstm/" + "xgb_map_depth_5000.npy")
+        map_depth_6000 = np.load(path + "lstm/" + "xgb_map_depth_6000.npy")
+        map_depth_10000 = np.load(path + "lstm/" + "xgb_map_depth_10000.npy")
 
-        map_est_2 = np.load(self.path + "lstm/" + "xgb_map_est_2.npy")
-        map_est_4 = np.load(self.path + "lstm/" + "xgb_map_est_4.npy")
-        map_est_6 = np.load(self.path + "lstm/" + "xgb_map_est_6.npy")
-        map_est_12 = np.load(self.path + "lstm/" + "xgb_map_est_12.npy")
-        map_est_20 = np.load(self.path + "lstm/" + "xgb_map_est_20.npy")
+        map_est_2 = np.load(path + "lstm/" + "xgb_map_est_2.npy")
+        map_est_4 = np.load(path + "lstm/" + "xgb_map_est_4.npy")
+        map_est_6 = np.load(path + "lstm/" + "xgb_map_est_6.npy")
+        map_est_12 = np.load(path + "lstm/" + "xgb_map_est_12.npy")
+        map_est_20 = np.load(path + "lstm/" + "xgb_map_est_20.npy")
 
         fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(12, 6))
 
