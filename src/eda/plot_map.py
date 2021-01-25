@@ -509,33 +509,29 @@ class PlotMap:
         pass
 
     def plot_pr_roc(self):
-        path = "/data2/hic_lstm/downstream/"
-        precision_file = "precision.npy"
-        recall_file = "recall.npy"
+        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
 
-        gene_p = np.load(path + "RNA-seq/" + precision_file)
-        gene_r = np.load(path + "RNA-seq/" + recall_file)
-        rep_p = np.load(path + "replication_timing/" + precision_file)
-        rep_r = np.load(path + "replication_timing/" + recall_file)
-        pe_p = np.load(path + "PE-interactions/" + precision_file)
-        pe_r = np.load(path + "PE-interactions/" + recall_file)
-        fire_p = np.load(path + "FIREs/" + precision_file)
-        fire_r = np.load(path + "FIREs/" + recall_file)
+        gene_precision = np.load(path + "gene_precision.npy")
+        gene_recall = np.load(path + "gene_recall.npy")
+        rep_precision = np.load(path + "rep_precision.npy")
+        rep_recall = np.load(path + "rep_recall.npy")
+        pe_precision = np.load(path + "pe_precision.npy")
+        pe_recall = np.load(path + "pe_recall.npy")
+        fire_precision = np.load(path + "fire_precision.npy")
+        fire_recall = np.load(path + "fire_recall.npy")
 
-        # list(map(lambda x: 10 if x == 'x' else x, a))
-
-        plt.figure(figsize=(8, 6))
-        plt.step(gene_r, gene_p, color='b', alpha=0.5, where='post', linewidth=3, label="Gene Expression")
-        plt.step(rep_r, rep_p, color='g', alpha=0.5, where='post', linewidth=3, label="Replication Timing")
-        plt.step(pe_r, pe_p, color='m', alpha=0.5, where='post', linewidth=3, label="PE-Interactions")
-        plt.step(fire_r, fire_p, color='y', alpha=0.5, where='post', linewidth=3, label="FIREs")
+        plt.figure(figsize=(10, 6))
+        plt.step(rep_recall, rep_precision, color='g', alpha=0.5, where='post', linewidth=3, label="Replication Timing")
+        plt.step(gene_recall, gene_precision, color='b', alpha=0.5, where='post', linewidth=3, label="Gene Expression")
+        plt.step(fire_recall, fire_precision, color='y', alpha=0.5, where='post', linewidth=3, label="FIREs")
+        plt.step(pe_recall, pe_precision, color='m', alpha=0.5, where='post', linewidth=3, label="PE-Interactions")
         plt.xticks(fontsize=16)
         plt.yticks(fontsize=16)
         plt.xlabel('Recall', fontsize=16)
         plt.ylabel('Precision', fontsize=16)
         plt.ylim([0.0, 1.05])
         plt.xlim([0.0, 1])
-        plt.legend(fontsize=14)
+        plt.legend(fontsize=14, bbox_to_anchor=(1.05, 1), loc='upper left')
         plt.show()
 
         pass
