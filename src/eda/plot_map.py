@@ -209,7 +209,7 @@ class PlotMap:
 
     def plot_hyper_lstm(self, hidden_list):
 
-        mode = "test_time"
+        mode = "train_time"
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
 
         if mode == "mAP":
@@ -468,10 +468,10 @@ if __name__ == "__main__":
     # plot_ob.plot_gene()
     # plot_ob.plot_all()
 
-    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
     # plot_ob.plot_auto_ablation(hidden_list)
-    #plot_ob.plot_hyper_lstm(hidden_list)
+    plot_ob.plot_hyper_lstm(hidden_list)
 
     # conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
     # plot_ob.plot_cnn_ablation(conv_layers_list)
@@ -483,6 +483,6 @@ if __name__ == "__main__":
     #plot_ob.plot_lr(epoch_list)
     #plot_ob.plot_hyper_xgb()
 
-    plot_ob.plot_gene_regression()
+    #plot_ob.plot_gene_regression()
 
     print("done")
