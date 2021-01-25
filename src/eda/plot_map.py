@@ -291,19 +291,17 @@ class PlotMap:
             plt.legend(fontsize=16)
             plt.show()
         elif mode == "model_var":
-            r2_1layer = np.load(path + "r2_1layer.npy")
+            r2_var1_3 = np.load(path + "r2_var1_3.npy")
 
-            r2_2layer = np.load(path + "r2_2layer.npy")
-            r2_dropout = np.load(path + "r2_dropout.npy")
-            r2_no_ln = np.load(path + "r2_no_ln.npy")
-            r2_bidir = np.load(path + "r2_bidir.npy")
+            r2_var2_3 = np.load(path + "r2_var2_3.npy")
+            r2_var1_4 = np.load(path + "r2_var1_4.npy")
+            r2_var2_4 = np.load(path + "r2_var2_4.npy")
 
             plt.figure()
-            plt.plot(hidden_list, r2_1layer, label='one layer', marker='o', markersize=14)
-            plt.plot(hidden_list, r2_2layer, label='two layers', marker='^', markersize=14)
-            plt.plot(hidden_list, r2_no_ln, label='one layer w/o layer norm', marker='v', markersize=14)
-            plt.plot(hidden_list, r2_dropout, label='one layer w dropout', marker='+', markersize=14)
-            plt.plot(hidden_list, r2_bidir, label='one layer bidirectional lstm', marker='', markersize=14)
+            plt.plot(hidden_list, r2_var1_3, label='Epi-LSTM', marker='o', markersize=14)
+            plt.plot(hidden_list, r2_var2_3, label='Variation 2+3', marker='^', markersize=14)
+            plt.plot(hidden_list, r2_var1_4, label='Variation 1+4', marker='v', markersize=14)
+            plt.plot(hidden_list, r2_var2_4, label='Variation 2+4', marker='+', markersize=14)
 
             plt.xticks(fontsize=14)
             plt.yticks(fontsize=14)
@@ -510,6 +508,52 @@ class PlotMap:
             plt.show()
         pass
 
+    def plot_pr_roc(self):
+        path = "/data2/hic_lstm/downstream/"
+        precision_file = "precision.npy"
+        recall_file = "recall.npy"
+
+        gene_p = np.load(path + "RNA-seq/" + precision_file)
+        gene_r = np.load(path + "RNA-seq/" + recall_file)
+        rep_p = np.load(path + "replication_timing/" + precision_file)
+        rep_r = np.load(path + "replication_timing/" + recall_file)
+        pe_p = np.load(path + "PE-interactions/" + precision_file)
+        pe_r = np.load(path + "PE-interactions/" + recall_file)
+        fire_p = np.load(path + "FIREs/" + precision_file)
+        fire_r = np.load(path + "FIREs/" + recall_file)
+        tss_p = np.load(path + "tss/" + precision_file)
+        tss_r = np.load(path + "tss/" + recall_file)
+        en_p = np.load(path + "enhancers/" + precision_file)
+        en_r = np.load(path + "enhancers/" + recall_file)
+        domain_p = np.load(path + "domains/" + precision_file)
+        domain_r = np.load(path + "domains/" + recall_file)
+        loop_p = np.load(path + "loops/" + precision_file)
+        loop_r = np.load(path + "loops/" + recall_file)
+        subc_p = np.load(path + "subcompartments/" + precision_file)
+        subc_r = np.load(path + "subcompartments/" + recall_file)
+
+        # list(map(lambda x: 10 if x == 'x' else x, a))
+
+        plt.figure(figsize=(8, 6))
+        plt.step(gene_r, gene_p, color='b', alpha=0.5, where='post', linewidth=3, label="Gene Expression")
+        plt.step(rep_r, rep_p, color='g', alpha=0.5, where='post', linewidth=3, label="Replication Timing")
+        plt.step(en_r, en_p, color='r', alpha=0.5, where='post', linewidth=3, label="Enhancers")
+        plt.step(tss_r, tss_p, color='c', alpha=0.5, where='post', linewidth=3, label="TSS")
+        plt.step(pe_r, pe_p, color='m', alpha=0.5, where='post', linewidth=3, label="PE-Interactions")
+        plt.step(fire_r, fire_p, color='y', alpha=0.5, where='post', linewidth=3, label="FIREs")
+        plt.step(domain_r, domain_p, color='k', alpha=0.5, where='post', linewidth=3, label="Non-loop Domains")
+        plt.step(loop_r, loop_p, color='indigo', alpha=0.5, where='post', linewidth=3, label="Loop Domains")
+        plt.step(subc_r, subc_p, color='brown', alpha=0.5, where='post', linewidth=3, label="Subcompartments")
+        plt.xticks(fontsize=16)
+        plt.yticks(fontsize=16)
+        plt.xlabel('Recall', fontsize=16)
+        plt.ylabel('Precision', fontsize=16)
+        plt.ylim([0.0, 1.05])
+        plt.xlim([0.0, 1])
+        plt.legend(fontsize=14)
+        plt.show()
+
+        pass
 
 if __name__ == "__main__":
     setup_logging()
@@ -523,10 +567,10 @@ if __name__ == "__main__":
     # plot_ob.plot_gene()
     # plot_ob.plot_all()
 
-    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
     # plot_ob.plot_auto_ablation(hidden_list)
-    plot_ob.plot_hyper_lstm(hidden_list)
+    #plot_ob.plot_hyper_lstm(hidden_list)
 
     # conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
     # plot_ob.plot_cnn_ablation(conv_layers_list)
@@ -542,4 +586,5 @@ if __name__ == "__main__":
     # plot_ob.plot_smoothness()
     #plot_ob.plot_correlations()
 
+    plot_ob.plot_pr_roc()
     print("done")
