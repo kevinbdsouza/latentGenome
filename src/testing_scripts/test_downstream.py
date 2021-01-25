@@ -140,7 +140,19 @@ r2_avo = [0.5, 1.4, 1.51, 1.56, 1.59, 1.65, 1.7, 1.81, 1.91]
 r2_avo = r2_avo / np.mean(r2_avo)
 
 '''
+'''
+    def plot_tad(self, tad_dict):
+        key_list, value_list = self.get_lists(tad_dict)
 
+        plt.figure()
+        plt.bar(range(len(key_list)), value_list, align='center')
+        plt.xticks(range(len(key_list)), key_list)
+        plt.title('Topologically Associated Domains (TADs)')
+        # plt.xlabel('Cell Types')
+        plt.ylabel('MAP')
+        plt.legend()
+        plt.savefig(self.path + 'tad.png')
+'''
 path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
 r2_lstm = np.load(path + "mod_euclid_lstm.npy")
 r2_avo = np.load(path + "mod_euclid_avocado.npy")

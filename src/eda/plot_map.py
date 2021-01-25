@@ -443,17 +443,24 @@ class PlotMap:
 
         pass
 
-    def plot_tad(self, tad_dict):
-        key_list, value_list = self.get_lists(tad_dict)
+    def plot_smoothness(self):
+        path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
+        r2_lstm = np.load(path + "mod_euclid_lstm.npy")
+        r2_avo = np.load(path + "mod_euclid_avocado.npy")
+        pos = [0, 100, 200, 400, 800, 1600, 3200, 6400, 9000, 10000]
+        pos = [i * 25000 for i in pos]
 
-        plt.figure()
-        plt.bar(range(len(key_list)), value_list, align='center')
-        plt.xticks(range(len(key_list)), key_list)
-        plt.title('Topologically Associated Domains (TADs)')
-        # plt.xlabel('Cell Types')
-        plt.ylabel('MAP')
-        plt.legend()
-        plt.savefig(self.path + 'tad.png')
+        plt.ylabel('R-squared', fontsize=14)
+        plt.xlabel('Distance between positions (bp)', fontsize=14)
+        plt.yticks(fontsize=14)
+        plt.xticks(fontsize=14)
+        plt.xscale("log")
+        plt.tick_params(axis='x', which='both', length=0)
+        plt.plot(pos, r2_avo, linestyle='--', marker='o', color='blue', label='avocado')
+        plt.plot(pos, r2_lstm, linestyle='--', marker='o', color='red', label='lstm')
+        plt.legend(fontsize=14, )
+        plt.show()
+        pass
 
 
 if __name__ == "__main__":
@@ -468,10 +475,10 @@ if __name__ == "__main__":
     # plot_ob.plot_gene()
     # plot_ob.plot_all()
 
-    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
     # plot_ob.plot_auto_ablation(hidden_list)
-    plot_ob.plot_hyper_lstm(hidden_list)
+    #plot_ob.plot_hyper_lstm(hidden_list)
 
     # conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
     # plot_ob.plot_cnn_ablation(conv_layers_list)
@@ -484,5 +491,6 @@ if __name__ == "__main__":
     #plot_ob.plot_hyper_xgb()
 
     #plot_ob.plot_gene_regression()
+    plot_ob.plot_smoothness()
 
     print("done")
