@@ -5,6 +5,9 @@ import xgboost
 from sklearn.metrics import average_precision_score
 from sklearn.utils import resample
 from train_fns.test_gene import get_config
+from sklearn.metrics import roc_curve
+from sklearn.metrics import roc_auc_score
+import matplotlib.pyplot as plt
 
 logger = logging.getLogger(__name__)
 
@@ -95,6 +98,55 @@ class DownstreamHelper:
         # window_feature_matrix.target = window_feature_matrix.target.astype(int)
 
         return window_feature_matrix
+
+    def plot_roc(self, y_test, y_hat):
+        fpr, tpr, _ = roc_curve(y_test, y_hat)
+        plt.plot(fpr, tpr, marker='o', markersize=14)
+        plt.show()
+        auc = roc_auc_score(y_test, y_hat)
+        return auc
+
+    def calculate_map3(self, feature_matrix, cls_mode):
+
+        n_folds = 20
+        hidden_size = None
+        if cls_mode == 'concat':
+            hidden_size = self.cfg_down.hidden_size_encoder
+        elif cls_mode == 'ind':
+            hidden_size = self.cfg.hidden_size_encoder
+
+        average_precisions = np.zeros(n_folds)
+        X_train = pd.DataFrame(columns=list(np.arange(hidden_size)))
+        y_train = pd.DataFrame()
+        feature_matrix = feature_matrix.sample(frac=1)
+
+        y_test_cell = []
+        y_hat_cell = []
+        for i in range(n_folds):
+            X_test = feature_matrix.iloc[i::n_folds, 0:hidden_size]
+            X_valid = feature_matrix.iloc[(i + 1) % n_folds::n_folds, 0:hidden_size]
+            y_test = feature_matrix.iloc[i::n_folds]["target"]
+            y_valid = feature_matrix.iloc[(i + 1) % n_folds::n_folds]["target"]
+
+            for j in range(n_folds):
+                if j != i and j != (i + 1) % n_folds:
+                    fold_mat = feature_matrix.iloc[j::n_folds, 0:hidden_size]
+                    y_mat = feature_matrix.iloc[j::n_folds]["target"]
+                    X_train = pd.concat([X_train, fold_mat])
+                    y_train = pd.concat([y_train, y_mat])
+
+            y_train = y_train.astype(int)
+
+            model = xgboost.XGBClassifier(n_estimators=5000, nthread=min(X_train.shape[1], 12), max_depth=6)
+
+            model.fit(X_train, y_train, eval_set=[(X_valid, y_valid)], eval_metric='map', early_stopping_rounds=20,
+                      verbose=False)
+
+            y_hat = model.predict_proba(X_test)
+            y_test_cell.append(y_test)
+            y_hat_cell.append(y_hat)
+
+        return y_test_cell, y_hat_cell
 
     def calculate_map2(self, feature_matrix, cls_mode):
 

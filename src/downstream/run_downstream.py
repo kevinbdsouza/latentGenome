@@ -49,10 +49,11 @@ class DownstreamTasks:
         self.run_features_rna = True
         self.run_features_pe = False
         self.run_features_fire = False
-        self.run_features_rep = True
+        self.run_features_rep = False
         self.concat_lstm = False
         self.run_concat_feat = False
         self.calculate_map = True
+        self.roc = True
         self.downstream_helper_ob = DownstreamHelper(cfg, chr, mode=mode)
         self.down_lstm_ob = DownstreamLSTM()
 
@@ -126,6 +127,8 @@ class DownstreamTasks:
         rna_seq_chr['target'] = 0
         mean_map_dict = {}
 
+        y_test = []
+        y_hat = []
         for col in range(1, 58):
             rna_seq_chr.loc[rna_seq_chr.iloc[:, col] >= 0.5, 'target'] = 1
             rna_window_labels = rna_seq_chr.filter(['start', 'end', 'target'], axis=1)
@@ -163,11 +166,19 @@ class DownstreamTasks:
 
             if self.calculate_map:
                 mean_map = self.downstream_helper_ob.calculate_map2(feature_matrix, cls_mode)
-
                 mean_map_dict[rna_seq_chr.columns[col]] = mean_map
 
-        np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
+            if self.roc:
+                y_test_cell, y_hat_cell = self.downstream_helper_ob.calculate_map3(feature_matrix, cls_mode)
+                y_test.append(y_test_cell)
+                y_hat.append(y_hat_cell)
 
+        if self.roc:
+            auc = self.downstream_helper_ob.plot_roc(y_test, y_hat)
+        elif self.calculate_map:
+            np.save(self.saved_model_dir + 'map_dict_rnaseq.npy', mean_map_dict)
+
+        print("done")
         return mean_map_dict
 
     def run_pe(self, cfg):
