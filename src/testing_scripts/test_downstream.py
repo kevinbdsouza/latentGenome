@@ -153,6 +153,7 @@ r2_avo = r2_avo / np.mean(r2_avo)
         plt.legend()
         plt.savefig(self.path + 'tad.png')
 '''
+'''
 path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
 r2_lstm = np.load(path + "mod_euclid_lstm.npy")
 r2_avo = np.load(path + "mod_euclid_avocado.npy")
@@ -169,6 +170,7 @@ plt.plot(pos, r2_avo, linestyle='--', marker='o', color='blue', label='avocado')
 plt.plot(pos, r2_lstm, linestyle='--', marker='o', color='red', label='lstm')
 plt.legend(fontsize=14, )
 plt.show()
+'''
 
 print("done")
 

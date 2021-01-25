@@ -447,6 +447,7 @@ class PlotMap:
         path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
         r2_lstm = np.load(path + "mod_euclid_lstm.npy")
         r2_avo = np.load(path + "mod_euclid_avocado.npy")
+        r2_refined_cnn = np.load(path + "mod_refined_cnn.npy")
         pos = [0, 100, 200, 400, 800, 1600, 3200, 6400, 9000, 10000]
         pos = [i * 25000 for i in pos]
 
@@ -454,14 +455,28 @@ class PlotMap:
         plt.xlabel('Distance between positions (bp)', fontsize=14)
         plt.yticks(fontsize=14)
         plt.xticks(fontsize=14)
-        plt.xscale("log")
         plt.tick_params(axis='x', which='both', length=0)
-        plt.plot(pos, r2_avo, linestyle='--', marker='o', color='blue', label='avocado')
-        plt.plot(pos, r2_lstm, linestyle='--', marker='o', color='red', label='lstm')
+        plt.plot(pos, r2_lstm, linestyle='--', marker='o', color='red', label='Epi-lstm')
+        plt.plot(pos, r2_avo, linestyle='--', marker='o', color='blue', label='Avocado')
+        plt.plot(pos, r2_refined_cnn, linestyle='--', marker='o', color='brown', label='Refined+CNN')
         plt.legend(fontsize=14, )
         plt.show()
         pass
 
+    def plot_correlations(self):
+        data_path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
+        gc_path = data_path + "gccorrelations.pkl"
+        phylo_path = data_path + "phylo_abs_corr.pkl"
+
+        gc_corr = pd.read_pickle(gc_path)
+        phylo_corr = pd.read_pickle(phylo_path)
+
+        features = np.linspace(1, 24, num=24, endpoint=True)
+        #plt.xticks(pos)
+        plt.xlabel('Features', fontsize=14)
+        plt.xticks(fontsize=14)
+
+        pass
 
 if __name__ == "__main__":
     setup_logging()
@@ -491,6 +506,7 @@ if __name__ == "__main__":
     #plot_ob.plot_hyper_xgb()
 
     #plot_ob.plot_gene_regression()
-    plot_ob.plot_smoothness()
+    #plot_ob.plot_smoothness()
+    plot_ob.plot_correlations()
 
     print("done")
