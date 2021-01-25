@@ -536,6 +536,26 @@ class PlotMap:
             plt.legend(fontsize=14, bbox_to_anchor=(1.05, 1), loc='upper left')
             plt.show()
         elif mode == "roc":
+            gene_recall = np.load(path + "gene_recall.npy")
+            rep_recall = np.load(path + "rep_recall.npy")
+            pe_recall = np.load(path + "pe_recall.npy")
+            fire_recall = np.load(path + "fire_recall.npy")
+
+            plt.figure(figsize=(10, 6))
+            plt.plot(rep_recall, rep_recall, color='g', linewidth=3,
+                     label="Replication Timing")
+            plt.step(gene_recall, gene_recall, color='b', linewidth=3,
+                     label="Gene Expression")
+            plt.step(fire_recall, fire_recall, color='y', linewidth=3, label="FIREs")
+            plt.step(pe_recall, pe_recall, color='m', linewidth=3, label="PE-Interactions")
+            plt.xticks(fontsize=16)
+            plt.yticks(fontsize=16)
+            plt.xlabel('Recall', fontsize=16)
+            plt.ylabel('Precision', fontsize=16)
+            plt.ylim([0.0, 1.05])
+            plt.xlim([0.0, 1])
+            plt.legend(fontsize=14, bbox_to_anchor=(1.05, 1), loc='upper left')
+            plt.show()
             print("done")
         pass
 
