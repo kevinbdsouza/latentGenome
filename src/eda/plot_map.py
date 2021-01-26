@@ -396,7 +396,7 @@ class PlotMap:
 
     def plot_auto_ablation(self, hidden_list):
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
-        map_lstm = np.load(path + "map_lstm.npy")
+        map_lstm = np.load(path + "r2_1layer.npy")
 
         map_rnn = np.load(path + "map_rnn.npy")
         map_ff = np.load(path + "map_ff.npy")
@@ -523,8 +523,10 @@ class PlotMap:
             fire_recall = np.load(path + "fire_recall.npy")
 
             plt.figure(figsize=(10, 6))
-            plt.step(rep_recall, rep_precision, color='g', alpha=0.5, where='post', linewidth=3, label="Replication Timing")
-            plt.step(gene_recall, gene_precision, color='b', alpha=0.5, where='post', linewidth=3, label="Gene Expression")
+            plt.step(rep_recall, rep_precision, color='g', alpha=0.5, where='post', linewidth=3,
+                     label="Replication Timing")
+            plt.step(gene_recall, gene_precision, color='b', alpha=0.5, where='post', linewidth=3,
+                     label="Gene Expression")
             plt.step(fire_recall, fire_precision, color='y', alpha=0.5, where='post', linewidth=3, label="FIREs")
             plt.step(pe_recall, pe_precision, color='m', alpha=0.5, where='post', linewidth=3, label="PE-Interactions")
             plt.xticks(fontsize=16)
@@ -542,12 +544,12 @@ class PlotMap:
             fire_recall = np.load(path + "fire_recall.npy")
 
             plt.figure(figsize=(10, 6))
-            plt.step(rep_recall, rep_recall, color='g', linewidth=3,
+            plt.step(rep_recall, rep_fpr, color='g', linewidth=3,
                      label="Replication Timing")
-            plt.step(gene_recall, gene_recall, color='b', linewidth=3,
+            plt.step(gene_recall, gene_fpr, color='b', linewidth=3,
                      label="Gene Expression")
-            plt.step(fire_recall, fire_recall, color='y', linewidth=3, label="FIREs")
-            plt.step(pe_recall, pe_recall, color='m', linewidth=3, label="PE-Interactions")
+            plt.step(fire_recall, fire_fpr, color='y', linewidth=3, label="FIREs")
+            plt.step(pe_recall, pe_fpr, color='m', linewidth=3, label="PE-Interactions")
             plt.xticks(fontsize=16)
             plt.yticks(fontsize=16)
             plt.xlabel('Recall', fontsize=16)
@@ -558,6 +560,7 @@ class PlotMap:
             plt.show()
             print("done")
         pass
+
 
 if __name__ == "__main__":
     setup_logging()
@@ -571,9 +574,9 @@ if __name__ == "__main__":
     # plot_ob.plot_gene()
     # plot_ob.plot_all()
 
-    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
-    # plot_ob.plot_auto_ablation(hidden_list)
+    plot_ob.plot_auto_ablation(hidden_list)
     #plot_ob.plot_hyper_lstm(hidden_list)
 
     # conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -588,7 +591,7 @@ if __name__ == "__main__":
 
     # plot_ob.plot_gene_regression()
     # plot_ob.plot_smoothness()
-    #plot_ob.plot_correlations()
+    # plot_ob.plot_correlations()
 
-    plot_ob.plot_pr_roc()
+    #plot_ob.plot_pr_roc()
     print("done")
