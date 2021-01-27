@@ -174,11 +174,11 @@ class PlotMap:
         palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
         plt.figure(figsize=(10, 6))
         plt.ylim(0.65, 1)
-        sns.set(font_scale=1.2)
+        sns.set(font_scale=1.4)
         sns.set_style("whitegrid")
         ax = sns.barplot(x="Cell Types", hue="labels", y="mAP", palette=palette, data=df)
         ax.grid(False)
-        plt.legend(fontsize=16, bbox_to_anchor=(1.05, 1), loc='upper left')
+        plt.legend(fontsize=18, bbox_to_anchor=(1.05, 1), loc='upper left')
         plt.show()
         print("done")
         # plt.savefig(path + 'map_rep.png')
@@ -396,14 +396,14 @@ class PlotMap:
 
     def plot_auto_ablation(self, hidden_list):
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
-        map_lstm = np.load(path + "r2_1layer.npy")
+        r2_lstm = np.load(path + "r2_1layer.npy")
 
         map_rnn = np.load(path + "map_rnn.npy")
         map_ff = np.load(path + "map_ff.npy")
         map_cnn = np.load(path + "map_cnn.npy")
 
         plt.figure()
-        plt.plot(hidden_list, map_lstm, label='Epi-LSTM', marker='o', markersize=14, color='r')
+        plt.plot(hidden_list, r2_lstm, label='Epi-LSTM', marker='o', markersize=14, color='r')
         plt.plot(hidden_list, map_rnn, label='RNN', marker='^', markersize=14)
         plt.plot(hidden_list, map_cnn, label='Epi-CNN', marker='v', markersize=14)
         plt.plot(hidden_list, map_ff, label='Fully Connected', marker='+', markersize=14)
@@ -572,11 +572,11 @@ if __name__ == "__main__":
     plot_ob = PlotMap(cfg)
 
     # plot_ob.plot_gene()
-    # plot_ob.plot_all()
+    plot_ob.plot_all()
 
-    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
-    plot_ob.plot_auto_ablation(hidden_list)
+    #plot_ob.plot_auto_ablation(hidden_list)
     #plot_ob.plot_hyper_lstm(hidden_list)
 
     # conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
