@@ -54,29 +54,29 @@ class PlotMap:
         return value_list_lstm
 
     def plot_auroc_accuracy(self):
-        path = "/home/kevindsouza/Documents/projects/hic_lstm/src/saved_model/model_lstm/log_run/"
+        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
         mode = "AuROC"
         tasks = ["Gene Expression", "Replication Timing", "PE-Interactions", "FIREs"]
         methods = ["Epi-LSTM", "Avocado", "Refined+CNN", "Baseline"]
 
         if mode == "AuROC":
-            lstm_values_all_tasks = np.load(path + "lstm/" + "lstm_values_all_tasks.npy")
-            sniper_intra_values_all_tasks = np.load(path + "lstm/" + "sniper_intra_values_all_tasks.npy")
-            pca_values_all_tasks = np.load(path + "lstm/" + "pca_values_all_tasks.npy")
-            sbcid_values_all_tasks = np.load(path + "lstm/" + "sbcid_values_all_tasks.npy")
+            lstm_auroc_all_tasks = np.load(path + "lstm_auroc_all_tasks.npy")
+            avocado_auroc_all_tasks = np.load(path + "avocado_auroc_all_tasks.npy")
+            refined_auroc_all_tasks = np.load(path + "refined_auroc_all_tasks.npy")
+            baseline_auroc_all_tasks = np.load(path + "baseline_auroc_all_tasks.npy")
         elif mode == "Accuracy":
             pass
 
 
         df_main = pd.DataFrame(columns=["Tasks", "Epi-LSTM", "Avocado", "Refined+CNN", "Baseline"])
         df_main["Tasks"] = tasks
-        df_main["Epi-LSTM"] = lstm_values_all_tasks
-        df_main["Avocado"] = sniper_intra_values_all_tasks
-        df_main["Refined+CNN"] = pca_values_all_tasks
-        df_main["Baseline"] = sbcid_values_all_tasks
+        df_main["Epi-LSTM"] = lstm_auroc_all_tasks
+        df_main["Avocado"] = avocado_auroc_all_tasks
+        df_main["Refined+CNN"] = refined_auroc_all_tasks
+        df_main["Baseline"] = baseline_auroc_all_tasks
 
         palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
-        plt.figure(figsize=(12, 10))
+        plt.figure(figsize=(8, 6))
         plt.xticks(rotation=90, fontsize=15)
         plt.yticks(fontsize=15)
         plt.xlabel("Prediction Target", fontsize=15)
@@ -141,11 +141,12 @@ class PlotMap:
 
         label_list = ['Epi-LSTM', 'Avocado', 'Refined+CNN', 'Baseline']
         color_list = ['red', 'blue', 'brown', 'green']
+        marker_list = ['o', '^', 'v', '+']
 
         values = [value_list_lstm, value_list_avocado, value_list_refined, value_list_baseline]
 
         for i, label in enumerate(label_list):
-            plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i])
+            plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i], marker=marker_list[i])
 
         plt.legend(fontsize=16)
         plt.show()
@@ -629,10 +630,10 @@ if __name__ == "__main__":
     # plot_ob.plot_lr(epoch_list)
     # plot_ob.plot_hyper_xgb()
 
-    # plot_ob.plot_gene_regression()
+    plot_ob.plot_gene_regression()
     # plot_ob.plot_smoothness()
     # plot_ob.plot_correlations()
 
     #plot_ob.plot_pr_roc()
-    plot_ob.plot_auroc_accuracy()
+    #plot_ob.plot_auroc_accuracy()
     print("done")
