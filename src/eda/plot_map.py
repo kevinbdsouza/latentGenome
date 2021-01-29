@@ -55,7 +55,7 @@ class PlotMap:
 
     def plot_auroc_accuracy(self):
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
-        mode = "AuROC"
+        mode = "Accuracy"
         tasks = ["Gene Expression", "Replication Timing", "PE-Interactions", "FIREs"]
         methods = ["Epi-LSTM", "Avocado", "Refined+CNN", "Baseline"]
 
@@ -630,10 +630,10 @@ if __name__ == "__main__":
     # plot_ob.plot_lr(epoch_list)
     # plot_ob.plot_hyper_xgb()
 
-    plot_ob.plot_gene_regression()
+    #plot_ob.plot_gene_regression()
     # plot_ob.plot_smoothness()
     # plot_ob.plot_correlations()
 
     #plot_ob.plot_pr_roc()
-    #plot_ob.plot_auroc_accuracy()
+    plot_ob.plot_auroc_accuracy()
     print("done")
