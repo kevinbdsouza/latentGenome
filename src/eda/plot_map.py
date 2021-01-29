@@ -634,10 +634,10 @@ if __name__ == "__main__":
     # plot_ob.plot_lr(epoch_list)
     # plot_ob.plot_hyper_xgb()
 
-    plot_ob.plot_gene_regression()
+    #plot_ob.plot_gene_regression()
     # plot_ob.plot_smoothness()
     # plot_ob.plot_correlations()
 
     #plot_ob.plot_pr_roc()
-    #plot_ob.plot_auroc_accuracy()
+    plot_ob.plot_auroc_accuracy()
     print("done")
