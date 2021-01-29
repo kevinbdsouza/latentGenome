@@ -71,7 +71,6 @@ class PlotMap:
             baseline_all_tasks = np.load(path + "baseline_accu_all_tasks.npy")
             pass
 
-
         df_main = pd.DataFrame(columns=["Tasks", "Epi-LSTM", "Avocado", "Refined+CNN", "Baseline"])
         df_main["Tasks"] = tasks
         df_main["Epi-LSTM"] = lstm_all_tasks
@@ -91,7 +90,8 @@ class PlotMap:
                  label="Avocado")
         plt.plot('Tasks', 'Refined+CNN', data=df_main, marker='v', markersize=14, color="C5", linewidth=2,
                  label="Refined+CNN")
-        plt.plot('Tasks', 'Baseline', data=df_main, marker='+', markersize=14, color="C2", linewidth=2, label="Baseline")
+        plt.plot('Tasks', 'Baseline', data=df_main, marker='+', markersize=14, color="C2", linewidth=2,
+                 label="Baseline")
         plt.legend(fontsize=16)
         plt.show()
         pass
@@ -613,7 +613,7 @@ class PlotMap:
 
         for i in range(len(features)):
             feat_cur = str(features[i] + 1)
-            x = phylo_df[i]
+            x = phylo_df[features[i]]
             y = phylo_df['p_score']
             H, xedges, yedges = np.histogram2d(x, y, bins=10)
 
@@ -621,30 +621,16 @@ class PlotMap:
             for i in range(len(H)):
                 columns = H[:, i]
                 totals.append(np.sum(columns))
-            to_be_array = []
 
             for i in range(len(H)):
-
-                cur = []
                 for j in range(len(H)):
-                    # cur.append(H[i][j]/totals[j])
                     H[i][j] = H[i][j] / totals[j]
-                # to_be_array.append(cur)
-
-            new_H = np.array(to_be_array)
-
-            # newH = H.transpose()
-
-            newH = np.zeros((H.shape))
-            # newH[: len(newH) - 2, :] = H[2:len(newH), :]
-            # newH[len(newH) - 2:, :] = H[:2, :]
-            # newH = np.flip(H, axis=0)
 
             plt.figure()
             X, Y = np.meshgrid(xedges, yedges)
             plt.pcolormesh(X, Y, H.T)
-
-            # plt.pcolormesh(xedges,yedges, new_H, cmap='Blues')
+            plt.xticks(fontsize=16)
+            plt.yticks(fontsize=16)
             plt.xlabel('Values of Feature' + " " + feat_cur)
             plt.ylabel('PhyloP Score')
             cbar = plt.colorbar()
@@ -652,6 +638,7 @@ class PlotMap:
 
             plt.show()
         pass
+
 
 if __name__ == "__main__":
     setup_logging()
@@ -662,13 +649,13 @@ if __name__ == "__main__":
     cfg = get_config(model_path, config_base, result_base)
     plot_ob = PlotMap(cfg)
 
-    #plot_ob.plot_gene()
-    #plot_ob.plot_all()
+    # plot_ob.plot_gene()
+    # plot_ob.plot_all()
 
-    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    # hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
-    #plot_ob.plot_auto_ablation(hidden_list)
-    #plot_ob.plot_hyper_lstm(hidden_list)
+    # plot_ob.plot_auto_ablation(hidden_list)
+    # plot_ob.plot_hyper_lstm(hidden_list)
 
     # conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
     # plot_ob.plot_cnn_ablation(conv_layers_list)
@@ -680,11 +667,11 @@ if __name__ == "__main__":
     # plot_ob.plot_lr(epoch_list)
     # plot_ob.plot_hyper_xgb()
 
-    #plot_ob.plot_gene_regression()
+    # plot_ob.plot_gene_regression()
     # plot_ob.plot_smoothness()
-    #plot_ob.plot_correlations()
+    # plot_ob.plot_correlations()
 
-    #plot_ob.plot_pr_roc()
-    #plot_ob.plot_auroc_accuracy()
+    # plot_ob.plot_pr_roc()
+    # plot_ob.plot_auroc_accuracy()
     plot_ob.plot_phylo_density()
     print("done")
