@@ -53,6 +53,44 @@ class PlotMap:
 
         return value_list_lstm
 
+    def plot_auroc_accuracy(self):
+        mode = "AuROC"
+        tasks = ["Gene Expression", "Replication Timing", "PE-Interactions", "FIREs"]
+        methods = ["Epi-LSTM", "Avocado", "Refined+CNN", "Baseline"]
+
+        if mode == "AuROC":
+            lstm_values_all_tasks = np.load(self.path + "lstm/" + "lstm_values_all_tasks.npy")
+            sniper_intra_values_all_tasks = np.load(self.path + "lstm/" + "sniper_intra_values_all_tasks.npy")
+            pca_values_all_tasks = np.load(self.path + "lstm/" + "pca_values_all_tasks.npy")
+            sbcid_values_all_tasks = np.load(self.path + "lstm/" + "sbcid_values_all_tasks.npy")
+        elif mode == "Accuracy":
+            pass
+
+
+        df_main = pd.DataFrame(columns=["Tasks", "Epi-LSTM", "Avocado", "Refined+CNN", "Baseline"])
+        df_main["Tasks"] = tasks
+        df_main["Epi-LSTM"] = lstm_values_all_tasks
+        df_main["Avocado"] = sniper_intra_values_all_tasks
+        df_main["Refined+CNN"] = pca_values_all_tasks
+        df_main["Baseline"] = sbcid_values_all_tasks
+
+        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
+        plt.figure(figsize=(12, 10))
+        plt.xticks(rotation=90, fontsize=15)
+        plt.yticks(fontsize=15)
+        plt.xlabel("Prediction Target", fontsize=15)
+        plt.ylabel(mode, fontsize=15)
+        plt.plot('Tasks', 'Epi-LSTM', data=df_main, marker='o', markersize=14, color="C3", linewidth=2,
+                 label="Epi-LSTM")
+        plt.plot('Tasks', 'Avocado', data=df_main, marker='^', markersize=14, color="C0", linewidth=2,
+                 label="Avocado")
+        plt.plot('Tasks', 'Refined+CNN', data=df_main, marker='v', markersize=14, color="C5", linewidth=2,
+                 label="Refined+CNN")
+        plt.plot('Tasks', 'Baseline', data=df_main, marker='+', markersize=14, color="C2", linewidth=2, label="Baseline")
+        plt.legend(fontsize=16)
+        plt.show()
+        pass
+
     def plot_gene(self):
         avocado_rna = np.load(self.path + "avocado_rna.npy").item()
         lstm_rna = np.load(self.path + "lstm_rna.npy").item()
@@ -72,11 +110,12 @@ class PlotMap:
 
         label_list = ['Epi-LSTM', 'Avocado', 'Refined+CNN', 'Baseline']
         color_list = ['red', 'blue', 'brown', 'green']
+        marker_list = ['o', '^', 'v', '+']
 
         values = [value_list_lstm, value_list_avocado, value_list_refined, value_list_baseline]
 
         for i, label in enumerate(label_list):
-            plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i])
+            plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i], marker=marker_list[i])
 
         plt.legend(fontsize=16)
         plt.show()
@@ -287,7 +326,7 @@ class PlotMap:
             plt.xticks(fontsize=14)
             plt.yticks(fontsize=14)
             plt.xlabel('Hidden Nodes', fontsize=15)
-            plt.ylabel('Testing Time (Seconds)', fontsize=15)
+            plt.ylabel('Average GPU testing days \nper chromosome', fontsize=15)
             plt.legend(fontsize=16)
             plt.show()
         elif mode == "model_var":
@@ -571,13 +610,13 @@ if __name__ == "__main__":
     cfg = get_config(model_path, config_base, result_base)
     plot_ob = PlotMap(cfg)
 
-    # plot_ob.plot_gene()
+    plot_ob.plot_gene()
     #plot_ob.plot_all()
 
-    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
     #plot_ob.plot_auto_ablation(hidden_list)
-    plot_ob.plot_hyper_lstm(hidden_list)
+    #plot_ob.plot_hyper_lstm(hidden_list)
 
     # conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
     # plot_ob.plot_cnn_ablation(conv_layers_list)
@@ -594,4 +633,5 @@ if __name__ == "__main__":
     # plot_ob.plot_correlations()
 
     #plot_ob.plot_pr_roc()
+    #plot_ob.plot_auroc_accuracy()
     print("done")
