@@ -572,7 +572,7 @@ if __name__ == "__main__":
     plot_ob = PlotMap(cfg)
 
     # plot_ob.plot_gene()
-    plot_ob.plot_all()
+    #plot_ob.plot_all()
 
     hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
