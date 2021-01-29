@@ -209,7 +209,7 @@ class PlotMap:
 
     def plot_hyper_lstm(self, hidden_list):
 
-        mode = "train_time"
+        mode = "test_time"
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
 
         if mode == "mAP":
@@ -268,7 +268,7 @@ class PlotMap:
             plt.xticks(fontsize=14)
             plt.yticks(fontsize=14)
             plt.xlabel('Hidden Nodes', fontsize=15)
-            plt.ylabel('Training Time (Seconds)', fontsize=15)
+            plt.ylabel('Average GPU training days \nper chromosome', fontsize=15)
             plt.legend(fontsize=16)
             plt.show()
         elif mode == "test_time":
