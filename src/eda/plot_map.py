@@ -54,15 +54,16 @@ class PlotMap:
         return value_list_lstm
 
     def plot_auroc_accuracy(self):
+        path = "/home/kevindsouza/Documents/projects/hic_lstm/src/saved_model/model_lstm/log_run/"
         mode = "AuROC"
         tasks = ["Gene Expression", "Replication Timing", "PE-Interactions", "FIREs"]
         methods = ["Epi-LSTM", "Avocado", "Refined+CNN", "Baseline"]
 
         if mode == "AuROC":
-            lstm_values_all_tasks = np.load(self.path + "lstm/" + "lstm_values_all_tasks.npy")
-            sniper_intra_values_all_tasks = np.load(self.path + "lstm/" + "sniper_intra_values_all_tasks.npy")
-            pca_values_all_tasks = np.load(self.path + "lstm/" + "pca_values_all_tasks.npy")
-            sbcid_values_all_tasks = np.load(self.path + "lstm/" + "sbcid_values_all_tasks.npy")
+            lstm_values_all_tasks = np.load(path + "lstm/" + "lstm_values_all_tasks.npy")
+            sniper_intra_values_all_tasks = np.load(path + "lstm/" + "sniper_intra_values_all_tasks.npy")
+            pca_values_all_tasks = np.load(path + "lstm/" + "pca_values_all_tasks.npy")
+            sbcid_values_all_tasks = np.load(path + "lstm/" + "sbcid_values_all_tasks.npy")
         elif mode == "Accuracy":
             pass
 
