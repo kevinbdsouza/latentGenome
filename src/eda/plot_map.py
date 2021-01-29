@@ -60,20 +60,24 @@ class PlotMap:
         methods = ["Epi-LSTM", "Avocado", "Refined+CNN", "Baseline"]
 
         if mode == "AuROC":
-            lstm_auroc_all_tasks = np.load(path + "lstm_auroc_all_tasks.npy")
-            avocado_auroc_all_tasks = np.load(path + "avocado_auroc_all_tasks.npy")
-            refined_auroc_all_tasks = np.load(path + "refined_auroc_all_tasks.npy")
-            baseline_auroc_all_tasks = np.load(path + "baseline_auroc_all_tasks.npy")
+            lstm_all_tasks = np.load(path + "lstm_auroc_all_tasks.npy")
+            avocado_all_tasks = np.load(path + "avocado_auroc_all_tasks.npy")
+            refined_all_tasks = np.load(path + "refined_auroc_all_tasks.npy")
+            baseline_all_tasks = np.load(path + "baseline_auroc_all_tasks.npy")
         elif mode == "Accuracy":
+            lstm_all_tasks = np.load(path + "lstm_accu_all_tasks.npy")
+            avocado_all_tasks = np.load(path + "avocado_accu_all_tasks.npy")
+            refined_all_tasks = np.load(path + "refined_accu_all_tasks.npy")
+            baseline_all_tasks = np.load(path + "baseline_accu_all_tasks.npy")
             pass
 
 
         df_main = pd.DataFrame(columns=["Tasks", "Epi-LSTM", "Avocado", "Refined+CNN", "Baseline"])
         df_main["Tasks"] = tasks
-        df_main["Epi-LSTM"] = lstm_auroc_all_tasks
-        df_main["Avocado"] = avocado_auroc_all_tasks
-        df_main["Refined+CNN"] = refined_auroc_all_tasks
-        df_main["Baseline"] = baseline_auroc_all_tasks
+        df_main["Epi-LSTM"] = lstm_all_tasks
+        df_main["Avocado"] = avocado_all_tasks
+        df_main["Refined+CNN"] = refined_all_tasks
+        df_main["Baseline"] = baseline_all_tasks
 
         palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
         plt.figure(figsize=(8, 6))
@@ -130,7 +134,7 @@ class PlotMap:
         value_list_refined = list(np.load(self.path + "refined_regress.npy"))
 
         avocado_rna = np.load(self.path + "avocado_rna.npy").item()
-        key_list_avocado, value_list_avocado = self.get_lists(avocado_rna)
+        key_list_avocado, _ = self.get_lists(avocado_rna)
 
         plt.figure(figsize=(14, 6))
         plt.ylim(0, 1)
@@ -630,10 +634,10 @@ if __name__ == "__main__":
     # plot_ob.plot_lr(epoch_list)
     # plot_ob.plot_hyper_xgb()
 
-    #plot_ob.plot_gene_regression()
+    plot_ob.plot_gene_regression()
     # plot_ob.plot_smoothness()
     # plot_ob.plot_correlations()
 
     #plot_ob.plot_pr_roc()
-    plot_ob.plot_auroc_accuracy()
+    #plot_ob.plot_auroc_accuracy()
     print("done")
