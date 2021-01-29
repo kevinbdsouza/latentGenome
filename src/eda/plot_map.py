@@ -55,7 +55,7 @@ class PlotMap:
 
     def plot_auroc_accuracy(self):
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
-        mode = "Accuracy"
+        mode = "AuROC"
         tasks = ["Gene Expression", "Replication Timing", "PE-Interactions", "FIREs"]
         methods = ["Epi-LSTM", "Avocado", "Refined+CNN", "Baseline"]
 
