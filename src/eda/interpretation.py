@@ -120,9 +120,10 @@ class Interpretation:
 
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/gc_phylo/feat_phylo_chr_21.pkl"
         phylo_df = pd.read_pickle(path)
+        features = [0, 2]
 
-        for i in range(0, 24):
-            feat_cur = str(i + 1)
+        for i in range(len(features)):
+            feat_cur = str(features[i] + 1)
             x = phylo_df[i]
             y = phylo_df['p_score']
             H, xedges, yedges = np.histogram2d(x, y, bins=10)

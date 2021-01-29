@@ -606,6 +606,52 @@ class PlotMap:
             print("done")
         pass
 
+    def plot_phylo_density(self):
+        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/gc_phylo/feat_phylo_chr_21.pkl"
+        phylo_df = pd.read_pickle(path)
+        features = [0, 2]
+
+        for i in range(len(features)):
+            feat_cur = str(features[i] + 1)
+            x = phylo_df[i]
+            y = phylo_df['p_score']
+            H, xedges, yedges = np.histogram2d(x, y, bins=10)
+
+            totals = []
+            for i in range(len(H)):
+                columns = H[:, i]
+                totals.append(np.sum(columns))
+            to_be_array = []
+
+            for i in range(len(H)):
+
+                cur = []
+                for j in range(len(H)):
+                    # cur.append(H[i][j]/totals[j])
+                    H[i][j] = H[i][j] / totals[j]
+                # to_be_array.append(cur)
+
+            new_H = np.array(to_be_array)
+
+            # newH = H.transpose()
+
+            newH = np.zeros((H.shape))
+            # newH[: len(newH) - 2, :] = H[2:len(newH), :]
+            # newH[len(newH) - 2:, :] = H[:2, :]
+            # newH = np.flip(H, axis=0)
+
+            plt.figure()
+            X, Y = np.meshgrid(xedges, yedges)
+            plt.pcolormesh(X, Y, H.T)
+
+            # plt.pcolormesh(xedges,yedges, new_H, cmap='Blues')
+            plt.xlabel('Values of Feature' + " " + feat_cur)
+            plt.ylabel('PhyloP Score')
+            cbar = plt.colorbar()
+            cbar.ax.set_ylabel('Counts')
+
+            plt.show()
+        pass
 
 if __name__ == "__main__":
     setup_logging()
@@ -636,8 +682,9 @@ if __name__ == "__main__":
 
     #plot_ob.plot_gene_regression()
     # plot_ob.plot_smoothness()
-    plot_ob.plot_correlations()
+    #plot_ob.plot_correlations()
 
     #plot_ob.plot_pr_roc()
     #plot_ob.plot_auroc_accuracy()
+    plot_ob.plot_phylo_density()
     print("done")
