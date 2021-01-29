@@ -538,15 +538,15 @@ class PlotMap:
         features = np.linspace(1, 24, num=24, endpoint=True)
 
         if mode == "gc":
-            plt.xticks(fontsize=14)
-            plt.yticks(fontsize=14)
+            plt.xticks(fontsize=16)
+            plt.yticks(fontsize=16)
             plt.xlabel('Representations', fontsize=15)
             plt.ylabel('GC Content Correlation', fontsize=15)
             plt.scatter(features, gc_corr, color='blue')
             plt.show()
         elif mode == "phylo":
-            plt.xticks(fontsize=14)
-            plt.yticks(fontsize=14)
+            plt.xticks(fontsize=16)
+            plt.yticks(fontsize=16)
             plt.xlabel('Representations', fontsize=15)
             plt.ylabel('AbsVal phyloP Score Correlation', fontsize=15)
             plt.scatter(features, phylo_corr, color='blue')
@@ -636,8 +636,8 @@ if __name__ == "__main__":
 
     #plot_ob.plot_gene_regression()
     # plot_ob.plot_smoothness()
-    # plot_ob.plot_correlations()
+    plot_ob.plot_correlations()
 
     #plot_ob.plot_pr_roc()
-    plot_ob.plot_auroc_accuracy()
+    #plot_ob.plot_auroc_accuracy()
     print("done")
