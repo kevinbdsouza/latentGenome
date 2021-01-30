@@ -254,7 +254,7 @@ class PlotMap:
 
     def plot_hyper_lstm(self, hidden_list):
 
-        mode = "train_time"
+        mode = "test_time"
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
 
         if mode == "mAP":
