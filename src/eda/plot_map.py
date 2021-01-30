@@ -652,10 +652,10 @@ if __name__ == "__main__":
     # plot_ob.plot_gene()
     # plot_ob.plot_all()
 
-    # hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
     # plot_ob.plot_auto_ablation(hidden_list)
-    # plot_ob.plot_hyper_lstm(hidden_list)
+    plot_ob.plot_hyper_lstm(hidden_list)
 
     # conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
     # plot_ob.plot_cnn_ablation(conv_layers_list)
@@ -663,9 +663,9 @@ if __name__ == "__main__":
     # tasks = ["Gene Expression", "P-E Interactions", "FIREs", "Replication Timing"]
     # plot_ob.plot_class_ablation(tasks)
 
-    epoch_list = [2, 4, 6, 8, 10, 12, 14, 16]
+    #epoch_list = [2, 4, 6, 8, 10, 12, 14, 16]
     # plot_ob.plot_lr(epoch_list)
-    plot_ob.plot_hyper_xgb()
+    #plot_ob.plot_hyper_xgb()
 
     # plot_ob.plot_gene_regression()
     # plot_ob.plot_smoothness()
