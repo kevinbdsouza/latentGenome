@@ -254,7 +254,7 @@ class PlotMap:
 
     def plot_hyper_lstm(self, hidden_list):
 
-        mode = "test_time"
+        mode = "train_time"
         path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
 
         if mode == "mAP":
@@ -313,7 +313,7 @@ class PlotMap:
             plt.xticks(fontsize=14)
             plt.yticks(fontsize=14)
             plt.xlabel('Hidden Nodes', fontsize=15)
-            plt.ylabel('Average GPU training days \nper chromosome', fontsize=15)
+            plt.ylabel('Average GPU training days \nper 10Mbp region', fontsize=15)
             plt.legend(fontsize=16)
             plt.show()
         elif mode == "test_time":
@@ -332,7 +332,7 @@ class PlotMap:
             plt.xticks(fontsize=14)
             plt.yticks(fontsize=14)
             plt.xlabel('Hidden Nodes', fontsize=15)
-            plt.ylabel('Average GPU testing days \nper chromosome', fontsize=15)
+            plt.ylabel('Average GPU testing days \nper 10Mbp region', fontsize=15)
             plt.legend(fontsize=16)
             plt.show()
         elif mode == "model_var":
@@ -629,12 +629,12 @@ class PlotMap:
             plt.figure()
             X, Y = np.meshgrid(xedges, yedges)
             plt.pcolormesh(X, Y, H.T)
-            plt.xticks(fontsize=16)
+            plt.xticks(fontsize=14)
             plt.yticks(fontsize=16)
-            plt.xlabel('Values of Feature' + " " + feat_cur)
-            plt.ylabel('PhyloP Score')
+            plt.xlabel('Values of Feature' + " " + feat_cur, fontsize=16)
+            plt.ylabel('PhyloP Score', fontsize=16)
             cbar = plt.colorbar()
-            cbar.ax.set_ylabel('Counts')
+            cbar.ax.set_ylabel('Counts', fontsize=16)
 
             plt.show()
         pass
@@ -663,9 +663,9 @@ if __name__ == "__main__":
     # tasks = ["Gene Expression", "P-E Interactions", "FIREs", "Replication Timing"]
     # plot_ob.plot_class_ablation(tasks)
 
-    # epoch_list = [2, 4, 6, 8, 10, 12, 14, 16]
+    epoch_list = [2, 4, 6, 8, 10, 12, 14, 16]
     # plot_ob.plot_lr(epoch_list)
-    # plot_ob.plot_hyper_xgb()
+    plot_ob.plot_hyper_xgb()
 
     # plot_ob.plot_gene_regression()
     # plot_ob.plot_smoothness()
@@ -673,5 +673,5 @@ if __name__ == "__main__":
 
     # plot_ob.plot_pr_roc()
     # plot_ob.plot_auroc_accuracy()
-    plot_ob.plot_phylo_density()
+    #plot_ob.plot_phylo_density()
     print("done")
