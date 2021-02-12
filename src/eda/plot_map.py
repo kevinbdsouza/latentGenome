@@ -522,7 +522,7 @@ class PlotMap:
         plt.tick_params(axis='x', which='both', length=0)
         plt.plot(pos, r2_lstm, linestyle='--', marker='o', color='red', label='Epi-lstm')
         plt.plot(pos, r2_avo, linestyle='--', marker='o', color='blue', label='Avocado')
-        plt.plot(pos, r2_refined_cnn, linestyle='--', marker='o', color='brown', label='Refined+CNN')
+        plt.plot(pos, r2_refined_cnn, linestyle='--', marker='o', color='brown', label='REFINED+CNN')
         plt.legend(fontsize=14, )
         plt.show()
         pass
@@ -667,8 +667,8 @@ if __name__ == "__main__":
     # plot_ob.plot_lr(epoch_list)
     #plot_ob.plot_hyper_xgb()
 
-    plot_ob.plot_gene_regression()
-    # plot_ob.plot_smoothness()
+    #plot_ob.plot_gene_regression()
+    plot_ob.plot_smoothness()
     # plot_ob.plot_correlations()
 
     # plot_ob.plot_pr_roc()
