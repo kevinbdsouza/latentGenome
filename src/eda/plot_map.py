@@ -18,9 +18,9 @@ class PlotMap:
     def plot_all(self):
         avocado_pe, avocado_fire, avocado_rep, lstm_pe, lstm_fire, lstm_rep = self.get_dict()
 
-        # self.plot_pe(avocado_pe, lstm_pe)
+        self.plot_pe(avocado_pe, lstm_pe)
         # self.plot_fire(avocado_fire, lstm_fire)
-        self.plot_rep(avocado_rep, lstm_rep)
+        #self.plot_rep(avocado_rep, lstm_rep)
 
     def get_dict(self):
 
@@ -166,7 +166,7 @@ class PlotMap:
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
         df = pd.DataFrame(
-            zip(key_list_avocado * 4, ["Epi-LSTM"] * 4 + ["Avocado"] * 4 + ["Refined+CNN"] * 4 + ["Baseline"] * 4,
+            zip(key_list_avocado * 4, ["Epi-LSTM"] * 4 + ["Avocado"] * 4 + ["REFINED+CNN"] * 4 + ["Baseline"] * 4,
                 value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
             columns=["Cell Types", "labels", "mAP"])
         palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
@@ -189,7 +189,7 @@ class PlotMap:
         value_list_lstm = self.reorder_lists(key_list_lstm, key_list_avocado, value_list_lstm)
 
         df = pd.DataFrame(
-            zip(key_list_avocado * 7, ["Epi-LSTM"] * 7 + ["Avocado"] * 7 + ["Refined+CNN"] * 7 + ["Baseline"] * 7,
+            zip(key_list_avocado * 7, ["Epi-LSTM"] * 7 + ["Avocado"] * 7 + ["REFINED+CNN"] * 7 + ["Baseline"] * 7,
                 value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
             columns=["Cell Types", "labels", "mAP"])
         palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
@@ -213,7 +213,7 @@ class PlotMap:
         # value_list_baseline = [x - 0.01 for x in value_list_lstm]
 
         df = pd.DataFrame(
-            zip(key_list_avocado * 5, ["Epi-LSTM"] * 5 + ["Avocado"] * 5 + ["Refined+CNN"] * 5 + ["Baseline"] * 5,
+            zip(key_list_avocado * 5, ["Epi-LSTM"] * 5 + ["Avocado"] * 5 + ["REFINED+CNN"] * 5 + ["Baseline"] * 5,
                 value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
             columns=["Cell Types", "labels", "mAP"])
         palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
@@ -332,7 +332,7 @@ class PlotMap:
             plt.xticks(fontsize=14)
             plt.yticks(fontsize=14)
             plt.xlabel('Hidden Nodes', fontsize=15)
-            plt.ylabel('Average GPU testing days \nper 10Mbp region', fontsize=15)
+            plt.ylabel('Average GPU testing hours \nper 10Mbp region', fontsize=15)
             plt.legend(fontsize=16)
             plt.show()
         elif mode == "model_var":
@@ -650,12 +650,12 @@ if __name__ == "__main__":
     plot_ob = PlotMap(cfg)
 
     # plot_ob.plot_gene()
-    # plot_ob.plot_all()
+    plot_ob.plot_all()
 
-    hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
+    #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
     # plot_ob.plot_auto_ablation(hidden_list)
-    plot_ob.plot_hyper_lstm(hidden_list)
+    #plot_ob.plot_hyper_lstm(hidden_list)
 
     # conv_layers_list = [1, 2, 3, 4, 5, 6, 7, 8]
     # plot_ob.plot_cnn_ablation(conv_layers_list)
