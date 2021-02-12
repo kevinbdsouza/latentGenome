@@ -649,7 +649,7 @@ if __name__ == "__main__":
     cfg = get_config(model_path, config_base, result_base)
     plot_ob = PlotMap(cfg)
 
-    plot_ob.plot_gene()
+    #plot_ob.plot_gene()
     #plot_ob.plot_all()
 
     #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
@@ -667,7 +667,7 @@ if __name__ == "__main__":
     # plot_ob.plot_lr(epoch_list)
     #plot_ob.plot_hyper_xgb()
 
-    # plot_ob.plot_gene_regression()
+    plot_ob.plot_gene_regression()
     # plot_ob.plot_smoothness()
     # plot_ob.plot_correlations()
 
