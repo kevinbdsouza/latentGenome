@@ -169,7 +169,7 @@ class PlotMap:
             zip(key_list_avocado * 4, ["Epi-LSTM"] * 4 + ["Avocado"] * 4 + ["REFINED+CNN"] * 4 + ["Baseline"] * 4,
                 value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
             columns=["Cell Types", "labels", "mAP"])
-        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
+        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "REFINED+CNN": "C5", "Baseline": "C2"}
         plt.figure()
         sns.set(font_scale=1.2)
         sns.set_style("whitegrid")
@@ -192,7 +192,7 @@ class PlotMap:
             zip(key_list_avocado * 7, ["Epi-LSTM"] * 7 + ["Avocado"] * 7 + ["REFINED+CNN"] * 7 + ["Baseline"] * 7,
                 value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
             columns=["Cell Types", "labels", "mAP"])
-        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
+        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "REFINED+CNN": "C5", "Baseline": "C2"}
         plt.figure()
         sns.set(font_scale=1.2)
         sns.set_style("whitegrid")
@@ -216,7 +216,7 @@ class PlotMap:
             zip(key_list_avocado * 5, ["Epi-LSTM"] * 5 + ["Avocado"] * 5 + ["REFINED+CNN"] * 5 + ["Baseline"] * 5,
                 value_list_lstm + value_list_avocado + value_list_refined + value_list_baseline),
             columns=["Cell Types", "labels", "mAP"])
-        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "Refined+CNN": "C5", "Baseline": "C2"}
+        palette = {"Epi-LSTM": "C3", "Avocado": "C0", "REFINED+CNN": "C5", "Baseline": "C2"}
         plt.figure(figsize=(18, 10))
         plt.ylim(0.65, 1)
         sns.set(font_scale=3)
