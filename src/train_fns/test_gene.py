@@ -39,14 +39,14 @@ def get_config(model_dir, config_base, result_base):
 def test_gene(cfg, chr):
     data_ob_gene = DataPrepGene(cfg, mode='test', chr=chr)
     monitor = MonitorTesting(cfg)
-    callback = TensorBoard(cfg.tensorboard_log_path)
+    #callback = TensorBoard(cfg.tensorboard_log_path)
     vizOb = Viz(cfg)
 
     data_ob_gene.prepare_id_dict()
     data_gen_test = data_ob_gene.get_data()
     model = Model(cfg, data_ob_gene.vocab_size, gpu_id)
     model.load_weights()
-    model.set_callback(callback)
+    #model.set_callback(callback)
 
     logger.info('Testing Start')
 
