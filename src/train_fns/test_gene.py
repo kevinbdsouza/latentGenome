@@ -81,7 +81,7 @@ def test_gene(cfg):
 
 
 if __name__ == '__main__':
-    setup_logging()
+    #setup_logging()
 
     model_dir = '..data/'
     config_base = 'config.yaml'
