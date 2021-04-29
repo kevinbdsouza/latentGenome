@@ -83,7 +83,7 @@ def test_gene(cfg):
 if __name__ == '__main__':
     #setup_logging()
 
-    model_dir = '..data/'
+    model_dir = '/Users/kevindsouza/Documents/UBC/PhD/Research/latent_genome/Epi-LSTM/data/'
     config_base = 'config.yaml'
     result_base = 'images'
 
