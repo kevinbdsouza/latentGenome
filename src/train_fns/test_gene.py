@@ -36,8 +36,8 @@ def get_config(model_dir, config_base, result_base):
     return cfg
 
 
-def test_gene(cfg):
-    data_ob_gene = DataPrepGene(cfg, mode='test')
+def test_gene(cfg, chr):
+    data_ob_gene = DataPrepGene(cfg, mode='test', chr=chr)
     monitor = MonitorTesting(cfg)
     callback = TensorBoard(cfg.tensorboard_log_path)
     vizOb = Viz(cfg)
@@ -82,11 +82,11 @@ def test_gene(cfg):
 
 if __name__ == '__main__':
     #setup_logging()
-
+    chr = '21'
     model_dir = '/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/model'
     config_base = 'config.yaml'
     result_base = 'images'
 
     cfg = get_config(model_dir, config_base, result_base)
 
-    test_gene(cfg)
+    test_gene(cfg, chr)
