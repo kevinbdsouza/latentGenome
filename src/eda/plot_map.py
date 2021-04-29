@@ -18,9 +18,9 @@ class PlotMap:
     def plot_all(self):
         avocado_pe, avocado_fire, avocado_rep, lstm_pe, lstm_fire, lstm_rep = self.get_dict()
 
-        #self.plot_pe(avocado_pe, lstm_pe)
+        self.plot_pe(avocado_pe, lstm_pe)
         #self.plot_fire(avocado_fire, lstm_fire)
-        self.plot_rep(avocado_rep, lstm_rep)
+        #self.plot_rep(avocado_rep, lstm_rep)
 
     def get_dict(self):
 
@@ -176,6 +176,7 @@ class PlotMap:
         ax = sns.barplot(x="Cell Types", hue="labels", y="mAP", palette=palette, data=df)
         ax.grid(False)
         plt.legend(fontsize=16)
+        plt.title("Promoter-Enhancer Interactions")
         plt.show()
         print("done")
         # plt.savefig(self.path + 'map_pe.png')
@@ -650,7 +651,7 @@ if __name__ == "__main__":
     plot_ob = PlotMap(cfg)
 
     #plot_ob.plot_gene()
-    #plot_ob.plot_all()
+    plot_ob.plot_all()
 
     #hidden_list = [6, 12, 24, 36, 48, 60, 96, 110]
     # plot_ob.plot_hidden(hidden_list)
@@ -668,7 +669,7 @@ if __name__ == "__main__":
     #plot_ob.plot_hyper_xgb()
 
     #plot_ob.plot_gene_regression()
-    plot_ob.plot_smoothness()
+    #plot_ob.plot_smoothness()
     # plot_ob.plot_correlations()
 
     # plot_ob.plot_pr_roc()
