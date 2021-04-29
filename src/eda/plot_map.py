@@ -123,7 +123,7 @@ class PlotMap:
             plt.scatter(key_list_avocado, values[i], label=label, c=color_list[i], marker=marker_list[i])
 
         plt.legend(fontsize=16)
-        plt.title("Gene Expression")
+        plt.title("Gene Expression", fontsize=16)
         plt.show()
         print("done")
         pass
