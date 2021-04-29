@@ -19,8 +19,8 @@ class PlotMap:
         avocado_pe, avocado_fire, avocado_rep, lstm_pe, lstm_fire, lstm_rep = self.get_dict()
 
         #self.plot_pe(avocado_pe, lstm_pe)
-        self.plot_fire(avocado_fire, lstm_fire)
-        #self.plot_rep(avocado_rep, lstm_rep)
+        #self.plot_fire(avocado_fire, lstm_fire)
+        self.plot_rep(avocado_rep, lstm_rep)
 
     def get_dict(self):
 
@@ -226,6 +226,7 @@ class PlotMap:
         ax = sns.barplot(x="Cell Types", hue="labels", y="mAP", palette=palette, data=df)
         ax.grid(False)
         plt.legend(fontsize=35, bbox_to_anchor=(1.05, 1), loc='upper left')
+        plt.title("Replication Timing")
         plt.show()
         print("done")
         # plt.savefig(path + 'map_rep.png')
