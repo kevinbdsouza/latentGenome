@@ -23,7 +23,7 @@ class AvocadoAnalysis:
         self.epigenome_npz_path = None
         self.model_name = "avocado-chr21"
         self.vocab_size = None
-        self.model_path = "/home/kevindsouza/Documents/projects/latentGenome/src/downstream/avocado/model/"
+        self.model_path = ""
 
     def get_data(self, cfg, mode):
 

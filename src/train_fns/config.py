@@ -28,7 +28,7 @@ class Config:
         self.epigenome_npz_path_test = '/data2/latent/data/npz/chr21_arc_sinh_znorm'
         self.epigenome_bigwig_path = '/opt/data/latent/data/bigwig'
 
-        self.model_dir = '/home/kevindsouza/Documents/projects/latentGenome/src/saved_model/model_all_ca'
+        self.model_dir = '..data/'
         self.config_base = 'config.yaml'
         self.tensorboard_log_base = 't_log'
         self.config_file = os.path.join(self.model_dir, self.config_base)

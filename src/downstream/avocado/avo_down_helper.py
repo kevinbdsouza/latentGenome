@@ -116,10 +116,10 @@ class AvoDownstreamHelper:
 
 
 if __name__ == '__main__':
-    file_name = "/home/kevindsouza/Documents/projects/latent/results/03-04-2019_n/downstream/feat_rna_h3_E004.pkl"
+    file_name = ""
     config_base = 'config.yaml'
     result_base = 'down_images'
-    model_path = "/home/kevindsouza/Documents/projects/latent/results/03-04-2019_n/downstream/h4/model"
+    model_path = ""
 
     cfg = get_config(model_path, config_base, result_base)
     helper_ob = AvoDownstreamHelper(cfg)

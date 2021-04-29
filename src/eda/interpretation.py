@@ -118,7 +118,7 @@ class Interpretation:
 
     def run_density_plots(self, ):
 
-        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/gc_phylo/feat_phylo_chr_21.pkl"
+        path = "..data/"
         phylo_df = pd.read_pickle(path)
         features = [0, 2]
 
@@ -170,8 +170,8 @@ class Interpretation:
 
 if __name__ == "__main__":
     setup_logging()
-    dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/"
-    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/model"
+    dir = "..data/"
+    model_path = "..data/"
     config_base = 'config.yaml'
     result_base = 'down_images'
     chr = 21

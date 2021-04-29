@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class PlotMap:
     def __init__(self, cfg):
         self.cfg = cfg
-        self.path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/"
+        self.path = "..data/"
 
     def plot_all(self):
         avocado_pe, avocado_fire, avocado_rep, lstm_pe, lstm_fire, lstm_rep = self.get_dict()
@@ -54,7 +54,7 @@ class PlotMap:
         return value_list_lstm
 
     def plot_auroc_accuracy(self):
-        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        path = "..data/"
         mode = "AuROC"
         tasks = ["Gene Expression", "Replication Timing", "PE-Interactions", "FIREs"]
         methods = ["Epi-LSTM", "Avocado", "Refined+CNN", "Baseline"]
@@ -233,7 +233,7 @@ class PlotMap:
         # plt.savefig(path + 'map_rep.png')
 
     def plot_hidden(self, hidden_list):
-        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        path = "..data/"
         map_hidden = np.load(path + "map_hidden.npy")
 
         map_2_layer = np.load(path + "map_2_layer.npy")
@@ -259,7 +259,7 @@ class PlotMap:
     def plot_hyper_lstm(self, hidden_list):
 
         mode = "test_time"
-        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        path = "..data/"
 
         if mode == "mAP":
             map_1_layer = np.load(path + "map_1_layer.npy")
@@ -361,7 +361,7 @@ class PlotMap:
         pass
 
     def plot_lr(self, epoch_list):
-        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        path = "..data/"
         r2_1 = np.load(path + "r2_1.npy")
         r2_2 = np.load(path + "r2_2.npy")
         r2_3 = np.load(path + "r2_3.npy")
@@ -383,7 +383,7 @@ class PlotMap:
     def plot_hyper_xgb(self):
         depth_list = [2, 4, 6, 8, 12, 20]
         estimators_list = [2000, 4000, 5000, 6000, 8000, 10000]
-        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        path = "..data/"
 
         plt.figure(figsize=(10, 6))
         map_depth_2000 = np.load(path + "xgb_map_depth_2000.npy")
@@ -444,7 +444,7 @@ class PlotMap:
         pass
 
     def plot_auto_ablation(self, hidden_list):
-        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        path = "..data/"
         r2_lstm = np.load(path + "r2_1layer.npy")
 
         map_rnn = np.load(path + "map_rnn.npy")
@@ -467,7 +467,7 @@ class PlotMap:
         pass
 
     def plot_cnn_ablation(self, conv_layers_list):
-        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        path = "..data/"
         map_7f = np.load(path + "map_7f.npy")
 
         map_3f = np.load(path + "map_3f.npy")
@@ -490,7 +490,7 @@ class PlotMap:
         pass
 
     def plot_class_ablation(self, tasks):
-        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        path = "..data/"
         map_xgb = np.load(path + "map_lstm.npy")
 
         map_rf = np.load(path + "map_rf.npy")
@@ -512,7 +512,7 @@ class PlotMap:
         pass
 
     def plot_smoothness(self):
-        path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
+        path = "..data/"
         r2_lstm = np.load(path + "mod_euclid_lstm.npy")
         r2_avo = np.load(path + "mod_euclid_avocado.npy")
         r2_refined_cnn = np.load(path + "mod_refined_cnn.npy")
@@ -532,7 +532,7 @@ class PlotMap:
         pass
 
     def plot_correlations(self):
-        data_path = "/home/kevindsouza/Documents/projects/latentGenome/src/common/data/"
+        data_path = "..data/"
         gc_path = data_path + "gccorrelations.pkl"
         phylo_path = data_path + "phylo_abs_corr.pkl"
         gc_corr = pd.read_pickle(gc_path)
@@ -558,7 +558,7 @@ class PlotMap:
         pass
 
     def plot_pr_roc(self):
-        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/hidden/"
+        path = "..data/"
         mode = "roc"
 
         if mode == "pr":
@@ -611,7 +611,7 @@ class PlotMap:
         pass
 
     def plot_phylo_density(self):
-        path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/gc_phylo/feat_phylo_chr_21.pkl"
+        path = "..data/"
         phylo_df = pd.read_pickle(path)
         features = [0, 2]
 
@@ -648,7 +648,7 @@ if __name__ == "__main__":
     setup_logging()
     config_base = 'config.yaml'
     result_base = 'down_images'
-    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21"
+    model_path = "..data/"
 
     cfg = get_config(model_path, config_base, result_base)
     plot_ob = PlotMap(cfg)

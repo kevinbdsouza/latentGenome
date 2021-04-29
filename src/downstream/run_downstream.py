@@ -366,8 +366,8 @@ if __name__ == '__main__':
     result_base = 'down_images'
     chr = 21
 
-    dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/"
-    model_path = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/model"
+    dir = "../data"
+    model_path = "../data"
     cfg = get_config(model_path, config_base, result_base)
     pd_col = list(np.arange(cfg.hidden_size_encoder))
     pd_col.append('target')

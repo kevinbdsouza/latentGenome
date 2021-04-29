@@ -90,7 +90,7 @@ def run_all(model, down_dir, chr_list):
 if __name__ == "__main__":
     # setup_logging()
     logging.basicConfig(
-        filename="/home/kevindsouza/Documents/projects/latentGenome/src/saved_model/avocado/avocado_log.txt",
+        filename="../avocado/avocado_log.txt",
         level=logging.DEBUG)
 
     model = "avocado-chr"

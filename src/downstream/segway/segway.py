@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class SegWay:
     def __init__(self):
         self.fasta_path = "/data2/latent/data/dna/chr21.fa"
-        self.dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/lstm_features/"
+        self.dir = "../lstm_features/"
         self.features_path = self.dir + "feat_chr_21.pkl"
 
     def read_fasta(self, fasta_path):
@@ -68,7 +68,7 @@ class SegWay:
 
     def run_genome_euclid(self):
         target = open(
-            '/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/lstm_features/feat_chr_21.pkl',
+            '../lstm_features/feat_chr_21.pkl',
             'rb')
         chr_df = pickle.load(target)
         target.close()
@@ -91,7 +91,7 @@ class SegWay:
 
     def run_segway(self):
 
-        GENOMEDATA_DIRNAME = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14/21/lstm_features/genomedata/genomedata.test"
+        GENOMEDATA_DIRNAME = "../lstm_features/genomedata/genomedata.test"
 
         # run.main(["--random-starts=3", "train", GENOMEDATA_DIRNAME])
 

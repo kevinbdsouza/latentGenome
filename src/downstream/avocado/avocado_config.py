@@ -25,7 +25,7 @@ class Config:
         self.epigenome_npz_path_test = '/opt/data/latent/data/npz/all_npz_arc_sinh'
         self.epigenome_bigwig_path = '/opt/data/latent/data/bigwig'
 
-        self.model_dir = '/home/kevindsouza/Documents/projects/latentGenome/src/saved_model/avocado'
+        self.model_dir = ''
         self.config_base = 'avocado_config.yaml'
         self.tensorboard_log_base = 't_log'
         self.config_file = os.path.join(self.model_dir, self.config_base)

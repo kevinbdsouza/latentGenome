@@ -63,7 +63,7 @@ def run_all(chr_list, down_dir):
 
 if __name__ == "__main__":
     chr_list = [20, 21]
-    down_dir = "/home/kevindsouza/Documents/projects/latentGenome/results/04-27-2019_n/h_110/5e-14"
+    down_dir = "..data/"
 
     logging.basicConfig(filename=down_dir + "/run_log_eval.txt",
                         level=logging.DEBUG)
